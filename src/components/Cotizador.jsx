@@ -253,9 +253,11 @@ const Cotizador = () => {
         if (insertError) throw insertError;
       }
 
-      if (supabase) {
-        await supabase.functions.invoke('send-email', {
-          body: {
+      try {
+        const emailRes = await fetch('https://tjurqmgkapyfofyvllqj.supabase.co/functions/v1/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
             type: 'INSERT',
             table: 'cotizaciones',
             record: {
@@ -269,10 +271,13 @@ const Cotizador = () => {
             },
             pdfBase64,
             pdfName,
-          },
-        }).catch((emailErr) => {
-          console.error('Error al enviar correo:', emailErr);
+          }),
         });
+        if (!emailRes.ok) {
+          console.error('Error al enviar correo:', emailRes.status, await emailRes.text());
+        }
+      } catch (emailErr) {
+        console.error('Error al enviar correo:', emailErr);
       }
 
       doc.save(pdfName);

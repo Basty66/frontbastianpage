@@ -104,7 +104,7 @@ serve(async (req) => {
       }]
     }
 
-    await fetch('https://api.resend.com/emails', {
+    const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
@@ -113,6 +113,14 @@ serve(async (req) => {
       body: JSON.stringify(ownerPayload),
     })
 
+    if (!res.ok) {
+      const errorText = await res.text()
+      console.error('Resend error:', res.status, errorText)
+      return new Response(`Resend error (${res.status}): ${errorText}`, { status: 502, headers: corsHeaders })
+    }
+
+    const resendData = await res.json()
+    console.log('Resend success:', JSON.stringify(resendData))
     return new Response('ok', { status: 200, headers: corsHeaders })
   } catch (err) {
     console.error('Function error:', err)
