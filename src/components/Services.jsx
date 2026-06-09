@@ -49,6 +49,40 @@ const Services = () => {
             );
           })}
         </div>
+
+        <Reveal animation="fade-up" delay={500} className="mt-10 sm:mt-14">
+          <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-lg overflow-x-auto">
+            <h3 className="text-lg font-heading font-semibold text-white mb-5 text-center">
+              <span className="text-emerald-400">$0/mes</span> vs Hosting Tradicional
+            </h3>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="text-left text-slate-400 font-medium py-3 pr-4">Concepto</th>
+                  <th className="text-center text-emerald-400 font-semibold py-3 px-4 bg-emerald-500/5 rounded-t-xl">Serverless (Nosotros)</th>
+                  <th className="text-center text-red-400/70 font-medium py-3 pl-4">Hosting Tradicional</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Costo mensual', '$0 CLP', 'Desde $5.990 – $49.990 CLP'],
+                  ['Velocidad global', 'Edge CDN — 50ms', 'Servidor único — 300ms+'],
+                  ['SSL / HTTPS', 'Incluido de por vida', 'Pagas extra o manual'],
+                  ['Mantenimiento', 'Automático (nosotros)', 'Tú lo gestionas'],
+                  ['Escalabilidad', 'Ilimitada (serverless)', 'Limitada al plan'],
+                  ['Ancho de banda', 'Sin límite', 'Caps mensuales'],
+                  ['Backups', 'Automáticos diarios', 'Manuales o pagas'],
+                ].map((row, i) => (
+                  <tr key={i} className="border-b border-white/5">
+                    <td className="text-slate-300 py-3 pr-4 font-medium">{row[0]}</td>
+                    <td className="text-center text-emerald-300 py-3 px-4 bg-emerald-500/5">{row[1]}</td>
+                    <td className="text-center text-slate-400 py-3 pl-4">{row[2]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

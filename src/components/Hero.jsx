@@ -150,6 +150,22 @@ const Hero = () => {
             <span className="relative z-10">Ver Portafolio</span>
           </button>
         </div>
+        <div className="flex items-center justify-center lg:justify-start gap-6 sm:gap-8 pt-4 sm:pt-6">
+          <div className="text-center">
+            <span className="block text-2xl sm:text-3xl font-bold font-heading text-white">+20</span>
+            <span className="text-xs text-slate-400">Proyectos entregados</span>
+          </div>
+          <div className="w-px h-10 bg-white/10" />
+          <div className="text-center">
+            <span className="block text-2xl sm:text-3xl font-bold font-heading text-white">+15</span>
+            <span className="text-xs text-slate-400">Clientes satisfechos</span>
+          </div>
+          <div className="w-px h-10 bg-white/10" />
+          <div className="text-center">
+            <span className="block text-2xl sm:text-3xl font-bold font-heading text-white">100%</span>
+            <span className="text-xs text-slate-400">Disponibilidad</span>
+          </div>
+        </div>
       </Reveal>
       <Reveal animation="fade-right" delay={200} className="relative z-10 flex-1 w-full max-w-xl">
         <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-lg animate-float">

@@ -1,12 +1,32 @@
 import { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Palette } from 'lucide-react';
 import Hero from './components/Hero';
 import Services from './components/Services';
+import Testimonios from './components/Testimonios';
 import About from './components/About';
 import Reveal from './components/Reveal';
 
 const Cotizador = lazy(() => import('./components/Cotizador'));
+
+function CotizadorSkeleton() {
+  return (
+    <section className="py-16 sm:py-20 px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto animate-pulse">
+        <div className="text-center mb-10 sm:mb-12 space-y-3">
+          <div className="h-10 w-72 sm:h-12 sm:w-96 bg-white/5 rounded-xl mx-auto" />
+          <div className="h-5 w-56 bg-white/5 rounded-lg mx-auto" />
+        </div>
+        <div className="grid md:grid-cols-3 gap-6 mb-10">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-64 bg-white/[0.02] border border-white/5 rounded-2xl" />
+          ))}
+        </div>
+        <div className="h-96 bg-white/[0.02] border border-white/5 rounded-2xl" />
+      </div>
+    </section>
+  );
+}
 
 const navLinks = [
   { label: 'Inicio', id: 'inicio' },
@@ -21,8 +41,9 @@ const Home = () => {
     <main>
       <Hero />
       <Services />
+      <Testimonios />
       <About />
-      <Suspense fallback={null}>
+      <Suspense fallback={<CotizadorSkeleton />}>
         <Cotizador />
       </Suspense>
     </main>
@@ -48,11 +69,32 @@ const Portfolio = () => (
   </div>
 );
 
+const NotFound = () => (
+  <div className="min-h-screen flex items-center justify-center px-4 sm:px-6">
+    <Reveal animation="fade-up" className="text-center max-w-lg">
+      <div className="w-16 sm:w-20 h-16 sm:h-20 mx-auto mb-6 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center">
+        <span className="text-3xl sm:text-4xl font-bold font-heading text-brand-cyan">404</span>
+      </div>
+      <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4 text-white">Página no encontrada</h2>
+      <p className="text-slate-300 mb-8">La página que buscas no existe o fue movida.</p>
+      <Link to="/" className="inline-flex items-center gap-2 text-brand-cyan hover:text-cyan-300 transition-colors font-medium">
+        <span>&larr;</span> Volver al inicio
+      </Link>
+    </Reveal>
+  </div>
+);
+
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [accent, setAccent] = useState(() => localStorage.getItem('bd-accent') || 'cyan');
+
+  useEffect(() => {
+    document.documentElement.dataset.accent = accent;
+    localStorage.setItem('bd-accent', accent);
+  }, [accent]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -114,6 +156,13 @@ function App() {
                 <span className="absolute inset-x-3 bottom-1.5 h-[2px] bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-center" />
               </button>
             ))}
+            <button
+              onClick={() => setAccent(accent === 'cyan' ? 'blue' : accent === 'blue' ? 'purple' : 'cyan')}
+              className="ml-2 p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.03] transition-all duration-300"
+              title="Cambiar color de acento"
+            >
+              <Palette className="w-4 h-4" />
+            </button>
           </div>
 
           <div className="flex items-center gap-1">
@@ -151,6 +200,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/portafolio" element={<Portfolio />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Reveal animation="fade-up" as="footer" className="border-t border-white/5 bg-slate-900/30 backdrop-blur-md py-6 sm:py-8 px-4 sm:px-6 text-center text-slate-300 text-xs sm:text-sm">

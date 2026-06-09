@@ -10,7 +10,7 @@ export default {
         brand: {
           dark: "#0b1329",
           card: "#1c2541",
-          cyan: "#00b4d8",
+          cyan: "hsla(var(--accent-h, 183), var(--accent-s, 80%), var(--accent-l, 50%), <alpha-value>)",
           slate: "#94a3b8",
         }
       },

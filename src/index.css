@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --accent-h: 183;
+  --accent-s: 80%;
+  --accent-l: 50%;
+}
+
+[data-accent="cyan"] {
+  --accent-h: 183;
+  --accent-s: 80%;
+  --accent-l: 50%;
+}
+
+[data-accent="blue"] {
+  --accent-h: 217;
+  --accent-s: 91%;
+  --accent-l: 60%;
+}
+
+[data-accent="purple"] {
+  --accent-h: 271;
+  --accent-s: 81%;
+  --accent-l: 56%;
+}
+
 @keyframes neon-glow {
   0%, 100% {
     box-shadow: 0 0 8px rgba(34, 211, 238, 0.15), 0 0 20px rgba(34, 211, 238, 0.05);

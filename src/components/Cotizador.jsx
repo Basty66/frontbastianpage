@@ -41,6 +41,8 @@ const adicionales = [
   { id: 'pagos', icon: CreditCard, label: 'Pasarela de Pago', desc: 'Mercado Pago / Webpay', precio: 80000, color: 'emerald' },
   { id: 'seo', icon: Search, label: 'SEO Profesional', desc: 'Optimización para Google', precio: 60000, color: 'sky' },
   { id: 'idioma', icon: Globe, label: 'Multi-idioma', desc: 'Traducción a varios idiomas', precio: 90000, color: 'violet' },
+  { id: 'soporte', icon: Settings, label: 'Soporte Mensual', desc: '10 hrs/mes de mantención y soporte', precio: 50000, color: 'emerald' },
+  { id: 'mantenimiento', icon: Settings, label: 'Mantenimiento Anual', desc: 'Actualizaciones, backups y monitoreo 12 meses', precio: 180000, color: 'sky' },
 ];
 
 const codigosPais = [
@@ -57,6 +59,12 @@ const codigosPais = [
   { code: '+44', label: '+44', pais: 'Reino Unido' },
   { code: '+33', label: '+33', pais: 'Francia' },
   { code: '+49', label: '+49', pais: 'Alemania' },
+];
+
+const monedas = [
+  { id: 'CLP', label: '$ CLP', simbolo: '$', tasa: 1 },
+  { id: 'USD', label: 'US$ USD', simbolo: 'US$', tasa: 0.0011 },
+  { id: 'UF', label: 'UF', simbolo: 'UF', tasa: 0.000028 },
 ];
 
 const planes = [
@@ -169,6 +177,7 @@ const Cotizador = () => {
   const [formData, setFormData] = useState({ nombre: '', email: '', telefono: '', mensaje: '', empresa: '' });
   const [formErrors, setFormErrors] = useState({ nombre: '', email: '', telefono: '' });
   const [codigoPais, setCodigoPais] = useState('+56');
+  const [moneda, setMoneda] = useState('CLP');
   const [enviado, setEnviado] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -210,6 +219,8 @@ const Cotizador = () => {
   };
 
   const handleFormChange = (field, value) => {
+    setError(null);
+    if (field === 'telefono') value = value.replace(/\D/g, '');
     setFormData(prev => ({ ...prev, [field]: value }));
     const err = validateField(field, value);
     setFormErrors(prev => ({ ...prev, [field]: err }));
@@ -277,6 +288,7 @@ const Cotizador = () => {
   const animatedTotal = useAnimatedNumber(total, 600);
 
   const handleExtraChange = (id) => {
+    setError(null);
     setExtras((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
 
@@ -403,7 +415,17 @@ const Cotizador = () => {
     return () => window.removeEventListener('keydown', handleEscape);
   }, [showPreview, showSignatures, showPdfPreview]);
 
-  const formatCurrency = (val) => `$${val.toLocaleString('es-CL')}`;
+  const formatCurrency = (val) => {
+    const m = monedas.find(x => x.id === moneda) || monedas[0];
+    const convertido = val * m.tasa;
+    if (moneda === 'UF') {
+      return `${m.simbolo} ${convertido.toFixed(2)}`;
+    }
+    if (moneda === 'USD') {
+      return `${m.simbolo} ${convertido.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+    }
+    return `${m.simbolo}${Math.round(convertido).toLocaleString('es-CL')}`;
+  };
 
   const formatDate = (d) => {
     const dia = String(d.getDate()).padStart(2, '0');
@@ -824,6 +846,21 @@ const Cotizador = () => {
         <p className="text-slate-300 text-lg max-w-xl mx-auto">
           Selecciona lo que necesitas y obtén tu cotización en tiempo real.
         </p>
+        <div className="flex items-center justify-center gap-1 mt-4">
+          {monedas.map((m) => (
+            <button
+              key={m.id}
+              onClick={() => setMoneda(m.id)}
+              className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all duration-300 ${
+                moneda === m.id
+                  ? 'border-brand-cyan/50 bg-brand-cyan/10 text-cyan-200'
+                  : 'border-white/10 text-slate-500 hover:text-slate-300 hover:border-white/20'
+              }`}
+            >
+              {m.label}
+            </button>
+          ))}
+        </div>
       </Reveal>
 
       <div className="flex items-center justify-center gap-2 sm:gap-4 mb-12">
@@ -887,6 +924,7 @@ const Cotizador = () => {
                         }`}
                         style={{ boxShadow: selected ? `0 0 24px ${c.glow}` : undefined }}
                         onClick={() => {
+                          setError(null);
                           if (plan.id === 'custom') {
                             setSelectedPlan('custom');
                             setTipoWeb(0);
@@ -915,7 +953,7 @@ const Cotizador = () => {
                               {selected && <div className={`w-2.5 h-2.5 rounded-full ${c.dot}`} />}
                             </div>
                             {plan.precio ? (
-                              <span className="font-bold font-heading text-lg">${plan.precio.toLocaleString('es-CL')}</span>
+                              <span className="font-bold font-heading text-lg transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_0_12px_rgba(34,211,238,0.4)] inline-block">{formatCurrency(plan.precio)}</span>
                             ) : (
                               <span className="text-xs font-medium text-white/70">Precio variable</span>
                             )}
@@ -965,7 +1003,7 @@ const Cotizador = () => {
                                 <span className="text-sm">{item.label}</span>
                                 <span className="text-[10px] text-slate-500">{item.desc}</span>
                               </div>
-                              <span className="text-sm font-semibold">${item.precio.toLocaleString('es-CL')}</span>
+                              <span className="text-sm font-semibold">{formatCurrency(item.precio)}</span>
                             </div>
                           );
                         })}
@@ -995,7 +1033,7 @@ const Cotizador = () => {
                                 </div>
                                 <span className="text-xs">{item.label}</span>
                               </div>
-                              <span className="text-xs font-medium text-cyan-400">+${item.precio.toLocaleString('es-CL')}</span>
+                              <span className="text-xs font-medium text-cyan-400">+{formatCurrency(item.precio)}</span>
                             </div>
                           );
                         })}
@@ -1006,13 +1044,13 @@ const Cotizador = () => {
                         disabled={tipoWeb === 0}
                         className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-cyan-500 text-white font-bold text-sm transition-all hover:shadow-lg hover:shadow-cyan-500/25 disabled:opacity-40 disabled:cursor-not-allowed"
                       >
-                        {tipoWeb === 0 ? 'Selecciona un tipo de web' : `Continuar — ${formatCurrency(total)} CLP`}
+                        {tipoWeb === 0 ? 'Selecciona un tipo de web' : `Continuar — ${formatCurrency(total)} ${moneda === 'CLP' ? 'CLP' : ''}`}
                       </button>
                     </div>
                   </div>
                 )}
-              </div>
-            </Reveal>
+            </div>
+          </Reveal>
           )}
 
           {step === 2 && (
@@ -1052,7 +1090,7 @@ const Cotizador = () => {
                             <p className="text-xs text-slate-400">{item.desc}</p>
                           </div>
                           <span className={`font-bold font-heading text-lg ${selected ? 'text-white' : 'text-brand-cyan'}`}>
-                            ${item.precio.toLocaleString('es-CL')}
+                            {formatCurrency(item.precio)}
                           </span>
                         </span>
                       </label>
@@ -1113,7 +1151,7 @@ const Cotizador = () => {
                                 <p className="text-xs text-white/60">{item.desc}</p>
                               </div>
                             </div>
-                            <span className="font-bold font-heading text-sm whitespace-nowrap">+${item.precio.toLocaleString('es-CL')}</span>
+                            <span className="font-bold font-heading text-sm whitespace-nowrap">+{formatCurrency(item.precio)}</span>
                           </div>
                           <div className="flex items-center gap-2 mt-1 pointer-events-none">
                             <div className={`h-5 w-9 rounded-full transition-all duration-500 ${active ? c.toggle : 'bg-white/10'}`}>
@@ -1174,8 +1212,8 @@ const Cotizador = () => {
             <div className={`text-3xl sm:text-4xl font-extrabold font-heading tracking-tight transition-all duration-700 ${
               total > 0 ? 'text-white drop-shadow-[0_0_12px_rgba(34,211,238,0.3)]' : 'text-slate-400'
             }`}>
-              ${animatedTotal.toLocaleString('es-CL')}{' '}
-              <span className="text-xs font-normal text-slate-400">CLP</span>
+              {formatCurrency(animatedTotal)}{' '}
+              <span className="text-xs font-normal text-slate-400">{moneda === 'CLP' ? 'CLP' : ''}</span>
             </div>
           </div>
         </div>
@@ -1219,6 +1257,19 @@ const Cotizador = () => {
                 <span className="relative z-10">¿Consultas? Escríbeme</span>
               </a>
 
+              <a
+                href="https://calendly.com/cristianbastian/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl transition-all duration-500 ease-out border border-brand-cyan/30 bg-brand-cyan/5 hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2"
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-brand-cyan -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+                <svg className="w-4 h-4 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span className="relative z-10">Agendar reunión gratis</span>
+              </a>
+
               <button
                 type="button"
                 onClick={generatePDF}
@@ -1260,7 +1311,7 @@ const Cotizador = () => {
                     type="text"
                     placeholder="Ej: Mi Empresa SpA"
                     value={formData.empresa}
-                    onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
+                    onChange={(e) => { setError(null); setFormData({ ...formData, empresa: e.target.value }); }}
                     className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-brand-cyan/80 focus:ring-2 focus:ring-brand-cyan/20 transition-all duration-300"
                   />
                 </div>
@@ -1328,7 +1379,7 @@ const Cotizador = () => {
                     rows="2"
                     placeholder="Cuéntame sobre tu proyecto..."
                     value={formData.mensaje}
-                    onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
+                    onChange={(e) => { setError(null); setFormData({ ...formData, mensaje: e.target.value }); }}
                     className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-brand-cyan/80 focus:ring-2 focus:ring-brand-cyan/20 focus:shadow-[0_0_12px_rgba(34,211,238,0.08)] transition-all duration-300 resize-none"
                   />
                 </div>
@@ -1476,7 +1527,7 @@ const Cotizador = () => {
               <div className="flex justify-between items-center pt-3 border-t border-brand-cyan/30 opacity-0 animate-modal-content-right" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>
                 <span className="text-sm font-bold text-white">Total Inversión</span>
                 <span className="text-lg font-extrabold text-brand-cyan drop-shadow-[0_0_8px_rgba(34,211,238,0.3)]">
-                  {formatCurrency(total)} CLP
+                  {formatCurrency(total)} {moneda === 'CLP' ? 'CLP' : ''}
                 </span>
               </div>
 
@@ -1572,8 +1623,12 @@ const Cotizador = () => {
         </div>
 
       {/* Modal PDF Preview */}
-      {showPdfPreview && pdfPreviewUrl && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => { setError(null); setShowPdfPreview(false); setPdfPreviewUrl(null); }}>
+      <div
+        className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ease-out ${
+          showPdfPreview && pdfPreviewUrl ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
+        }`}
+        onClick={() => { setError(null); setShowPdfPreview(false); setPdfPreviewUrl(null); }}
+      >
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
           <div
             role="dialog"
@@ -1633,10 +1688,9 @@ const Cotizador = () => {
               >
                 {loading ? 'Enviando...' : 'Enviar Cotización'}
               </button>
-            </div>
           </div>
         </div>
-      )}
+      </div>
     </section>
   );
 };
