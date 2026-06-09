@@ -151,6 +151,7 @@ const Cotizador = () => {
   const [tipoWeb, setTipoWeb] = useState(0);
   const [extras, setExtras] = useState([]);
   const [formData, setFormData] = useState({ nombre: '', email: '', telefono: '', mensaje: '' });
+  const [formErrors, setFormErrors] = useState({ nombre: '', email: '', telefono: '' });
   const [enviado, setEnviado] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -168,6 +169,50 @@ const Cotizador = () => {
   const mountedRef = useRef(false);
   const bastianImgRef = useRef(null);
   const [clientSigned, setClientSigned] = useState(false);
+
+  const validateField = (field, value) => {
+    if (field === 'nombre') {
+      if (!value.trim()) return 'El nombre es obligatorio';
+      if (value.trim().length < 3) return 'Debe tener al menos 3 caracteres';
+      if (!/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]+$/.test(value.trim())) return 'Solo se permiten letras';
+      return '';
+    }
+    if (field === 'email') {
+      if (!value.trim()) return 'El email es obligatorio';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) return 'Formato de email inválido';
+      return '';
+    }
+    if (field === 'telefono') {
+      if (!value.trim()) return 'El teléfono es obligatorio';
+      const digits = value.replace(/\D/g, '');
+      if (digits.length < 8 || digits.length > 15) return 'Debe tener entre 8 y 15 dígitos';
+      return '';
+    }
+    return '';
+  };
+
+  const handleFormChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    const err = validateField(field, value);
+    setFormErrors(prev => ({ ...prev, [field]: err }));
+  };
+
+  const handleFormBlur = (field) => {
+    const err = validateField(field, formData[field]);
+    setFormErrors(prev => ({ ...prev, [field]: err }));
+  };
+
+  const isFormValid = () => {
+    const errors = {};
+    let valid = true;
+    ['nombre', 'email', 'telefono'].forEach((field) => {
+      const err = validateField(field, formData[field]);
+      errors[field] = err;
+      if (err) valid = false;
+    });
+    setFormErrors(errors);
+    return valid;
+  };
 
   const handleClientDraw = useCallback(() => setClientSigned(true), []);
   const handleClientClear = useCallback(() => setClientSigned(false), []);
@@ -216,6 +261,11 @@ const Cotizador = () => {
     e.preventDefault();
     setError(null);
 
+    if (!isFormValid()) {
+      setError('Corrige los errores en el formulario antes de continuar.');
+      return;
+    }
+
     if (isCanvasEmpty(clientSigRef)) {
       setError('Debes firmar la conformidad antes de enviar.');
       setShowSignatures(true);
@@ -249,7 +299,8 @@ const Cotizador = () => {
       }
 
       const pdfBase64 = doc.output('datauristring').split(',')[1];
-      const pdfName = `Propuesta_BastianDev_${formData.nombre.replace(/\s+/g, '_')}.pdf`;
+      const slugNombre = (formData.nombre || 'pendiente').trim().replace(/\s+/g, '_') || 'pendiente';
+      const pdfName = `Propuesta_BastianDev_${slugNombre}.pdf`;
       const tipoId = getTipoId();
 
       try {
@@ -518,7 +569,9 @@ const Cotizador = () => {
     const tableColWidths = [30, 50, 25];
     const tableRows = [];
 
-    if (proyectoActual) {
+    if (planActual && selectedPlan !== 'custom') {
+      tableRows.push([`Plan ${planActual.label}`, planActual.desc, formatCurrency(planActual.total)]);
+    } else if (proyectoActual) {
       tableRows.push([proyectoActual.label, proyectoActual.desc, formatCurrency(proyectoActual.precio)]);
       extras.forEach((id) => {
         const item = adicionales.find((a) => a.id === id);
@@ -723,15 +776,21 @@ const Cotizador = () => {
       </Reveal>
 
       <div className="flex items-center justify-center gap-2 sm:gap-4 mb-12">
-        {steps.map((s, i) => (
+        {steps.map((s, i) => {
+          const isStep4Locked = i === 3 && total === 0 && !selectedPlan;
+          return (
           <div key={i} className="flex items-center gap-2 sm:gap-4">
             <button
-              onClick={() => setStep(i + 1)}
+              onClick={() => {
+                if (isStep4Locked) return;
+                if (i === 3 && total === 0 && !selectedPlan) return;
+                setStep(i + 1);
+              }}
               className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-2.5 rounded-xl border transition-all duration-500 ease-out ${
                 step >= i + 1
                   ? 'border-brand-cyan/50 bg-brand-cyan/10 text-white shadow-lg shadow-brand-cyan/5'
                   : 'border-white/10 bg-white/[0.02] text-slate-400 hover:border-white/20'
-              }`}
+              } ${isStep4Locked ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
               <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 ${
                 step >= i + 1 ? 'bg-brand-cyan/20 text-cyan-200 shadow-[0_0_8px_rgba(34,211,238,0.3)]' : 'bg-white/10 text-white/60'
@@ -751,12 +810,13 @@ const Cotizador = () => {
               <div className={`h-px w-6 sm:w-12 transition-all duration-500 ${step > i + 1 ? 'bg-brand-cyan/50' : 'bg-white/10'}`} />
             )}
           </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="grid lg:grid-cols-5 gap-12 items-start">
-        <div className={`lg:col-span-3 bg-white/[0.02] border border-white/10 p-4 sm:p-8 rounded-3xl backdrop-blur-lg space-y-6 sm:space-y-8 transition-all duration-500 ${
-          step <= 3 ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none scale-[0.98]'
+        <div className={`lg:col-span-3 bg-white/[0.02] border border-white/10 p-4 sm:p-8 rounded-3xl backdrop-blur-lg space-y-6 sm:space-y-8 transition-all duration-700 ease-out ${
+          step <= 3 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-30 pointer-events-none scale-[0.96] blur-[1px]'
         }`}>
           {step === 1 && (
             <Reveal animation="fade-up">
@@ -998,8 +1058,8 @@ const Cotizador = () => {
           </div>
         </div>
 
-        <Reveal animation="fade-right" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-8 rounded-3xl backdrop-blur-lg sticky top-28 transition-all duration-500 ${
-          step === 4 ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none scale-[0.98]'
+        <Reveal animation="fade-right" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-8 rounded-3xl backdrop-blur-lg sticky top-28 transition-all duration-700 ease-out ${
+          step === 4 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-30 pointer-events-none scale-[0.96] blur-[1px]'
         }`}>
           <h3 className="text-2xl font-heading font-bold mb-2">
             <span className="text-white">¿Trabajamos </span>
@@ -1061,9 +1121,19 @@ const Cotizador = () => {
                       type={field === 'email' ? 'email' : field === 'telefono' ? 'tel' : 'text'}
                       placeholder={field === 'nombre' ? 'Ej: Juan Pérez' : field === 'email' ? 'juan@empresa.cl' : '+56 9 1234 5678'}
                       value={formData[field]}
-                      onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                      className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-brand-cyan/80 focus:ring-2 focus:ring-brand-cyan/20 focus:shadow-[0_0_12px_rgba(34,211,238,0.08)] transition-all duration-300"
+                      onChange={(e) => handleFormChange(field, e.target.value)}
+                      onBlur={() => handleFormBlur(field)}
+                      className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                        formErrors[field]
+                          ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20'
+                          : formData[field]
+                            ? 'border-brand-cyan/50 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
+                            : 'border-white/10 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
+                      }`}
                     />
+                    {formErrors[field] && (
+                      <p className="text-[10px] text-red-400 mt-1">{formErrors[field]}</p>
+                    )}
                   </div>
                 </Reveal>
               ))}
