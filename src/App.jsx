@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
+import { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import Hero from './components/Hero';

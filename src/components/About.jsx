@@ -1,5 +1,4 @@
-import React from 'react';
-import { Code2, Briefcase, Cpu, Users, GraduationCap, Server, ArrowUpRight } from 'lucide-react';
+import { Code2, Briefcase, Cpu, Users, GraduationCap, Server } from 'lucide-react';
 import Reveal from './Reveal';
 
 const knowledge = [

@@ -1,18 +1,17 @@
-import React, { useState, useRef, useCallback, useEffect, memo } from 'react';
+import { useState, useRef, useCallback, useEffect, memo } from 'react';
 import { jsPDF } from 'jspdf';
-import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle } from 'lucide-react';
+import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle, Check, Star } from 'lucide-react';
 import Reveal from './Reveal';
 import useAnimatedNumber from '../hooks/useAnimatedNumber';
 import { supabase } from '../lib/supabaseClient';
 import bastianSigImg from '/firma-bastian.png';
 
 const steps = [
+  { label: 'Plan', desc: 'Elige tu plan' },
   { label: 'Tipo de Web', desc: 'Elige el proyecto' },
   { label: 'Extras', desc: 'Complementos' },
   { label: 'Contacto', desc: 'Recibe tu cotización' },
 ];
-
-const diasPorTipo = { landing: 7, corporativa: 14, ecommerce: 21 };
 
 const infoProyecto = {
   landing: { label: 'Landing Page', dias: 7 },
@@ -34,6 +33,7 @@ const colorMap = {
   emerald: { from: 'from-emerald-600', to: 'to-emerald-500', glow: 'rgba(16,185,129,0.35)', border: 'border-emerald-500/60', text: 'text-emerald-400', dot: 'bg-emerald-400', toggle: 'bg-emerald-500' },
   sky: { from: 'from-sky-600', to: 'to-sky-500', glow: 'rgba(14,165,233,0.35)', border: 'border-sky-500/60', text: 'text-sky-400', dot: 'bg-sky-400', toggle: 'bg-sky-500' },
   violet: { from: 'from-violet-600', to: 'to-violet-500', glow: 'rgba(139,92,246,0.35)', border: 'border-violet-500/60', text: 'text-violet-400', dot: 'bg-violet-400', toggle: 'bg-violet-500' },
+  cyan: { from: 'from-cyan-600', to: 'to-cyan-500', glow: 'rgba(34,211,238,0.35)', border: 'border-cyan-500/60', text: 'text-cyan-400', dot: 'bg-cyan-400', toggle: 'bg-cyan-500' },
 };
 
 const adicionales = [
@@ -41,6 +41,13 @@ const adicionales = [
   { id: 'pagos', icon: CreditCard, label: 'Pasarela de Pago', desc: 'Mercado Pago / Webpay', precio: 80000, color: 'emerald' },
   { id: 'seo', icon: Search, label: 'SEO Profesional', desc: 'Optimización para Google', precio: 60000, color: 'sky' },
   { id: 'idioma', icon: Globe, label: 'Multi-idioma', desc: 'Traducción a varios idiomas', precio: 90000, color: 'violet' },
+];
+
+const planes = [
+  { id: 'basico', label: 'Básico', desc: 'Landing Page profesional', precio: 150000, total: 150000, tipoId: 'landing', extras: [], incluye: ['Landing Page', 'Hosting $0', 'SEO base', 'Formulario Contacto', 'WhatsApp'], color: 'emerald', popular: false },
+  { id: 'estandar', label: 'Estándar', desc: 'Web Corporativa con panel', precio: 380000, total: 380000, tipoId: 'corporativa', extras: ['admin', 'seo'], incluye: ['Web Corporativa', 'Panel Admin', 'SEO Profesional', 'Hosting $0', 'Formulario Contacto'], color: 'blue', popular: true },
+  { id: 'premium', label: 'Premium', desc: 'E-commerce completo', precio: 750000, total: 750000, tipoId: 'ecommerce', extras: ['admin', 'pagos', 'seo', 'idioma'], incluye: ['E-commerce completo', 'Panel Admin', 'Pasarela de Pago', 'SEO Profesional', 'Multi-idioma', 'Hosting $0'], color: 'purple', popular: false },
+  { id: 'custom', label: 'A Medida', desc: 'Tú eliges cada componente', precio: null, total: 0, tipoId: null, extras: [], incluye: ['Selección libre de tipo y extras', 'Precio según elección'], color: 'cyan', popular: false },
 ];
 
 const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
@@ -81,7 +88,9 @@ const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
     ctx.moveTo(x, y);
   }, [canvasRef]);
 
-  drawRef.current = draw;
+  useEffect(() => {
+    drawRef.current = draw;
+  }, [draw]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -151,9 +160,10 @@ const Cotizador = () => {
   const [showSignatures, setShowSignatures] = useState(false);
   const [showPdfPreview, setShowPdfPreview] = useState(false);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [customPrice, setCustomPrice] = useState(0);
 
   const clientSigRef = useRef(null);
-  const bastianSigRef = useRef(null);
   const pdfDocRef = useRef(null);
   const mountedRef = useRef(false);
   const bastianImgRef = useRef(null);
@@ -186,12 +196,15 @@ const Cotizador = () => {
     return true;
   };
 
+  const planActual = selectedPlan ? planes.find(p => p.id === selectedPlan) : null;
   const proyectoActual = tiposProyecto.find((t) => t.precio === tipoWeb);
 
-  const total = tipoWeb + extras.reduce((acc, id) => {
-    const item = adicionales.find((a) => a.id === id);
-    return acc + (item?.precio || 0);
-  }, 0);
+  const total = planActual && selectedPlan !== 'custom'
+    ? planActual.total
+    : (customPrice > 0 ? customPrice : (tipoWeb + extras.reduce((acc, id) => {
+        const item = adicionales.find((a) => a.id === id);
+        return acc + (item?.precio || 0);
+      }, 0)));
 
   const animatedTotal = useAnimatedNumber(total, 600);
 
@@ -212,8 +225,7 @@ const Cotizador = () => {
     setLoading(true);
 
     try {
-      const tipoId = getTipoId();
-      const doc = buildPDFDoc(tipoId);
+      const doc = buildPDFDoc();
       pdfDocRef.current = doc;
       const dataUri = doc.output('datauristring');
       setPdfPreviewUrl(dataUri);
@@ -250,6 +262,8 @@ const Cotizador = () => {
             tipo_web: tipoId,
             extras: extras,
             total_estimado: total,
+            plan: selectedPlan || null,
+            custom_price: selectedPlan === 'custom' ? customPrice : null,
           });
           if (insertError) console.error('Error al guardar cotización:', insertError);
         }
@@ -272,6 +286,8 @@ const Cotizador = () => {
               tipo_web: tipoId,
               extras: extras,
               total_estimado: total,
+              plan: selectedPlan || null,
+              custom_price: selectedPlan === 'custom' ? customPrice : null,
             },
             pdfBase64,
             pdfName,
@@ -322,17 +338,18 @@ const Cotizador = () => {
   };
 
   const getTipoId = () => {
+    if (planActual && selectedPlan !== 'custom') return planActual.tipoId;
     if (!proyectoActual) return 'landing';
     return proyectoActual.id;
   };
 
   const getTipoLabel = () => {
+    if (planActual && selectedPlan !== 'custom') return `Plan ${planActual.label}`;
     const id = getTipoId();
     return id === 'landing' ? 'Landing Page' : id === 'corporativa' ? 'Web Corporativa' : 'E-commerce';
   };
 
-  const buildPDFDoc = (tipoId) => {
-    const proyecto = infoProyecto[tipoId];
+  const buildPDFDoc = () => {
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
     const pw = doc.internal.pageSize.getWidth();
     const ph = doc.internal.pageSize.getHeight();
@@ -347,14 +364,17 @@ const Cotizador = () => {
     let yy = mg;
 
     const helpers = {
-      title(text, yp, sz = 9) {
+      title(text, yp, sz = 10) {
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(sz);
-        doc.setTextColor(...dark);
+        doc.setTextColor(0, 40, 80);
         doc.text(text, mg, yp);
-        doc.setDrawColor(...accent);
-        doc.setLineWidth(0.3);
-        doc.line(mg, yp + 1, mg + 40, yp + 1);
+        doc.setDrawColor(0, 120, 200);
+        doc.setLineWidth(0.6);
+        doc.line(mg, yp + 1.5, mg + 50, yp + 1.5);
+        doc.setLineWidth(0.2);
+        doc.setDrawColor(200, 215, 230);
+        doc.line(mg + 50, yp + 1.5, pw - mg, yp + 1.5);
       },
       txt(text, x, yp, sz, color, align = 'left') {
         doc.setFont('times', 'normal');
@@ -374,9 +394,49 @@ const Cotizador = () => {
         doc.setTextColor(...color);
         doc.text(` ${char} ${text}`, x, yp, { maxWidth: cw - (x - mg) - 5 });
       },
+      drawTable(headers, rows, y, colWidths) {
+        const totalW = colWidths.reduce((a, b) => a + b, 0);
+        const xStart = (pw - totalW) / 2;
+        let cy = y;
+        doc.setFillColor(0, 80, 140);
+        doc.rect(xStart, cy, totalW, 6, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7);
+        let cx = xStart + 2;
+        headers.forEach((h, i) => {
+          if (i === headers.length - 1) {
+            doc.text(h, xStart + totalW - 2, cy + 4, { align: 'right' });
+          } else {
+            doc.text(h, cx, cy + 4);
+          }
+          cx += colWidths[i];
+        });
+        doc.setFont('times', 'normal');
+        doc.setFontSize(7);
+        let ry = cy + 6;
+        rows.forEach((row, ri) => {
+          if (ri % 2 === 1) {
+            doc.setFillColor(245, 248, 252);
+            doc.rect(xStart, ry, totalW, 5.5, 'F');
+          }
+          doc.setTextColor(40, 40, 50);
+          let cx2 = xStart + 2;
+          row.forEach((cell, i) => {
+            if (i === row.length - 1) {
+              doc.text(cell, xStart + totalW - 2, ry + 4, { align: 'right' });
+            } else {
+              doc.text(cell, cx2, ry + 4);
+            }
+            cx2 += colWidths[i];
+          });
+          ry += 5.5;
+        });
+        return ry;
+      },
     };
 
-    const { title, txt, txtBold, bullet } = helpers;
+    const { title, txt, txtBold, bullet, drawTable } = helpers;
 
     // ===== HEADER =====
     doc.setFillColor(...dark);
@@ -394,6 +454,7 @@ const Cotizador = () => {
     doc.setTextColor(...gray);
     doc.text('Soluciones Web · Serverless · Hosting $0', mg + 14, yy + 8);
 
+    // eslint-disable-next-line react-hooks/purity
     const propuestaNum = `PRO-${String(Date.now()).slice(-6)}`;
     const hoy = new Date();
     const venc = new Date(hoy);
@@ -426,46 +487,61 @@ const Cotizador = () => {
     txt(` ${formData.telefono || '________________'}`, mg + 3 + 16, yy, 7, gray);
     yy += 7.5;
 
+    // ===== PLAN (if selected) =====
+    if (planActual && selectedPlan !== 'custom') {
+      title('Plan Seleccionado', yy, 8);
+      yy += 5;
+      doc.setFillColor(240, 248, 255);
+      doc.setDrawColor(0, 120, 200);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(mg, yy, cw, 20, 1.5, 1.5, 'FD');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(0, 60, 120);
+      doc.text(`${planActual.label} — ${formatCurrency(planActual.total)} CLP`, mg + 4, yy + 5);
+      doc.setFont('times', 'normal');
+      doc.setFontSize(6.5);
+      doc.setTextColor(60, 70, 90);
+      let inclY = yy + 10;
+      planActual.incluye.forEach((inc) => {
+        doc.text(`✓ ${inc}`, mg + 8, inclY);
+        inclY += 3.5;
+      });
+      yy += 24;
+    }
+
     // ===== PRESUPUESTO =====
     title('Resumen del Presupuesto', yy, 8);
     yy += 5;
 
+    const tableHeaders = ['Servicio', 'Detalle', 'Valor'];
+    const tableColWidths = [30, 50, 25];
+    const tableRows = [];
+
     if (proyectoActual) {
-      doc.setFillColor(...dark);
-      doc.rect(mg, yy - 1.5, cw, 5, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(6);
-      doc.setTextColor(...white);
-      doc.text('Servicio', mg + 2, yy + 1);
-      doc.text('Detalle', mg + 55, yy + 1);
-      doc.text('Valor', pw - mg - 2, yy + 1, { align: 'right' });
-      yy += 5;
-
-      doc.setFont('times', 'normal');
-      doc.setFontSize(7);
-      doc.setTextColor(...dark);
-      doc.text(proyectoActual.label, mg + 2, yy);
-      doc.text(proyectoActual.desc, mg + 55, yy);
-      doc.text(formatCurrency(proyectoActual.precio), pw - mg - 2, yy, { align: 'right' });
-      yy += 4.5;
-
+      tableRows.push([proyectoActual.label, proyectoActual.desc, formatCurrency(proyectoActual.precio)]);
       extras.forEach((id) => {
         const item = adicionales.find((a) => a.id === id);
-        if (!item) return;
-        doc.text(item.label, mg + 2, yy);
-        doc.text(item.desc, mg + 55, yy);
-        doc.text(`+${formatCurrency(item.precio)}`, pw - mg - 2, yy, { align: 'right' });
-        yy += 4.5;
+        if (item) tableRows.push([item.label, item.desc, `+${formatCurrency(item.precio)}`]);
       });
+    }
 
-      doc.setFillColor(...accent);
-      doc.rect(mg, yy - 1, cw, 6, 'F');
+    if (customPrice > 0 && selectedPlan === 'custom') {
+      tableRows.push(['Ajuste manual', 'Precio personalizado', formatCurrency(customPrice)]);
+    }
+
+    if (tableRows.length > 0) {
+      yy = drawTable(tableHeaders, tableRows, yy, tableColWidths);
+      yy += 2;
+
+      doc.setFillColor(0, 80, 140);
+      doc.rect(mg, yy, cw, 6, 'F');
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.setTextColor(...white);
-      doc.text('TOTAL', mg + 2, yy + 3);
-      doc.text(`${formatCurrency(total)} CLP`, pw - mg - 2, yy + 3, { align: 'right' });
-      yy += 8;
+      doc.text('TOTAL', mg + 2, yy + 4);
+      doc.text(`${formatCurrency(total)} CLP`, pw - mg - 2, yy + 4, { align: 'right' });
+      yy += 9;
     }
 
     // ===== ALCANCE =====
@@ -499,30 +575,24 @@ const Cotizador = () => {
     yy += 2;
 
     // ===== TIEMPOS Y PAGO =====
-    title('Tiempos y Pago', yy, 8);
-    yy += 5;
-    const dias = proyecto?.dias || 7;
     const anticipo = Math.round(total * 0.5);
     const saldo = total - anticipo;
 
-    txtBold('Desarrollo:', mg, yy, 7.5, dark);
+    doc.setFillColor(240, 248, 255);
+    doc.setDrawColor(0, 120, 200);
+    doc.setLineWidth(0.8);
+    doc.roundedRect(mg, yy, cw, 24, 2, 2, 'FD');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(0, 60, 120);
+    doc.text('Condiciones de Pago', mg + 4, yy + 5);
     doc.setFont('times', 'normal');
-    doc.setFontSize(12);
-    doc.setTextColor(...accent);
-    doc.text(`${dias} días hábiles`, mg + 28, yy);
-    yy += 5.5;
-
-    txtBold('Condiciones:', mg, yy, 7.5, dark);
-    yy += 4;
-    [
-      `Anticipo 50% (${formatCurrency(anticipo)} CLP) para iniciar el desarrollo.`,
-      `Saldo 50% (${formatCurrency(saldo)} CLP) contra entrega y conformidad.`,
-      'Pago: Transferencia bancaria, Mercado Pago o Webpay.',
-    ].forEach((item) => {
-      bullet(item, mg + 1, yy, 6.5, gray, '•');
-      yy += 4;
-    });
-    yy += 2;
+    doc.setFontSize(7);
+    doc.setTextColor(50, 60, 80);
+    doc.text(`50% anticipo: ${formatCurrency(anticipo)} CLP — al iniciar el desarrollo`, mg + 4, yy + 11);
+    doc.text(`50% saldo: ${formatCurrency(saldo)} CLP — contra entrega y conformidad`, mg + 4, yy + 16);
+    doc.text(`Hosting: $0 CLP de por vida (infraestructura serverless)`, mg + 4, yy + 21);
+    yy += 28;
 
     // ===== PRÓXIMOS PASOS =====
     title('Próximos Pasos', yy, 8);
@@ -614,15 +684,15 @@ const Cotizador = () => {
 
     // ===== FOOTER =====
     yy = sigBoxY + 35;
-    doc.setDrawColor(200, 205, 215);
-    doc.setLineWidth(0.2);
-    doc.line(mg, ph - 13, pw - mg, ph - 13);
+    const fY = ph - 10;
+    doc.setDrawColor(210, 215, 225);
+    doc.setLineWidth(0.3);
+    doc.line(mg, fY - 2, pw - mg, fY - 2);
     doc.setFont('times', 'italic');
     doc.setFontSize(6);
-    doc.setTextColor(140, 140, 140);
-    doc.text('Bastian.dev — Cristian Bastian Cerda — cristianbastian.dev@gmail.com', mg, ph - 8.5);
-    doc.text(`Propuesta generada el ${formatDate(new Date())} · Válida por 15 días · ${propuestaNum}`, mg, ph - 5);
-    doc.text('Pág. 1/1', pw - mg, ph - 5, { align: 'right' });
+    doc.setTextColor(150, 155, 165);
+    doc.text('Bastian.dev — Cristian Bastian Cerda — Analista Programador', mg, fY + 4);
+    doc.text(`Pág. 1/1`, pw - mg, fY + 4, { align: 'right' });
 
     return doc;
   };
@@ -630,8 +700,7 @@ const Cotizador = () => {
   const generatePDF = async () => {
     setGenerating(true);
     try {
-      const tipoId = getTipoId();
-      const doc = buildPDFDoc(tipoId);
+      const doc = buildPDFDoc();
       const nombreArchivo = `Propuesta_BastianDev_${formData.nombre?.replace(/\s+/g, '_') || 'pendiente'}_${formatDate(new Date()).replace(/\//g, '-')}.pdf`;
       doc.save(nombreArchivo);
     } finally {
@@ -687,13 +756,88 @@ const Cotizador = () => {
 
       <div className="grid lg:grid-cols-5 gap-12 items-start">
         <div className={`lg:col-span-3 bg-white/[0.02] border border-white/10 p-4 sm:p-8 rounded-3xl backdrop-blur-lg space-y-6 sm:space-y-8 transition-all duration-500 ${
-          step === 1 || step === 2 ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none scale-[0.98]'
+          step <= 3 ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none scale-[0.98]'
         }`}>
           {step === 1 && (
             <Reveal animation="fade-up">
               <div className="space-y-3">
                 <label className="text-white font-heading font-semibold text-lg flex items-center gap-2">
                   <span className="w-7 h-7 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center text-xs font-bold">1</span>
+                  Elige tu plan
+                </label>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {planes.map((plan) => {
+                    const c = colorMap[plan.color];
+                    const selected = selectedPlan === plan.id;
+                    return (
+                      <div
+                        key={plan.id}
+                        className={`group relative overflow-hidden p-4 rounded-xl border cursor-pointer transition-all duration-500 ease-out ${
+                          selected
+                            ? `${c.border} text-white`
+                            : 'border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/30 hover:bg-white/[0.04]'
+                        }`}
+                        style={{ boxShadow: selected ? `0 0 24px ${c.glow}` : undefined }}
+                        onClick={() => {
+                          if (plan.id === 'custom') {
+                            setSelectedPlan('custom');
+                            setTipoWeb(0);
+                            setExtras([]);
+                            setCustomPrice(0);
+                            setTimeout(() => setStep(2), 400);
+                          } else {
+                            setSelectedPlan(plan.id);
+                            setTipoWeb(tiposProyecto.find(t => t.id === plan.tipoId)?.precio || 0);
+                            setExtras(plan.extras);
+                            setCustomPrice(0);
+                            setTimeout(() => setStep(4), 400);
+                          }
+                        }}
+                      >
+                        {plan.popular && (
+                          <div className="absolute top-2 right-2 z-10 flex items-center gap-1 text-[9px] font-bold text-amber-400 bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-full">
+                            <Star className="w-2.5 h-2.5" />
+                            MÁS ELEGIDO
+                          </div>
+                        )}
+                        <span className={`absolute inset-0 rounded-xl ${c.from} ${c.to} -translate-x-full transition-transform duration-500 ease-out ${selected ? 'translate-x-0' : 'group-hover:translate-x-0'}`} />
+                        <span className="relative z-10 flex flex-col h-full">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${
+                              selected ? 'border-white' : 'border-white/20 group-hover:border-white/40'
+                            }`}>
+                              {selected && <div className={`w-2.5 h-2.5 rounded-full ${c.dot}`} />}
+                            </div>
+                            {plan.precio ? (
+                              <span className="font-bold font-heading text-lg">${plan.precio.toLocaleString('es-CL')}</span>
+                            ) : (
+                              <span className="text-xs font-medium text-white/70">Precio variable</span>
+                            )}
+                          </div>
+                          <p className="font-medium text-sm">{plan.label}</p>
+                          {plan.desc && <p className="text-xs text-white/60 mb-2">{plan.desc}</p>}
+                          <div className="mt-auto space-y-0.5">
+                            {plan.incluye.map((inc, j) => (
+                              <div key={j} className="flex items-center gap-1.5 text-[10px] text-white/70">
+                                <Check className="w-2.5 h-2.5 flex-shrink-0" />
+                                {inc}
+                              </div>
+                            ))}
+                          </div>
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </Reveal>
+          )}
+
+          {step === 2 && (
+            <Reveal animation="fade-up">
+              <div className="space-y-3">
+                <label className="text-white font-heading font-semibold text-lg flex items-center gap-2">
+                  <span className="w-7 h-7 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center text-xs font-bold">2</span>
                   Tipo de plataforma
                 </label>
                 <div className="grid sm:grid-cols-1 gap-3">
@@ -709,7 +853,7 @@ const Cotizador = () => {
                             : 'border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/30 hover:bg-white/[0.04]'
                         }`}
                         style={{ boxShadow: selected ? `0 0 24px ${c.glow}` : undefined }}
-                        onClick={() => { setTipoWeb(item.precio); setTimeout(() => setStep(2), 400); }}
+                        onClick={() => { setTipoWeb(item.precio); setTimeout(() => setStep(3), 400); }}
                       >
                         <span className={`absolute inset-0 rounded-xl ${c.from} ${c.to} -translate-x-full transition-transform duration-500 ease-out ${selected ? 'translate-x-0' : 'group-hover:translate-x-0'}`} />
                         <span className="relative z-10 flex items-center gap-3 w-full">
@@ -733,11 +877,11 @@ const Cotizador = () => {
                     );
                   })}
                 </div>
-                <div className="flex justify-end pt-2">
-                  <button
-                    onClick={() => setStep(2)}
-                    className="text-sm text-brand-cyan hover:text-cyan-300 transition-colors font-medium flex items-center gap-1"
-                  >
+                <div className="flex justify-between pt-2">
+                  <button onClick={() => setStep(1)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1">
+                    <span className="text-lg">&larr;</span> Anterior
+                  </button>
+                  <button onClick={() => setStep(3)} className="text-sm text-brand-cyan hover:text-cyan-300 transition-colors font-medium flex items-center gap-1">
                     Siguiente paso <span className="text-lg">&rarr;</span>
                   </button>
                 </div>
@@ -745,11 +889,11 @@ const Cotizador = () => {
             </Reveal>
           )}
 
-          {step === 2 && (
+          {step === 3 && (
             <Reveal animation="fade-up">
               <div className="space-y-3">
                 <label className="text-white font-heading font-semibold text-lg flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center text-xs font-bold">2</span>
+                  <span className="w-7 h-7 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center text-xs font-bold">3</span>
                   Complementos
                 </label>
                 <div className="grid sm:grid-cols-2 gap-3">
@@ -801,10 +945,10 @@ const Cotizador = () => {
                   })}
                 </div>
                 <div className="flex justify-between pt-2">
-                  <button onClick={() => setStep(1)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1">
+                  <button onClick={() => setStep(selectedPlan === 'custom' ? 2 : 1)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1">
                     <span className="text-lg">&larr;</span> Anterior
                   </button>
-                  <button onClick={() => setStep(3)} className="text-sm text-brand-cyan hover:text-cyan-300 transition-colors font-medium flex items-center gap-1">
+                  <button onClick={() => setStep(4)} className="text-sm text-brand-cyan hover:text-cyan-300 transition-colors font-medium flex items-center gap-1">
                     Siguiente paso <span className="text-lg">&rarr;</span>
                   </button>
                 </div>
@@ -812,7 +956,7 @@ const Cotizador = () => {
             </Reveal>
           )}
 
-          {step === 3 && (
+          {step === 4 && (
             <div className="text-center py-8 space-y-4">
               <Reveal animation="scale-in">
                 <div className="inline-flex items-center gap-2 text-emerald-400 text-sm font-medium bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-full">
@@ -826,7 +970,7 @@ const Cotizador = () => {
                 <p className="text-slate-300 text-lg">Revisa tu inversión estimada y completa tus datos.</p>
               </Reveal>
               <Reveal animation="fade-up" delay={200}>
-                <button onClick={() => setStep(2)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1 justify-center">
+                <button onClick={() => setStep(3)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1 justify-center">
                   <span className="text-lg">&larr;</span> Volver a complementos
                 </button>
               </Reveal>
@@ -855,7 +999,7 @@ const Cotizador = () => {
         </div>
 
         <Reveal animation="fade-right" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-8 rounded-3xl backdrop-blur-lg sticky top-28 transition-all duration-500 ${
-          step === 3 ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none scale-[0.98]'
+          step === 4 ? 'opacity-100 translate-y-0' : 'opacity-40 pointer-events-none scale-[0.98]'
         }`}>
           <h3 className="text-2xl font-heading font-bold mb-2">
             <span className="text-white">¿Trabajamos </span>
@@ -935,6 +1079,19 @@ const Cotizador = () => {
                   />
                 </div>
               </Reveal>
+
+              {selectedPlan === 'custom' && (
+                <Reveal animation="fade-up" delay={200}>
+                  <div>
+                    <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Ajuste de precio (opcional)</label>
+                    <input type="number" value={customPrice || ''} onChange={(e) => setCustomPrice(Math.max(0, Number(e.target.value)))}
+                      placeholder="Ej: 450000"
+                      className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-brand-cyan/80 focus:ring-2 focus:ring-brand-cyan/20 transition-all duration-300" />
+                    <p className="text-[10px] text-slate-500 mt-1">Deja en 0 para usar el precio calculado</p>
+                  </div>
+                </Reveal>
+              )}
+
               {error && (
                 <Reveal animation="fade-up">
                   <div className="flex items-start gap-2 text-amber-400 text-xs bg-amber-500/10 border border-amber-500/20 p-3 rounded-xl">
@@ -1049,6 +1206,12 @@ const Cotizador = () => {
             </h4>
 
             <div className="space-y-4">
+              {planActual && selectedPlan !== 'custom' && (
+                <div className="flex justify-between items-center py-2 border-b border-white/5 opacity-0 animate-modal-content-right" style={{ animationDelay: '0.17s', animationFillMode: 'forwards' }}>
+                  <span className="text-sm text-slate-300">Plan {planActual.label}</span>
+                  <span className="text-sm font-semibold text-white">{formatCurrency(planActual.total)}</span>
+                </div>
+              )}
               <div className="flex justify-between items-center py-2 border-b border-white/5 opacity-0 animate-modal-content-right" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
                 <span className="text-sm text-slate-300">{getTipoLabel()}</span>
                 <span className="text-sm font-semibold text-white">{formatCurrency(tipoWeb)}</span>
@@ -1065,6 +1228,13 @@ const Cotizador = () => {
                       </div>
                     ) : null;
                   })}
+                </div>
+              )}
+
+              {customPrice > 0 && selectedPlan === 'custom' && (
+                <div className="flex justify-between items-center opacity-0 animate-modal-content-right" style={{ animationDelay: '0.27s', animationFillMode: 'forwards' }}>
+                  <span className="text-sm text-slate-400">Ajuste manual</span>
+                  <span className="text-sm text-slate-300">{formatCurrency(customPrice)}</span>
                 </div>
               )}
 

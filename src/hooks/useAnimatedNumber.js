@@ -28,6 +28,7 @@ export default function useAnimatedNumber(target, duration = 500) {
     return () => {
       if (rafId.current) cancelAnimationFrame(rafId.current)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [target, duration])
 
   return current

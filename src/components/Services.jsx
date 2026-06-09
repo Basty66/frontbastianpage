@@ -1,4 +1,3 @@
-import React from 'react';
 import { Zap, Gem, Shield } from 'lucide-react';
 import Reveal from './Reveal';
 
