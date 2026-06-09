@@ -43,6 +43,22 @@ const adicionales = [
   { id: 'idioma', icon: Globe, label: 'Multi-idioma', desc: 'Traducción a varios idiomas', precio: 90000, color: 'violet' },
 ];
 
+const codigosPais = [
+  { code: '+56', label: '+56', pais: 'Chile' },
+  { code: '+54', label: '+54', pais: 'Argentina' },
+  { code: '+51', label: '+51', pais: 'Perú' },
+  { code: '+57', label: '+57', pais: 'Colombia' },
+  { code: '+591', label: '+591', pais: 'Bolivia' },
+  { code: '+598', label: '+598', pais: 'Uruguay' },
+  { code: '+55', label: '+55', pais: 'Brasil' },
+  { code: '+52', label: '+52', pais: 'México' },
+  { code: '+34', label: '+34', pais: 'España' },
+  { code: '+1', label: '+1', pais: 'EE.UU./Canadá' },
+  { code: '+44', label: '+44', pais: 'Reino Unido' },
+  { code: '+33', label: '+33', pais: 'Francia' },
+  { code: '+49', label: '+49', pais: 'Alemania' },
+];
+
 const planes = [
   { id: 'basico', label: 'Básico', desc: 'Landing Page profesional', precio: 150000, total: 150000, tipoId: 'landing', extras: [], incluye: ['Landing Page', 'Hosting $0', 'SEO base', 'Formulario Contacto', 'WhatsApp'], color: 'emerald', popular: false, dias: 30 },
   { id: 'estandar', label: 'Estándar', desc: 'Web Corporativa con panel', precio: 380000, total: 380000, tipoId: 'corporativa', extras: ['admin', 'seo'], incluye: ['Web Corporativa', 'Panel Admin', 'SEO Profesional', 'Hosting $0', 'Formulario Contacto'], color: 'blue', popular: true, dias: 45 },
@@ -150,8 +166,9 @@ SignaturePad.displayName = 'SignaturePad';
 const Cotizador = () => {
   const [tipoWeb, setTipoWeb] = useState(0);
   const [extras, setExtras] = useState([]);
-  const [formData, setFormData] = useState({ nombre: '', email: '', telefono: '', mensaje: '' });
+  const [formData, setFormData] = useState({ nombre: '', email: '', telefono: '', mensaje: '', empresa: '' });
   const [formErrors, setFormErrors] = useState({ nombre: '', email: '', telefono: '' });
+  const [codigoPais, setCodigoPais] = useState('+56');
   const [enviado, setEnviado] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -248,12 +265,14 @@ const Cotizador = () => {
   const planActual = selectedPlan ? planes.find(p => p.id === selectedPlan) : null;
   const proyectoActual = tiposProyecto.find((t) => t.precio === tipoWeb);
 
+  const sumExtras = (ids) => ids.reduce((acc, id) => {
+    const item = adicionales.find((a) => a.id === id);
+    return acc + (item?.precio || 0);
+  }, 0);
+
   const total = planActual && selectedPlan !== 'custom'
-    ? planActual.total
-    : (tipoWeb + extras.reduce((acc, id) => {
-        const item = adicionales.find((a) => a.id === id);
-        return acc + (item?.precio || 0);
-      }, 0));
+    ? planActual.total + sumExtras(extras) - sumExtras(planActual.extras)
+    : tipoWeb + sumExtras(extras);
 
   const animatedTotal = useAnimatedNumber(total, 600);
 
@@ -304,7 +323,8 @@ const Cotizador = () => {
 
       const pdfBase64 = doc.output('datauristring').split(',')[1];
       const slugNombre = (formData.nombre || 'pendiente').trim().replace(/\s+/g, '_') || 'pendiente';
-      const pdfName = `Propuesta_BastianDev_${slugNombre}.pdf`;
+      const slugEmpresa = formData.empresa ? `_${formData.empresa.trim().replace(/\s+/g, '_')}` : '';
+      const pdfName = `Propuesta_BastianDev${slugEmpresa}_${slugNombre}.pdf`;
       const tipoId = getTipoId();
 
       try {
@@ -312,7 +332,8 @@ const Cotizador = () => {
           const { error: insertError } = await supabase.from('cotizaciones').insert({
             nombre: formData.nombre,
             email: formData.email,
-            telefono: formData.telefono,
+            telefono: `${codigoPais} ${formData.telefono}`,
+            empresa: formData.empresa || null,
             mensaje: formData.mensaje || '',
             tipo_web: tipoId,
             extras: extras,
@@ -335,7 +356,8 @@ const Cotizador = () => {
             record: {
               nombre: formData.nombre,
               email: formData.email,
-              telefono: formData.telefono,
+              telefono: `${codigoPais} ${formData.telefono}`,
+              empresa: formData.empresa || null,
               mensaje: formData.mensaje || '',
               tipo_web: tipoId,
               extras: extras,
@@ -535,7 +557,7 @@ const Cotizador = () => {
 
     // ===== CLIENTE =====
     doc.setFillColor(...lightBg);
-    doc.rect(mg, yy, cw, 16, 'F');
+    doc.rect(mg, yy, cw, 20, 'F');
     title('Cliente', yy + 2, 8);
     yy += 6;
     txtBold('Nombre:', mg + 3, yy, 7, dark);
@@ -543,8 +565,13 @@ const Cotizador = () => {
     txtBold('Email:', mg + 3 + cw / 2, yy, 7, dark);
     txt(` ${formData.email || '________________'}`, mg + 3 + cw / 2 + 10, yy, 7, gray);
     yy += 4.5;
+    if (formData.empresa) {
+      txtBold('Empresa:', mg + 3, yy, 7, dark);
+      txt(` ${formData.empresa}`, mg + 16, yy, 7, gray);
+      yy += 4.5;
+    }
     txtBold('Teléfono:', mg + 3, yy, 7, dark);
-    txt(` ${formData.telefono || '________________'}`, mg + 3 + 16, yy, 7, gray);
+    txt(` ${codigoPais} ${formData.telefono || '________________'}`, mg + 3 + 16, yy, 7, gray);
     yy += 7.5;
 
     // ===== PLAN (if selected) =====
@@ -802,7 +829,7 @@ const Cotizador = () => {
       <div className="flex items-center justify-center gap-2 sm:gap-4 mb-12">
         {steps.map((s, i) => {
           const stepNum = i + 1;
-          const canClick = stepNum === 1 || (stepNum === 4 && (total > 0 || selectedPlan));
+          const canClick = stepNum < 4 || (total > 0 || selectedPlan);
           return (
           <div key={i} className="flex items-center gap-2 sm:gap-4">
             <button
@@ -869,7 +896,7 @@ const Cotizador = () => {
                             setTipoWeb(tiposProyecto.find(t => t.id === plan.tipoId)?.precio || 0);
                             setExtras(plan.extras);
                             if (planTimeoutRef.current) clearTimeout(planTimeoutRef.current);
-                            planTimeoutRef.current = setTimeout(() => setStep(4), 400);
+                            planTimeoutRef.current = setTimeout(() => setStep(3), 400);
                           }
                         }}
                       >
@@ -1125,8 +1152,8 @@ const Cotizador = () => {
                 <p className="text-slate-300 text-lg">Revisa tu inversión estimada y completa tus datos.</p>
               </Reveal>
               <Reveal animation="fade-up" delay={200}>
-                <button onClick={() => setStep(1)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1 justify-center">
-                  <span className="text-lg">&larr;</span> Volver a servicios
+                <button onClick={() => setStep(selectedPlan === 'custom' ? 1 : 3)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1 justify-center">
+                  <span className="text-lg">&larr;</span> {selectedPlan === 'custom' ? 'Volver a servicios' : 'Volver a complementos'}
                 </button>
               </Reveal>
             </div>
@@ -1205,34 +1232,96 @@ const Cotizador = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              {['nombre', 'email', 'telefono'].map((field, i) => (
-                <Reveal key={field} animation="fade-up" delay={i * 80}>
-                  <div>
-                    <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">
-                      {field === 'nombre' ? 'Nombre completo' : field === 'email' ? 'Correo electrónico' : 'Teléfono'}
-                    </label>
-                    <input
-                      required
-                      type={field === 'email' ? 'email' : field === 'telefono' ? 'tel' : 'text'}
-                      placeholder={field === 'nombre' ? 'Ej: Juan Pérez' : field === 'email' ? 'juan@empresa.cl' : '+56 9 1234 5678'}
-                      value={formData[field]}
-                      onChange={(e) => handleFormChange(field, e.target.value)}
-                      onBlur={() => handleFormBlur(field)}
-                      className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 transition-all duration-300 ${
-                        formErrors[field]
-                          ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20'
-                          : formData[field]
-                            ? 'border-brand-cyan/50 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
-                            : 'border-white/10 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
-                      }`}
-                    />
-                    {formErrors[field] && (
-                      <p className="text-[10px] text-red-400 mt-1">{formErrors[field]}</p>
-                    )}
+              <Reveal animation="fade-up" delay={0}>
+                <div>
+                  <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Nombre completo</label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="Ej: Juan Pérez"
+                    value={formData.nombre}
+                    onChange={(e) => handleFormChange('nombre', e.target.value)}
+                    onBlur={() => handleFormBlur('nombre')}
+                    className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                      formErrors.nombre
+                        ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20'
+                        : formData.nombre
+                          ? 'border-brand-cyan/50 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
+                          : 'border-white/10 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
+                    }`}
+                  />
+                  {formErrors.nombre && <p className="text-[10px] text-red-400 mt-1">{formErrors.nombre}</p>}
+                </div>
+              </Reveal>
+              <Reveal animation="fade-up" delay={40}>
+                <div>
+                  <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Empresa (Opcional)</label>
+                  <input
+                    type="text"
+                    placeholder="Ej: Mi Empresa SpA"
+                    value={formData.empresa}
+                    onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-brand-cyan/80 focus:ring-2 focus:ring-brand-cyan/20 transition-all duration-300"
+                  />
+                </div>
+              </Reveal>
+              <Reveal animation="fade-up" delay={80}>
+                <div>
+                  <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Correo electrónico</label>
+                  <input
+                    required
+                    type="email"
+                    placeholder="juan@empresa.cl"
+                    value={formData.email}
+                    onChange={(e) => handleFormChange('email', e.target.value)}
+                    onBlur={() => handleFormBlur('email')}
+                    className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                      formErrors.email
+                        ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20'
+                        : formData.email
+                          ? 'border-brand-cyan/50 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
+                          : 'border-white/10 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
+                    }`}
+                  />
+                  {formErrors.email && <p className="text-[10px] text-red-400 mt-1">{formErrors.email}</p>}
+                </div>
+              </Reveal>
+              <Reveal animation="fade-up" delay={120}>
+                <div>
+                  <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Teléfono</label>
+                  <div className="flex gap-2">
+                    <select
+                      value={codigoPais}
+                      onChange={(e) => setCodigoPais(e.target.value)}
+                      className="bg-black/40 border border-white/10 rounded-xl px-3 py-3 text-white text-sm focus:outline-none focus:border-brand-cyan/80 focus:ring-2 focus:ring-brand-cyan/20 transition-all duration-300 appearance-none cursor-pointer flex-shrink-0"
+                      style={{ minWidth: '80px' }}
+                    >
+                      {codigosPais.map((c) => (
+                        <option key={c.code} value={c.code} className="bg-[#030712]">{c.label} {c.pais}</option>
+                      ))}
+                    </select>
+                    <div className="flex-1">
+                      <input
+                        required
+                        type="tel"
+                        placeholder="9 1234 5678"
+                        value={formData.telefono}
+                        onChange={(e) => handleFormChange('telefono', e.target.value)}
+                        onBlur={() => handleFormBlur('telefono')}
+                        className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                          formErrors.telefono
+                            ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20'
+                            : formData.telefono
+                              ? 'border-brand-cyan/50 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
+                              : 'border-white/10 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
+                        }`}
+                      />
+                      {formErrors.telefono && <p className="text-[10px] text-red-400 mt-1">{formErrors.telefono}</p>}
+                    </div>
                   </div>
-                </Reveal>
-              ))}
-              <Reveal animation="fade-up" delay={240}>
+                </div>
+              </Reveal>
+              <Reveal animation="fade-up" delay={160}>
                 <div>
                   <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Detalles (Opcional)</label>
                   <textarea
