@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ExternalLink, ArrowUpRight } from 'lucide-react';
 import Reveal from './Reveal';
 import { proyectos } from '../data/portfolio';
@@ -13,8 +12,6 @@ const colores = [
 ];
 
 function Thumbnail({ proj, idx }) {
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(false);
   const initials = proj.titulo
     .split(/[\s-]+/)
     .map((w) => w[0])
@@ -22,26 +19,14 @@ function Thumbnail({ proj, idx }) {
     .slice(0, 2)
     .toUpperCase();
   const gradient = colores[idx % colores.length];
-  const screenshotUrl = proj.screenshot ||
-    `https://api.microlink.io/?url=${encodeURIComponent(proj.url)}&screenshot=true&meta=false&embed=screenshot.url`;
 
   return (
     <div className="relative w-full h-full bg-slate-800 overflow-hidden">
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} transition-opacity duration-700 ${loaded ? 'opacity-0' : 'opacity-100'}`}>
-        <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-          <span className="text-white/20 text-5xl sm:text-6xl font-heading font-black select-none">{initials}</span>
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`}>
+        <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
+          <span className="text-white/15 text-5xl sm:text-6xl font-heading font-black select-none">{initials}</span>
         </div>
       </div>
-      {!error && (
-        <img
-          src={screenshotUrl}
-          alt={proj.titulo}
-          className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-110 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-          loading="lazy"
-          onLoad={() => setLoaded(true)}
-          onError={() => setError(true)}
-        />
-      )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 transition-opacity duration-500" />
     </div>
   );
