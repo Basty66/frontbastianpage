@@ -2,20 +2,47 @@ export const proyectos = [
   {
     id: 'frontbastianpage',
     titulo: 'Bastian.dev',
-    desc: 'Mi sitio profesional — simulador de presupuestos con PDF, testimonios, hosting serverless $0 y formulario con Supabase.',
+    desc: 'Landing page profesional con cotizador interactivo de presupuestos web, generación de PDF con firma digital, testimonios con Supabase y hosting serverless $0.',
     url: 'https://frontbastianpage.vercel.app',
     repo: 'https://github.com/Basty66/frontbastianpage',
-    tags: ['React', 'Vite', 'Tailwind CSS', 'Supabase', 'jsPDF'],
-    screenshot: '', // opcional: pon '/screenshots/mi-proyecto.png' en public/screenshots/
+    tags: ['React', 'Vite', 'Tailwind CSS', 'Supabase', 'jsPDF', 'Vercel'],
+    screenshot: '',
   },
-  // COPIA ESTE BLOQUE para cada proyecto que quieras mostrar:
+  {
+    id: 'piscina-oasis',
+    titulo: 'Piscina Oasis',
+    desc: 'Sistema de reservas para eventos en piscina. Landing con agenda interactiva, selección de fecha y generación automática de contrato al instante.',
+    url: 'https://sistema-reservas-ruddy.vercel.app',
+    repo: 'https://github.com/Basty66/Sistema-Reservas',
+    tags: ['React', 'Vite', 'Tailwind CSS', 'jsPDF', 'Vercel'],
+    screenshot: '',
+  },
+  {
+    id: 'dashu-store',
+    titulo: 'DASHU FOR MEN',
+    desc: 'E-commerce de alisado coreano profesional. Catálogo de productos con Webpay Plus, Mercado Pago, SEO completo y schema.org para tienda.',
+    url: 'https://dashu-store.vercel.app',
+    repo: 'https://github.com/Basty66/dashu-store',
+    tags: ['React', 'Vite', 'Tailwind CSS', 'SEO', 'Webpay', 'Vercel'],
+    screenshot: '',
+  },
+  {
+    id: 'viakids',
+    titulo: 'ViaKids',
+    desc: 'Plataforma de transporte escolar seguro con landing informativo, rutas, precios y formulario de contacto. Diseño responsivo con enfoque mobile-first.',
+    url: 'https://via-kids-completo.vercel.app',
+    repo: 'https://github.com/Basty66/ViaKidsCompleto',
+    tags: ['React', 'Vite', 'Tailwind CSS', 'Mobile First', 'Vercel'],
+    screenshot: '',
+  },
+  // Agrega aquí más proyectos:
   // {
-  //   id: 'mi-proyecto',                   // ID único en inglés sin espacios
-  //   titulo: 'Nombre del Proyecto',        // Nombre visible
-  //   desc: 'Descripción breve de una línea sobre lo que hace.',  // 15-25 palabras
-  //   url: 'https://proyecto.vercel.app',   // URL del sitio en vivo
-  //   repo: 'https://github.com/tuusuario/proyecto',  // Opcional: link al código
-  //   tags: ['React', 'Node.js', 'Tailwind'],          // Tecnologías usadas
-  //   screenshot: '',                        // Opcional: '/screenshots/proyecto.png'
+  //   id: 'mi-proyecto',
+  //   titulo: 'Nombre del Proyecto',
+  //   desc: 'Descripción breve de una línea sobre lo que hace.',
+  //   url: 'https://proyecto.vercel.app',
+  //   repo: 'https://github.com/tuusuario/proyecto',
+  //   tags: ['React', 'Node.js'],
+  //   screenshot: '',  // '/screenshots/proyecto.png'
   // },
 ];
