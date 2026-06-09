@@ -162,7 +162,6 @@ const Cotizador = () => {
   const [showPdfPreview, setShowPdfPreview] = useState(false);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [customPrice, setCustomPrice] = useState(0);
 
   const clientSigRef = useRef(null);
   const pdfDocRef = useRef(null);
@@ -246,10 +245,10 @@ const Cotizador = () => {
 
   const total = planActual && selectedPlan !== 'custom'
     ? planActual.total
-    : (customPrice > 0 ? customPrice : (tipoWeb + extras.reduce((acc, id) => {
+    : (tipoWeb + extras.reduce((acc, id) => {
         const item = adicionales.find((a) => a.id === id);
         return acc + (item?.precio || 0);
-      }, 0)));
+      }, 0));
 
   const animatedTotal = useAnimatedNumber(total, 600);
 
@@ -314,7 +313,6 @@ const Cotizador = () => {
             extras: extras,
             total_estimado: total,
             plan: selectedPlan || null,
-            custom_price: selectedPlan === 'custom' ? customPrice : null,
           });
           if (insertError) console.error('Error al guardar cotización:', insertError);
         }
@@ -338,7 +336,6 @@ const Cotizador = () => {
               extras: extras,
               total_estimado: total,
               plan: selectedPlan || null,
-              custom_price: selectedPlan === 'custom' ? customPrice : null,
             },
             pdfBase64,
             pdfName,
@@ -565,6 +562,24 @@ const Cotizador = () => {
     title('Resumen del Presupuesto', yy, 8);
     yy += 5;
 
+    if (selectedPlan === 'custom' && proyectoActual) {
+      doc.setFillColor(240, 248, 255);
+      doc.setDrawColor(0, 120, 200);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(mg, yy, cw, 12, 1.5, 1.5, 'FD');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(0, 60, 120);
+      doc.text('Plan a Medida — Selección personalizada', mg + 4, yy + 5);
+      doc.setFont('times', 'normal');
+      doc.setFontSize(6.5);
+      doc.setTextColor(60, 70, 90);
+      const extrasLabels = extras.map(id => { const a = adicionales.find(x => x.id === id); return a ? a.label : id; });
+      const extrasText = extrasLabels.length ? ` · Extras: ${extrasLabels.join(', ')}` : '';
+      doc.text(`${proyectoActual.label}${extrasText}`, mg + 4, yy + 9.5);
+      yy += 16;
+    }
+
     const tableHeaders = ['Servicio', 'Detalle', 'Valor'];
     const tableColWidths = [30, 50, 25];
     const tableRows = [];
@@ -577,10 +592,6 @@ const Cotizador = () => {
         const item = adicionales.find((a) => a.id === id);
         if (item) tableRows.push([item.label, item.desc, `+${formatCurrency(item.precio)}`]);
       });
-    }
-
-    if (customPrice > 0 && selectedPlan === 'custom') {
-      tableRows.push(['Ajuste manual', 'Precio personalizado', formatCurrency(customPrice)]);
     }
 
     if (tableRows.length > 0) {
@@ -843,13 +854,11 @@ const Cotizador = () => {
                             setSelectedPlan('custom');
                             setTipoWeb(0);
                             setExtras([]);
-                            setCustomPrice(0);
                             setTimeout(() => setStep(2), 400);
                           } else {
                             setSelectedPlan(plan.id);
                             setTipoWeb(tiposProyecto.find(t => t.id === plan.tipoId)?.precio || 0);
                             setExtras(plan.extras);
-                            setCustomPrice(0);
                             setTimeout(() => setStep(4), 400);
                           }
                         }}
@@ -1150,18 +1159,6 @@ const Cotizador = () => {
                 </div>
               </Reveal>
 
-              {selectedPlan === 'custom' && (
-                <Reveal animation="fade-up" delay={200}>
-                  <div>
-                    <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Ajuste de precio (opcional)</label>
-                    <input type="number" value={customPrice || ''} onChange={(e) => setCustomPrice(Math.max(0, Number(e.target.value)))}
-                      placeholder="Ej: 450000"
-                      className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-brand-cyan/80 focus:ring-2 focus:ring-brand-cyan/20 transition-all duration-300" />
-                    <p className="text-[10px] text-slate-500 mt-1">Deja en 0 para usar el precio calculado</p>
-                  </div>
-                </Reveal>
-              )}
-
               {error && (
                 <Reveal animation="fade-up">
                   <div className="flex items-start gap-2 text-amber-400 text-xs bg-amber-500/10 border border-amber-500/20 p-3 rounded-xl">
@@ -1298,13 +1295,6 @@ const Cotizador = () => {
                       </div>
                     ) : null;
                   })}
-                </div>
-              )}
-
-              {customPrice > 0 && selectedPlan === 'custom' && (
-                <div className="flex justify-between items-center opacity-0 animate-modal-content-right" style={{ animationDelay: '0.27s', animationFillMode: 'forwards' }}>
-                  <span className="text-sm text-slate-400">Ajuste manual</span>
-                  <span className="text-sm text-slate-300">{formatCurrency(customPrice)}</span>
                 </div>
               )}
 
