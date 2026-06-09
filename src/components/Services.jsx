@@ -51,37 +51,78 @@ const Services = () => {
         </div>
 
         <Reveal animation="fade-up" delay={500} className="mt-10 sm:mt-14">
-          <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-lg overflow-x-auto">
-            <h3 className="text-lg font-heading font-semibold text-white mb-5 text-center">
+          <div className="text-center mb-8">
+            <h3 className="text-xl sm:text-2xl font-heading font-bold text-white mb-2">
               <span className="text-emerald-400">$0/mes</span> vs Hosting Tradicional
             </h3>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/10">
-                  <th className="text-left text-slate-400 font-medium py-3 pr-4">Concepto</th>
-                  <th className="text-center text-emerald-400 font-semibold py-3 px-4 bg-emerald-500/5 rounded-t-xl">Serverless (Nosotros)</th>
-                  <th className="text-center text-red-400/70 font-medium py-3 pl-4">Hosting Tradicional</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  ['Costo mensual', '$0 CLP', 'Desde $5.990 – $49.990 CLP'],
-                  ['Velocidad global', 'Edge CDN — 50ms', 'Servidor único — 300ms+'],
-                  ['SSL / HTTPS', 'Incluido de por vida', 'Pagas extra o manual'],
-                  ['Mantenimiento', 'Automático (nosotros)', 'Tú lo gestionas'],
-                  ['Escalabilidad', 'Ilimitada (serverless)', 'Limitada al plan'],
-                  ['Ancho de banda', 'Sin límite', 'Caps mensuales'],
-                  ['Backups', 'Automáticos diarios', 'Manuales o pagas'],
-                ].map((row, i) => (
-                  <tr key={i} className="border-b border-white/5">
-                    <td className="text-slate-300 py-3 pr-4 font-medium">{row[0]}</td>
-                    <td className="text-center text-emerald-300 py-3 px-4 bg-emerald-500/5">{row[1]}</td>
-                    <td className="text-center text-slate-400 py-3 pl-4">{row[2]}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <p className="text-slate-400 text-sm">Infraestructura serverless de última generación sin costos mensuales.</p>
           </div>
+          <div className="grid md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
+            <div className="relative group bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-2 border-emerald-500/30 rounded-2xl p-6 sm:p-8 backdrop-blur-lg transition-all duration-500 hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-white font-heading font-bold text-lg">Serverless Edge</p>
+                  <p className="text-emerald-400 text-sm font-semibold">$0 CLP / mes</p>
+                </div>
+              </div>
+              <ul className="space-y-3">
+                {[
+                  { label: 'Velocidad global', value: 'Edge CDN — ~50ms', icon: 'Zap' },
+                  { label: 'SSL / HTTPS', value: 'Incluido de por vida', icon: 'Shield' },
+                  { label: 'Mantenimiento', value: 'Automático (nosotros)', icon: 'Settings' },
+                  { label: 'Escalabilidad', value: 'Ilimitada (serverless)', icon: 'BarChart' },
+                  { label: 'Ancho de banda', value: 'Sin límite', icon: 'Wifi' },
+                  { label: 'Backups', value: 'Automáticos diarios', icon: 'Cloud' },
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3 text-sm">
+                    <svg className="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    <span className="text-slate-300">{item.label}:</span>
+                    <span className="text-white font-medium ml-auto">{item.value}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="relative group bg-gradient-to-br from-red-500/5 to-red-500/[0.02] border border-red-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-lg transition-all duration-500 hover:shadow-xl hover:shadow-red-500/5 hover:-translate-y-1">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-white font-heading font-bold text-lg">Hosting Tradicional</p>
+                  <p className="text-red-400/70 text-sm font-semibold">$5.990 – $49.990 / mes</p>
+                </div>
+              </div>
+              <ul className="space-y-3">
+                {[
+                  { label: 'Velocidad global', value: 'Servidor único — ~300ms+' },
+                  { label: 'SSL / HTTPS', value: 'Pagas extra o manual' },
+                  { label: 'Mantenimiento', value: 'Tú lo gestionas' },
+                  { label: 'Escalabilidad', value: 'Limitada al plan' },
+                  { label: 'Ancho de banda', value: 'Caps mensuales' },
+                  { label: 'Backups', value: 'Manuales o pagas' },
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3 text-sm">
+                    <svg className="w-4 h-4 text-red-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    <span className="text-slate-400">{item.label}:</span>
+                    <span className="text-slate-500 font-medium ml-auto">{item.value}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <p className="text-center text-xs text-slate-500 mt-6">* Solo pagas tu dominio .cl anual (aprox. $10.000 CLP). Sin sorpresas.</p>
         </Reveal>
       </div>
     </section>

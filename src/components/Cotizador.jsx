@@ -939,7 +939,7 @@ const Cotizador = () => {
                         }}
                       >
                         {plan.popular && (
-                          <div className="absolute top-2 right-2 z-10 flex items-center gap-1 text-[9px] font-bold text-amber-400 bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-full">
+                          <div className="absolute top-0 left-0 z-10 flex items-center gap-1 text-[9px] font-bold text-amber-400 bg-gradient-to-r from-amber-500/20 to-transparent border-b border-r border-amber-500/20 px-2.5 py-1 rounded-br-xl">
                             <Star className="w-2.5 h-2.5" />
                             MÁS ELEGIDO
                           </div>
