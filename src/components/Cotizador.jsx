@@ -240,17 +240,21 @@ const Cotizador = () => {
       const pdfName = `Propuesta_BastianDev_${formData.nombre.replace(/\s+/g, '_')}.pdf`;
       const tipoId = getTipoId();
 
-      if (supabase) {
-        const { error: insertError } = await supabase.from('cotizaciones').insert({
-          nombre: formData.nombre,
-          email: formData.email,
-          telefono: formData.telefono,
-          mensaje: formData.mensaje || '',
-          tipo_web: tipoId,
-          extras: extras,
-          total_estimado: total,
-        });
-        if (insertError) throw insertError;
+      try {
+        if (supabase) {
+          const { error: insertError } = await supabase.from('cotizaciones').insert({
+            nombre: formData.nombre,
+            email: formData.email,
+            telefono: formData.telefono,
+            mensaje: formData.mensaje || '',
+            tipo_web: tipoId,
+            extras: extras,
+            total_estimado: total,
+          });
+          if (insertError) console.error('Error al guardar cotización:', insertError);
+        }
+      } catch (dbErr) {
+        console.error('Error al guardar cotización:', dbErr);
       }
 
       try {
