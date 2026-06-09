@@ -68,7 +68,7 @@ const Portfolio = ({ fullPage = false }) => {
             </div>
           </Reveal>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
             {proyectos.map((proj, i) => (
               <Reveal key={proj.id} animation="fade-up" delay={i * 120}>
                 <div className="group relative bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden backdrop-blur-lg transition-all duration-500 hover:-translate-y-2 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10 h-full flex flex-col">
