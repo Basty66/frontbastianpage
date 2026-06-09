@@ -163,6 +163,8 @@ const Cotizador = () => {
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
+  const planTimeoutRef = useRef(null);
+
   const clientSigRef = useRef(null);
   const pdfDocRef = useRef(null);
   const mountedRef = useRef(false);
@@ -218,7 +220,10 @@ const Cotizador = () => {
 
   useEffect(() => {
     mountedRef.current = true;
-    return () => { mountedRef.current = false; };
+    return () => {
+      mountedRef.current = false;
+      if (planTimeoutRef.current) clearTimeout(planTimeoutRef.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -509,7 +514,7 @@ const Cotizador = () => {
     doc.setTextColor(...gray);
     doc.text('Soluciones Web · Serverless · Hosting $0', mg + 14, yy + 8);
 
-    // eslint-disable-next-line react-hooks/purity
+    // eslint-disable-next-line react-hooks/purity -- buildPDFDoc is called from handlers, not during render
     const propuestaNum = `PRO-${String(Date.now()).slice(-6)}`;
     const hoy = new Date();
     const venc = new Date(hoy);
@@ -796,25 +801,22 @@ const Cotizador = () => {
 
       <div className="flex items-center justify-center gap-2 sm:gap-4 mb-12">
         {steps.map((s, i) => {
-          const isStep4Locked = i === 3 && total === 0 && !selectedPlan;
+          const stepNum = i + 1;
+          const canClick = stepNum === 1 || (stepNum === 4 && (total > 0 || selectedPlan));
           return (
           <div key={i} className="flex items-center gap-2 sm:gap-4">
             <button
-              onClick={() => {
-                if (isStep4Locked) return;
-                if (i === 3 && total === 0 && !selectedPlan) return;
-                setStep(i + 1);
-              }}
+              onClick={() => canClick && setStep(stepNum)}
               className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-2.5 rounded-xl border transition-all duration-500 ease-out ${
-                step >= i + 1
+                step >= stepNum
                   ? 'border-brand-cyan/50 bg-brand-cyan/10 text-white shadow-lg shadow-brand-cyan/5'
                   : 'border-white/10 bg-white/[0.02] text-slate-400 hover:border-white/20'
-              } ${isStep4Locked ? 'opacity-40 cursor-not-allowed' : ''}`}
+              } ${!canClick ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
               <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                step >= i + 1 ? 'bg-brand-cyan/20 text-cyan-200 shadow-[0_0_8px_rgba(34,211,238,0.3)]' : 'bg-white/10 text-white/60'
+                step >= stepNum ? 'bg-brand-cyan/20 text-cyan-200 shadow-[0_0_8px_rgba(34,211,238,0.3)]' : 'bg-white/10 text-white/60'
               }`}>
-                {step > i + 1 ? (
+                {step > stepNum ? (
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
@@ -826,7 +828,7 @@ const Cotizador = () => {
               </div>
             </button>
             {i < steps.length - 1 && (
-              <div className={`h-px w-6 sm:w-12 transition-all duration-500 ${step > i + 1 ? 'bg-brand-cyan/50' : 'bg-white/10'}`} />
+              <div className={`h-px w-6 sm:w-12 transition-all duration-500 ${step > stepNum ? 'bg-brand-cyan/50' : 'bg-white/10'}`} />
             )}
           </div>
           );
@@ -866,7 +868,8 @@ const Cotizador = () => {
                             setSelectedPlan(plan.id);
                             setTipoWeb(tiposProyecto.find(t => t.id === plan.tipoId)?.precio || 0);
                             setExtras(plan.extras);
-                            setTimeout(() => setStep(4), 400);
+                            if (planTimeoutRef.current) clearTimeout(planTimeoutRef.current);
+                            planTimeoutRef.current = setTimeout(() => setStep(4), 400);
                           }
                         }}
                       >
@@ -1097,7 +1100,7 @@ const Cotizador = () => {
                   })}
                 </div>
                 <div className="flex justify-between pt-2">
-                  <button onClick={() => setStep(selectedPlan === 'custom' ? 2 : 1)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1">
+                  <button onClick={() => setStep(1)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1">
                     <span className="text-lg">&larr;</span> Anterior
                   </button>
                   <button onClick={() => setStep(4)} className="text-sm text-brand-cyan hover:text-cyan-300 transition-colors font-medium flex items-center gap-1">
@@ -1122,8 +1125,8 @@ const Cotizador = () => {
                 <p className="text-slate-300 text-lg">Revisa tu inversión estimada y completa tus datos.</p>
               </Reveal>
               <Reveal animation="fade-up" delay={200}>
-                <button onClick={() => setStep(selectedPlan === 'custom' ? 1 : 3)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1 justify-center">
-                  <span className="text-lg">&larr;</span> {selectedPlan === 'custom' ? 'Volver a servicios' : 'Volver a complementos'}
+                <button onClick={() => setStep(1)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1 justify-center">
+                  <span className="text-lg">&larr;</span> Volver a servicios
                 </button>
               </Reveal>
             </div>
