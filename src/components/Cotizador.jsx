@@ -14,9 +14,9 @@ const steps = [
 ];
 
 const infoProyecto = {
-  landing: { label: 'Landing Page', dias: 7 },
-  corporativa: { label: 'Web Corporativa', dias: 14 },
-  ecommerce: { label: 'E-commerce', dias: 21 },
+  landing: { label: 'Landing Page', dias: 30 },
+  corporativa: { label: 'Web Corporativa', dias: 40 },
+  ecommerce: { label: 'E-commerce', dias: 50 },
 };
 
 const tiposProyecto = [
@@ -44,10 +44,10 @@ const adicionales = [
 ];
 
 const planes = [
-  { id: 'basico', label: 'Básico', desc: 'Landing Page profesional', precio: 150000, total: 150000, tipoId: 'landing', extras: [], incluye: ['Landing Page', 'Hosting $0', 'SEO base', 'Formulario Contacto', 'WhatsApp'], color: 'emerald', popular: false },
-  { id: 'estandar', label: 'Estándar', desc: 'Web Corporativa con panel', precio: 380000, total: 380000, tipoId: 'corporativa', extras: ['admin', 'seo'], incluye: ['Web Corporativa', 'Panel Admin', 'SEO Profesional', 'Hosting $0', 'Formulario Contacto'], color: 'blue', popular: true },
-  { id: 'premium', label: 'Premium', desc: 'E-commerce completo', precio: 750000, total: 750000, tipoId: 'ecommerce', extras: ['admin', 'pagos', 'seo', 'idioma'], incluye: ['E-commerce completo', 'Panel Admin', 'Pasarela de Pago', 'SEO Profesional', 'Multi-idioma', 'Hosting $0'], color: 'purple', popular: false },
-  { id: 'custom', label: 'A Medida', desc: 'Tú eliges cada componente', precio: null, total: 0, tipoId: null, extras: [], incluye: ['Selección libre de tipo y extras', 'Precio según elección'], color: 'cyan', popular: false },
+  { id: 'basico', label: 'Básico', desc: 'Landing Page profesional', precio: 150000, total: 150000, tipoId: 'landing', extras: [], incluye: ['Landing Page', 'Hosting $0', 'SEO base', 'Formulario Contacto', 'WhatsApp'], color: 'emerald', popular: false, dias: 30 },
+  { id: 'estandar', label: 'Estándar', desc: 'Web Corporativa con panel', precio: 380000, total: 380000, tipoId: 'corporativa', extras: ['admin', 'seo'], incluye: ['Web Corporativa', 'Panel Admin', 'SEO Profesional', 'Hosting $0', 'Formulario Contacto'], color: 'blue', popular: true, dias: 45 },
+  { id: 'premium', label: 'Premium', desc: 'E-commerce completo', precio: 750000, total: 750000, tipoId: 'ecommerce', extras: ['admin', 'pagos', 'seo', 'idioma'], incluye: ['E-commerce completo', 'Panel Admin', 'Pasarela de Pago', 'SEO Profesional', 'Multi-idioma', 'Hosting $0'], color: 'purple', popular: false, dias: 60 },
+  { id: 'custom', label: 'A Medida', desc: 'Tú eliges cada componente', precio: null, total: 0, tipoId: null, extras: [], incluye: ['Selección libre de tipo y extras', 'Precio según elección'], color: 'cyan', popular: false, dias: null },
 ];
 
 const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
@@ -397,6 +397,13 @@ const Cotizador = () => {
     return id === 'landing' ? 'Landing Page' : id === 'corporativa' ? 'Web Corporativa' : 'E-commerce';
   };
 
+  const getDias = () => {
+    if (planActual && selectedPlan !== 'custom') return planActual.dias;
+    const proyecto = infoProyecto[getTipoId()];
+    if (!proyecto) return 30;
+    return proyecto.dias + extras.length * 7;
+  };
+
   const buildPDFDoc = () => {
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
     const pw = doc.internal.pageSize.getWidth();
@@ -645,18 +652,19 @@ const Cotizador = () => {
     doc.setFillColor(240, 248, 255);
     doc.setDrawColor(0, 120, 200);
     doc.setLineWidth(0.8);
-    doc.roundedRect(mg, yy, cw, 24, 2, 2, 'FD');
+    doc.roundedRect(mg, yy, cw, 28, 2, 2, 'FD');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(8);
     doc.setTextColor(0, 60, 120);
-    doc.text('Condiciones de Pago', mg + 4, yy + 5);
+    doc.text('Condiciones de Pago y Entrega', mg + 4, yy + 5);
     doc.setFont('times', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(50, 60, 80);
-    doc.text(`50% anticipo: ${formatCurrency(anticipo)} CLP — al iniciar el desarrollo`, mg + 4, yy + 11);
-    doc.text(`50% saldo: ${formatCurrency(saldo)} CLP — contra entrega y conformidad`, mg + 4, yy + 16);
-    doc.text(`Hosting: $0 CLP de por vida (infraestructura serverless)`, mg + 4, yy + 21);
-    yy += 28;
+    doc.text(`Plazo de entrega: ${getDias()} días hábiles desde el anticipo y materiales recibidos.`, mg + 4, yy + 10);
+    doc.text(`50% anticipo: ${formatCurrency(anticipo)} CLP — al iniciar el desarrollo`, mg + 4, yy + 15);
+    doc.text(`50% saldo: ${formatCurrency(saldo)} CLP — contra entrega y conformidad`, mg + 4, yy + 20);
+    doc.text(`Hosting: $0 CLP de por vida (infraestructura serverless)`, mg + 4, yy + 25);
+    yy += 32;
 
     // ===== PRÓXIMOS PASOS =====
     title('Próximos Pasos', yy, 8);
@@ -1400,7 +1408,7 @@ const Cotizador = () => {
                 <div>
                   <span className="text-slate-500">Tiempo estimado</span>
                   <p className="text-white font-semibold mt-0.5">
-                    {proyectoActual ? (infoProyecto[proyectoActual.id]?.dias || 7) : 7} días hábiles
+                    {getDias()} días hábiles
                   </p>
                 </div>
                 <div>
