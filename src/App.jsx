@@ -4,6 +4,7 @@ import { Menu, X, Palette } from 'lucide-react';
 import Hero from './components/Hero';
 import Services from './components/Services';
 import Testimonios from './components/Testimonios';
+import PortfolioSection from './components/Portfolio';
 import About from './components/About';
 import Reveal from './components/Reveal';
 
@@ -42,6 +43,7 @@ const Home = () => {
       <Hero />
       <Services />
       <Testimonios />
+      <PortfolioSection />
       <About />
       <Suspense fallback={<CotizadorSkeleton />}>
         <Cotizador />
@@ -50,24 +52,7 @@ const Home = () => {
   );
 };
 
-const Portfolio = () => (
-  <div className="min-h-screen flex items-center justify-center px-4 sm:px-6">
-    <Reveal animation="fade-up" className="text-center max-w-lg">
-      <div className="w-16 sm:w-20 h-16 sm:h-20 mx-auto mb-6 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center">
-        <svg className="w-8 sm:w-10 h-8 sm:h-10 text-brand-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
-        </svg>
-      </div>
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4">
-            <span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent">Portafolio</span>
-          </h2>
-      <p className="text-slate-300 mb-8">Próximamente estaré mostrando aquí los proyectos más recientes de mis clientes.</p>
-      <Link to="/" className="inline-flex items-center gap-2 text-brand-cyan hover:text-cyan-300 transition-colors font-medium">
-        <span>&larr;</span> Volver al inicio
-      </Link>
-    </Reveal>
-  </div>
-);
+const PortfolioPage = () => <PortfolioSection fullPage />;
 
 const NotFound = () => (
   <div className="min-h-screen flex items-center justify-center px-4 sm:px-6">
@@ -199,7 +184,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/portafolio" element={<Portfolio />} />
+        <Route path="/portafolio" element={<PortfolioPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
