@@ -332,62 +332,63 @@ const Cotizador = () => {
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
     const pw = doc.internal.pageSize.getWidth();
     const ph = doc.internal.pageSize.getHeight();
-    const m = 16;
-    const cw = pw - 2 * m;
+    const mg = 16;
+    const cw = pw - 2 * mg;
     const dark = [0, 0, 0];
     const gray = [50, 50, 50];
     const white = [255, 255, 255];
     const lightBg = [245, 247, 250];
     const accent = [0, 120, 200];
 
-    let y = m;
+    let yy = mg;
 
-    const title = (text, yPos, size = 9) => {
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(size);
-      doc.setTextColor(...dark);
-      doc.text(text, m, yPos);
-      doc.setDrawColor(...accent);
-      doc.setLineWidth(0.3);
-      doc.line(m, yPos + 1, m + 40, yPos + 1);
+    const helpers = {
+      title(text, yp, sz = 9) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(sz);
+        doc.setTextColor(...dark);
+        doc.text(text, mg, yp);
+        doc.setDrawColor(...accent);
+        doc.setLineWidth(0.3);
+        doc.line(mg, yp + 1, mg + 40, yp + 1);
+      },
+      txt(text, x, yp, sz, color, align = 'left') {
+        doc.setFont('times', 'normal');
+        doc.setFontSize(sz);
+        doc.setTextColor(...color);
+        doc.text(text, x, yp, { align, maxWidth: cw - (x - mg) });
+      },
+      txtBold(text, x, yp, sz, color, align = 'left') {
+        doc.setFont('times', 'bold');
+        doc.setFontSize(sz);
+        doc.setTextColor(...color);
+        doc.text(text, x, yp, { align, maxWidth: cw - (x - mg) });
+      },
+      bullet(text, x, yp, sz, color, char = '•') {
+        doc.setFont('times', 'normal');
+        doc.setFontSize(sz);
+        doc.setTextColor(...color);
+        doc.text(` ${char} ${text}`, x, yp, { maxWidth: cw - (x - mg) - 5 });
+      },
     };
 
-    const txt = (text, x, yPos, size, color, align = 'left') => {
-      doc.setFont('times', 'normal');
-      doc.setFontSize(size);
-      doc.setTextColor(...color);
-      doc.text(text, x, yPos, { align, maxWidth: cw - (x - m) });
-    };
-
-    const txtBold = (text, x, yPos, size, color, align = 'left') => {
-      doc.setFont('times', 'bold');
-      doc.setFontSize(size);
-      doc.setTextColor(...color);
-      doc.text(text, x, yPos, { align, maxWidth: cw - (x - m) });
-    };
-
-    const bullet = (text, x, yPos, size, color, char = '•') => {
-      doc.setFont('times', 'normal');
-      doc.setFontSize(size);
-      doc.setTextColor(...color);
-      doc.text(` ${char} ${text}`, x, yPos, { maxWidth: cw - (x - m) - 5 });
-    };
+    const { title, txt, txtBold, bullet } = helpers;
 
     // ===== HEADER =====
     doc.setFillColor(...dark);
-    doc.rect(m, y - 3, 10, 10, 'F');
+    doc.rect(mg, yy - 3, 10, 10, 'F');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10);
     doc.setTextColor(...white);
-    doc.text('B', m + 2, y + 4);
+    doc.text('B', mg + 2, yy + 4);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(14);
     doc.setTextColor(...dark);
-    doc.text('Bastian.dev', m + 14, y + 3);
+    doc.text('Bastian.dev', mg + 14, yy + 3);
     doc.setFont('times', 'italic');
     doc.setFontSize(6.5);
     doc.setTextColor(...gray);
-    doc.text('Soluciones Web · Serverless · Hosting $0', m + 14, y + 8);
+    doc.text('Soluciones Web · Serverless · Hosting $0', mg + 14, yy + 8);
 
     const propuestaNum = `PRO-${String(Date.now()).slice(-6)}`;
     const hoy = new Date();
@@ -397,75 +398,75 @@ const Cotizador = () => {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(6);
     doc.setTextColor(...gray);
-    doc.text(`N° ${propuestaNum}`, pw - m, y, { align: 'right' });
+    doc.text(`N° ${propuestaNum}`, pw - mg, yy, { align: 'right' });
     doc.setFont('times', 'normal');
-    doc.text(`Emisión: ${formatDate(hoy)}  |  Válida: ${formatDate(venc)}`, pw - m, y + 4, { align: 'right' });
+    doc.text(`Emisión: ${formatDate(hoy)}  |  Válida: ${formatDate(venc)}`, pw - mg, yy + 4, { align: 'right' });
 
-    y += 13;
+    yy += 13;
     doc.setDrawColor(...accent);
     doc.setLineWidth(0.4);
-    doc.line(m, y, pw - m, y);
-    y += 5;
+    doc.line(mg, yy, pw - mg, yy);
+    yy += 5;
 
     // ===== CLIENTE =====
     doc.setFillColor(...lightBg);
-    doc.rect(m, y, cw, 16, 'F');
-    title('Cliente', y + 2, 8);
-    y += 6;
-    txtBold('Nombre:', m + 3, y, 7, dark);
-    txt(` ${formData.nombre || '________________'}`, m + 16, y, 7, gray);
-    txtBold('Email:', m + 3 + cw / 2, y, 7, dark);
-    txt(` ${formData.email || '________________'}`, m + 3 + cw / 2 + 10, y, 7, gray);
-    y += 4.5;
-    txtBold('Teléfono:', m + 3, y, 7, dark);
-    txt(` ${formData.telefono || '________________'}`, m + 3 + 16, y, 7, gray);
-    y += 7.5;
+    doc.rect(mg, yy, cw, 16, 'F');
+    title('Cliente', yy + 2, 8);
+    yy += 6;
+    txtBold('Nombre:', mg + 3, yy, 7, dark);
+    txt(` ${formData.nombre || '________________'}`, mg + 16, yy, 7, gray);
+    txtBold('Email:', mg + 3 + cw / 2, yy, 7, dark);
+    txt(` ${formData.email || '________________'}`, mg + 3 + cw / 2 + 10, yy, 7, gray);
+    yy += 4.5;
+    txtBold('Teléfono:', mg + 3, yy, 7, dark);
+    txt(` ${formData.telefono || '________________'}`, mg + 3 + 16, yy, 7, gray);
+    yy += 7.5;
 
     // ===== PRESUPUESTO =====
-    title('Resumen del Presupuesto', y, 8);
-    y += 5;
+    title('Resumen del Presupuesto', yy, 8);
+    yy += 5;
 
     if (proyectoActual) {
       doc.setFillColor(...dark);
-      doc.rect(m, y - 1.5, cw, 5, 'F');
+      doc.rect(mg, yy - 1.5, cw, 5, 'F');
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(6);
       doc.setTextColor(...white);
-      doc.text('Servicio', m + 2, y + 1);
-      doc.text('Detalle', m + 55, y + 1);
-      doc.text('Valor', pw - m - 2, y + 1, { align: 'right' });
-      y += 5;
+      doc.text('Servicio', mg + 2, yy + 1);
+      doc.text('Detalle', mg + 55, yy + 1);
+      doc.text('Valor', pw - mg - 2, yy + 1, { align: 'right' });
+      yy += 5;
 
       doc.setFont('times', 'normal');
       doc.setFontSize(7);
       doc.setTextColor(...dark);
-      doc.text(proyectoActual.label, m + 2, y);
-      doc.text(proyectoActual.desc, m + 55, y);
-      doc.text(formatCurrency(proyectoActual.precio), pw - m - 2, y, { align: 'right' });
-      y += 4.5;
+      doc.text(proyectoActual.label, mg + 2, yy);
+      doc.text(proyectoActual.desc, mg + 55, yy);
+      doc.text(formatCurrency(proyectoActual.precio), pw - mg - 2, yy, { align: 'right' });
+      yy += 4.5;
 
       extras.forEach((id) => {
         const item = adicionales.find((a) => a.id === id);
         if (!item) return;
-        doc.text(item.label, m + 2, y);
-        doc.text(item.desc, m + 55, y);
-        doc.text(`+${formatCurrency(item.precio)}`, pw - m - 2, y, { align: 'right' });
-        y += 4.5;
+        doc.text(item.label, mg + 2, yy);
+        doc.text(item.desc, mg + 55, yy);
+        doc.text(`+${formatCurrency(item.precio)}`, pw - mg - 2, yy, { align: 'right' });
+        yy += 4.5;
       });
 
       doc.setFillColor(...accent);
-      doc.rect(m, y - 1, cw, 6, 'F');
+      doc.rect(mg, yy - 1, cw, 6, 'F');
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.setTextColor(...white);
-      doc.text('TOTAL', m + 2, y + 3);
-      doc.text(`${formatCurrency(total)} CLP`, pw - m - 2, y + 3, { align: 'right' });
-      y += 8;
+      doc.text('TOTAL', mg + 2, yy + 3);
+      doc.text(`${formatCurrency(total)} CLP`, pw - mg - 2, yy + 3, { align: 'right' });
+      yy += 8;
     }
 
     // ===== ALCANCE =====
-    title('¿Qué incluye?', y, 8);
-    y += 5;
+    title('¿Qué incluye?', yy, 8);
+    yy += 5;
     [
       'Desarrollo frontend responsivo con React + Vite + Tailwind CSS. Diseño adaptable a todo dispositivo.',
       'Infraestructura serverless en Vercel Edge. Costo de hosting: $0 CLP de por vida.',
@@ -473,14 +474,14 @@ const Cotizador = () => {
       'Una revisión y ajuste post-entrega. Garantía de 30 días sobre el desarrollo entregado.',
       'Soporte técnico por correo electrónico durante los primeros 15 días operativos.',
     ].forEach((item) => {
-      bullet(item, m + 1, y, 6.5, gray, '✓');
-      y += 4;
+      bullet(item, mg + 1, yy, 6.5, gray, '✓');
+      yy += 4;
     });
-    y += 2;
+    yy += 2;
 
     // ===== EXCLUSIONES =====
-    title('Límites', y, 8);
-    y += 5;
+    title('Límites', yy, 8);
+    yy += 5;
     [
       'El cliente debe proveer textos definitivos, logotipos vectoriales e imágenes.',
       'No incluye costo anual del dominio .cl (NIC Chile). El cliente lo gestiona.',
@@ -488,107 +489,107 @@ const Cotizador = () => {
       'Cambios estructurales post-aprobación del diseño tendrán costo adicional.',
       'El plazo corre una vez recibido el anticipo del 50% y los materiales completos.',
     ].forEach((item) => {
-      bullet(item, m + 1, y, 6.5, gray, '✗');
-      y += 4;
+      bullet(item, mg + 1, yy, 6.5, gray, '✗');
+      yy += 4;
     });
-    y += 2;
+    yy += 2;
 
     // ===== TIEMPOS Y PAGO =====
-    title('Tiempos y Pago', y, 8);
-    y += 5;
+    title('Tiempos y Pago', yy, 8);
+    yy += 5;
     const dias = proyecto?.dias || 7;
     const anticipo = Math.round(total * 0.5);
     const saldo = total - anticipo;
 
-    txtBold('Desarrollo:', m, y, 7.5, dark);
+    txtBold('Desarrollo:', mg, yy, 7.5, dark);
     doc.setFont('times', 'normal');
     doc.setFontSize(12);
     doc.setTextColor(...accent);
-    doc.text(`${dias} días hábiles`, m + 28, y);
-    y += 5.5;
+    doc.text(`${dias} días hábiles`, mg + 28, yy);
+    yy += 5.5;
 
-    txtBold('Condiciones:', m, y, 7.5, dark);
-    y += 4;
+    txtBold('Condiciones:', mg, yy, 7.5, dark);
+    yy += 4;
     [
       `Anticipo 50% (${formatCurrency(anticipo)} CLP) para iniciar el desarrollo.`,
       `Saldo 50% (${formatCurrency(saldo)} CLP) contra entrega y conformidad.`,
       'Pago: Transferencia bancaria, Mercado Pago o Webpay.',
     ].forEach((item) => {
-      bullet(item, m + 1, y, 6.5, gray, '•');
-      y += 4;
+      bullet(item, mg + 1, yy, 6.5, gray, '•');
+      yy += 4;
     });
-    y += 2;
+    yy += 2;
 
     // ===== PRÓXIMOS PASOS =====
-    title('Próximos Pasos', y, 8);
-    y += 5;
+    title('Próximos Pasos', yy, 8);
+    yy += 5;
     [
       'Me contactaré contigo en un plazo máximo de 24 horas hábiles.',
       'Agendaremos una reunión para tomar los requerimientos detallados de tu proyecto.',
       'En la reunión definiremos alcance final, diseño preliminar y resolveremos dudas.',
       'Si todo está conforme, coordinamos el pago del anticipo para iniciar el desarrollo.',
     ].forEach((step) => {
-      bullet(step, m + 1, y, 6.5, gray, '→');
-      y += 4;
+      bullet(step, mg + 1, yy, 6.5, gray, '→');
+      yy += 4;
     });
-    y += 3;
+    yy += 3;
 
     // ===== CONTACTO =====
     doc.setFillColor(...lightBg);
-    doc.rect(m, y, cw, 11, 'F');
+    doc.rect(mg, yy, cw, 11, 'F');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7);
     doc.setTextColor(...dark);
-    doc.text('Contacto', m + 3, y + 3);
+    doc.text('Contacto', mg + 3, yy + 3);
     doc.setFont('times', 'normal');
     doc.setFontSize(6.5);
     doc.setTextColor(...gray);
-    doc.text('Cristian Bastian Cerda · Analista Programador · cristianbastian.dev@gmail.com', m + 3, y + 7.5);
-    y += 14;
+    doc.text('Cristian Bastian Cerda · Analista Programador · cristianbastian.dev@gmail.com', mg + 3, yy + 7.5);
+    yy += 14;
 
     // ===== FIRMAS =====
-    const remaining = ph - y - 22;
+    const remaining = ph - yy - 22;
     if (remaining < 45) {
       doc.addPage();
-      y = m;
+      yy = mg;
     }
 
-    title('Firmas de Conformidad', y, 8);
-    y += 5;
+    title('Firmas de Conformidad', yy, 8);
+    yy += 5;
     doc.setFont('times', 'italic');
     doc.setFontSize(6.5);
     doc.setTextColor(...gray);
-    doc.text('Las partes declaran su conformidad con todos los términos descritos en la presente propuesta.', m, y, { maxWidth: cw });
-    y += 7;
+    doc.text('Las partes declaran su conformidad con todos los términos descritos en la presente propuesta.', mg, yy, { maxWidth: cw });
+    yy += 7;
 
     const sigBoxW = (cw - 4) / 2;
-    const sigBoxY = y;
+    const sigBoxY = yy;
 
-    const embedSig = (canvasRef, xPos, yPos, boxW) => {
+    const embedSig = (canvasRef, xp, yp, bw) => {
       if (!canvasRef?.current) return;
       const sigData = canvasRef.current.toDataURL('image/png');
-      doc.addImage(sigData, 'PNG', xPos + 3, yPos + 9, boxW - 6, 14);
+      doc.addImage(sigData, 'PNG', xp + 3, yp + 9, bw - 6, 14);
     };
 
     doc.setDrawColor(160, 170, 180);
     doc.setLineWidth(0.3);
-    doc.rect(m, sigBoxY, sigBoxW, 30);
+    doc.rect(mg, sigBoxY, sigBoxW, 30);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(6.5);
     doc.setTextColor(...dark);
-    doc.text('Cliente:', m + 3, sigBoxY + 4);
+    doc.text('Cliente:', mg + 3, sigBoxY + 4);
     doc.setFont('times', 'normal');
     doc.setFontSize(6);
     doc.setTextColor(...gray);
-    doc.text(`${formData.nombre || '[Nombre]'}`, m + 3, sigBoxY + 8);
-    embedSig(clientSigRef, m, sigBoxY, sigBoxW);
+    doc.text(`${formData.nombre || '[Nombre]'}`, mg + 3, sigBoxY + 8);
+    embedSig(clientSigRef, mg, sigBoxY, sigBoxW);
     doc.setFont('times', 'italic');
     doc.setFontSize(6);
     doc.setTextColor(...gray);
-    doc.text('Firma:', m + 3, sigBoxY + 25);
-    doc.line(m + 12, sigBoxY + 28, m + sigBoxW - 3, sigBoxY + 28);
+    doc.text('Firma:', mg + 3, sigBoxY + 25);
+    doc.line(mg + 12, sigBoxY + 28, mg + sigBoxW - 3, sigBoxY + 28);
 
-    const bLeft = m + sigBoxW + 4;
+    const bLeft = mg + sigBoxW + 4;
     doc.rect(bLeft, sigBoxY, sigBoxW, 30);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(6.5);
@@ -608,16 +609,16 @@ const Cotizador = () => {
     doc.line(bLeft + 12, sigBoxY + 28, bLeft + sigBoxW - 3, sigBoxY + 28);
 
     // ===== FOOTER =====
-    y = sigBoxY + 35;
+    yy = sigBoxY + 35;
     doc.setDrawColor(200, 205, 215);
     doc.setLineWidth(0.2);
-    doc.line(m, ph - 13, pw - m, ph - 13);
+    doc.line(mg, ph - 13, pw - mg, ph - 13);
     doc.setFont('times', 'italic');
     doc.setFontSize(6);
     doc.setTextColor(140, 140, 140);
-    doc.text('Bastian.dev — Cristian Bastian Cerda — cristianbastian.dev@gmail.com', m, ph - 8.5);
-    doc.text(`Propuesta generada el ${formatDate(new Date())} · Válida por 15 días · ${propuestaNum}`, m, ph - 5);
-    doc.text('Pág. 1/1', pw - m, ph - 5, { align: 'right' });
+    doc.text('Bastian.dev — Cristian Bastian Cerda — cristianbastian.dev@gmail.com', mg, ph - 8.5);
+    doc.text(`Propuesta generada el ${formatDate(new Date())} · Válida por 15 días · ${propuestaNum}`, mg, ph - 5);
+    doc.text('Pág. 1/1', pw - mg, ph - 5, { align: 'right' });
 
     return doc;
   };

@@ -1,11 +1,12 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import Hero from './components/Hero';
 import Services from './components/Services';
 import About from './components/About';
-import Cotizador from './components/Cotizador';
 import Reveal from './components/Reveal';
+
+const Cotizador = lazy(() => import('./components/Cotizador'));
 
 const navLinks = [
   { label: 'Inicio', id: 'inicio' },
@@ -21,7 +22,9 @@ const Home = () => {
       <Hero />
       <Services />
       <About />
-      <Cotizador />
+      <Suspense fallback={null}>
+        <Cotizador />
+      </Suspense>
     </main>
   );
 };
