@@ -80,12 +80,12 @@ const Services = () => {
                   { label: 'Ancho de banda', value: 'Sin límite', icon: 'Wifi' },
                   { label: 'Backups', value: 'Automáticos diarios', icon: 'Cloud' },
                 ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm">
-                    <svg className="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <li key={i} className="flex items-start gap-2 text-sm">
+                    <svg className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
-                    <span className="text-slate-300">{item.label}:</span>
-                    <span className="text-white font-medium ml-auto">{item.value}</span>
+                    <span className="text-slate-300 flex-1">{item.label}:</span>
+                    <span className="text-white font-medium text-right flex-shrink-0 max-w-[55%] sm:max-w-none">{item.value}</span>
                   </li>
                 ))}
               </ul>
@@ -111,12 +111,12 @@ const Services = () => {
                   { label: 'Ancho de banda', value: 'Caps mensuales' },
                   { label: 'Backups', value: 'Manuales o pagas' },
                 ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm">
-                    <svg className="w-4 h-4 text-red-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <li key={i} className="flex items-start gap-2 text-sm">
+                    <svg className="w-4 h-4 text-red-400/60 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
-                    <span className="text-slate-400">{item.label}:</span>
-                    <span className="text-slate-500 font-medium ml-auto">{item.value}</span>
+                    <span className="text-slate-400 flex-1">{item.label}:</span>
+                    <span className="text-slate-500 font-medium text-right flex-shrink-0 max-w-[55%] sm:max-w-none">{item.value}</span>
                   </li>
                 ))}
               </ul>
