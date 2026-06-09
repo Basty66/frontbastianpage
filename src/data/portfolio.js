@@ -6,7 +6,7 @@ export const proyectos = [
     url: 'https://frontbastianpage.vercel.app',
     repo: 'https://github.com/Basty66/frontbastianpage',
     tags: ['React', 'Vite', 'Tailwind CSS', 'Supabase', 'jsPDF', 'Vercel'],
-    screenshot: '',
+    screenshot: '/screenshots/bastian-dev.png',
   },
   {
     id: 'piscina-oasis',
@@ -15,7 +15,7 @@ export const proyectos = [
     url: 'https://sistema-reservas-ruddy.vercel.app',
     repo: 'https://github.com/Basty66/Sistema-Reservas',
     tags: ['React', 'Vite', 'Tailwind CSS', 'jsPDF', 'Vercel'],
-    screenshot: '',
+    screenshot: '/screenshots/piscina-oasis.png',
   },
   {
     id: 'dashu-store',
@@ -24,7 +24,7 @@ export const proyectos = [
     url: 'https://dashu-store.vercel.app',
     repo: 'https://github.com/Basty66/dashu-store',
     tags: ['React', 'Vite', 'Tailwind CSS', 'SEO', 'Webpay', 'Vercel'],
-    screenshot: '',
+    screenshot: '/screenshots/dashu-store.png',
   },
   {
     id: 'viakids',
@@ -33,16 +33,6 @@ export const proyectos = [
     url: 'https://via-kids-completo.vercel.app',
     repo: 'https://github.com/Basty66/ViaKidsCompleto',
     tags: ['React', 'Vite', 'Tailwind CSS', 'Mobile First', 'Vercel'],
-    screenshot: '',
+    screenshot: '/screenshots/viakids.png',
   },
-  // Agrega aquí más proyectos:
-  // {
-  //   id: 'mi-proyecto',
-  //   titulo: 'Nombre del Proyecto',
-  //   desc: 'Descripción breve de una línea sobre lo que hace.',
-  //   url: 'https://proyecto.vercel.app',
-  //   repo: 'https://github.com/tuusuario/proyecto',
-  //   tags: ['React', 'Node.js'],
-  //   screenshot: '',  // '/screenshots/proyecto.png'
-  // },
 ];
