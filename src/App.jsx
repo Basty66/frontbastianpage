@@ -19,6 +19,8 @@ import Cookies from './components/Cookies';
 import { WHATSAPP_FULL } from './lib/constants';
 
 const Cotizador = lazy(() => import('./components/Cotizador'));
+const BlogList = lazy(() => import('./components/BlogList'));
+const BlogPost = lazy(() => import('./components/BlogPost'));
 
 function CotizadorSkeleton() {
   return (
@@ -44,6 +46,7 @@ const navLinks = [
   { label: 'Servicios', id: 'servicios' },
   { label: 'Sobre Mí', id: 'sobre-mi' },
   { label: 'Portafolio', id: 'portafolio' },
+  { label: 'Blog', id: 'blog' },
   { label: 'Cotizar', id: 'cotizador' },
 ];
 
@@ -141,8 +144,8 @@ function App() {
 
   const scrollTo = useCallback((id) => {
     setMenuOpen(false);
-    if (id === 'portafolio') {
-      navigate('/portafolio');
+    if (id === 'portafolio' || id === 'blog') {
+      navigate(`/${id}`);
       return;
     }
     if (location.pathname !== '/') {
@@ -247,6 +250,8 @@ function App() {
             <Route path="/terminos" element={<Terms />} />
             <Route path="/cookies" element={<Cookies />} />
             <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><Admin /></Suspense>} />
+            <Route path="/blog" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><BlogList /></Suspense>} />
+            <Route path="/blog/:slug" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><BlogPost /></Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
@@ -257,6 +262,7 @@ function App() {
           <Link to="/privacidad" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Política de Privacidad</Link>
           <Link to="/terminos" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Términos y Condiciones</Link>
           <Link to="/cookies" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Política de Cookies</Link>
+          <Link to="/blog" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Blog</Link>
         </div>
         <p className="text-slate-400 text-xs mb-2">Santiago, Región Metropolitana, Chile</p>
         <p className="text-slate-300 text-xs sm:text-sm">© 2026 Bastian.dev — Desarrollo Web para PYMEs Chilenas · Hosting $0</p>

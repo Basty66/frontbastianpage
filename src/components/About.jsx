@@ -44,7 +44,7 @@ const About = () => {
                 <div className="relative w-full h-full rounded-xl bg-gradient-to-br from-slate-800 to-[#030712] border border-white/10 flex items-center justify-center overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-cyan/15 via-transparent to-transparent" />
                   <div className="absolute -inset-full top-0 h-full w-1/2 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-25deg] group-hover:animate-[shine_0.8s_ease-in-out] pointer-events-none" />
-                  <img src="/images/portrait.png" alt="Cristian Bastian Cerda - Analista Programador" className="relative w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+                  <img src="/images/portrait.png" alt="Cristian Bastian Cerda - Analista Programador" loading="lazy" width="520" height="520" className="relative w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
                 </div>
               </div>
 
