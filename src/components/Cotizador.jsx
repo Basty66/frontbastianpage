@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect, memo } from 'react';
+import React, { useState, useRef, useCallback, useEffect, memo } from 'react';
 import { jsPDF } from 'jspdf';
 import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle, Check, Star } from 'lucide-react';
 import Reveal from './Reveal';
@@ -871,44 +871,41 @@ const Cotizador = () => {
         </div>
       </Reveal>
 
-      <div className="flex items-center justify-center gap-2 sm:gap-4 mb-12">
+      <div className="flex items-center justify-center gap-1 sm:gap-4 mb-10 sm:mb-12 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-none">
         {steps.map((s, i) => {
           const stepNum = i + 1;
           const canClick = stepNum < 4 || (total > 0 || selectedPlan);
           return (
-          <div key={i} className="flex items-center gap-2 sm:gap-4">
+          <React.Fragment key={i}>
             <button
               onClick={() => canClick && setStep(stepNum)}
-              className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-2.5 rounded-xl border transition-all duration-500 ease-out ${
+              className={`flex items-center gap-1.5 sm:gap-3 px-2 sm:px-5 py-2 sm:py-2.5 rounded-xl border transition-all duration-500 ease-out flex-shrink-0 min-w-0 ${
                 step >= stepNum
                   ? 'border-brand-cyan/50 bg-brand-cyan/10 text-white shadow-lg shadow-brand-cyan/5'
                   : 'border-white/10 bg-white/[0.02] text-slate-400 hover:border-white/20'
               } ${!canClick ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
-              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 ${
+              <span className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold transition-all duration-500 flex-shrink-0 ${
                 step >= stepNum ? 'bg-brand-cyan/20 text-cyan-200 shadow-[0_0_8px_rgba(34,211,238,0.3)]' : 'bg-white/10 text-white/60'
               }`}>
                 {step > stepNum ? (
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <svg className="w-3 sm:w-3.5 h-3 sm:h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 ) : i + 1}
               </span>
-              <div className="hidden sm:block text-left">
-                <p className="text-xs font-semibold leading-tight">{s.label}</p>
-                <p className="text-[10px] opacity-60">{s.desc}</p>
-              </div>
+              <span className="hidden sm:inline text-[10px] sm:text-xs font-semibold leading-tight truncate">{s.label}</span>
             </button>
             {i < steps.length - 1 && (
-              <div className={`h-px w-6 sm:w-12 transition-all duration-500 ${step > stepNum ? 'bg-brand-cyan/50' : 'bg-white/10'}`} />
+              <div className={`h-px w-3 sm:w-12 transition-all duration-500 flex-shrink-0 ${step > stepNum ? 'bg-brand-cyan/50' : 'bg-white/10'}`} />
             )}
-          </div>
+          </React.Fragment>
           );
         })}
       </div>
 
-      <div className="grid lg:grid-cols-5 gap-12 items-start">
-        <div className={`lg:col-span-3 bg-white/[0.02] border border-white/10 p-4 sm:p-8 rounded-3xl backdrop-blur-lg space-y-6 sm:space-y-8 transition-all duration-700 ease-out ${
+      <div className="grid lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-12 items-start">
+        <div className={`lg:col-span-3 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg space-y-5 sm:space-y-8 transition-all duration-700 ease-out ${
           step <= 3 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-30 pointer-events-none scale-[0.96] blur-[1px]'
         }`}>
           {step === 1 && (
@@ -1226,7 +1223,7 @@ const Cotizador = () => {
           </div>
         </div>
 
-        <Reveal animation="fade-right" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-8 rounded-3xl backdrop-blur-lg sticky top-28 transition-all duration-700 ease-out ${
+        <Reveal animation="fade-right" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg sticky top-28 transition-all duration-700 ease-out ${
           step === 4 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-30 pointer-events-none scale-[0.96] blur-[1px]'
         }`}>
           <h3 className="text-2xl font-heading font-bold mb-2">

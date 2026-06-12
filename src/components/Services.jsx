@@ -79,23 +79,23 @@ const Services = () => {
           </p>
         </Reveal>
 
-        <div className="grid md:grid-cols-3 gap-4 sm:gap-6 auto-rows-[1fr]">
+        <div className="grid md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 auto-rows-[1fr]">
           {services.map((s, i) => {
             const Icon = s.icon;
             return (
               <Reveal key={i} animation="fade-up" delay={i * 100}>
                 <div
-                  className={`group relative overflow-hidden bg-gradient-to-br ${s.color} border ${s.border} p-6 sm:p-8 rounded-2xl backdrop-blur-lg transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl h-full flex flex-col ${s.size}`}
+                  className={`group relative overflow-hidden bg-gradient-to-br ${s.color} border ${s.border} p-4 sm:p-6 md:p-8 rounded-2xl backdrop-blur-lg transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl h-full flex flex-col ${s.size}`}
                   style={{ boxShadow: `0 0 0px ${s.glow}`, transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}
                   onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 20px 60px ${s.glow}`; }}
                   onMouseLeave={(e) => { e.currentTarget.style.boxShadow = `0 0 0px ${s.glow}`; }}
                 >
                   <span className={`absolute -top-12 -right-12 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${s.iconColor.replace('text', 'bg').replace('-400', '-500/10')}`} />
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className={`w-12 h-12 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-white/[0.06] group-hover:scale-110 transition-all duration-500 ${s.iconColor}`}>
-                      <Icon className="w-6 h-6 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-500" />
+                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                    <div className={`w-8 h-8 sm:w-10 md:w-12 sm:h-10 md:h-12 rounded-lg sm:rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-white/[0.06] group-hover:scale-110 transition-all duration-500 ${s.iconColor}`}>
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-500" />
                     </div>
-                    <h3 className="text-lg font-heading font-semibold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-200 group-hover:bg-clip-text transition-all duration-500">
+                    <h3 className="text-sm sm:text-base md:text-lg font-heading font-semibold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-200 group-hover:bg-clip-text transition-all duration-500">
                       {s.title}
                     </h3>
                   </div>

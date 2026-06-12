@@ -1,10 +1,10 @@
 import Reveal from './Reveal';
 
 const logos = [
-  { id: 'dashu', name: 'DASHU FOR MEN', initial: 'D', color: 'from-amber-500 to-orange-600' },
-  { id: 'oasis', name: 'Piscina Oasis', initial: 'O', color: 'from-cyan-500 to-blue-600' },
-  { id: 'viakids', name: 'ViaKids', initial: 'V', color: 'from-emerald-500 to-teal-600' },
-  { id: 'bastian', name: 'Bastian.dev', initial: 'B', color: 'from-purple-500 to-violet-600' },
+  { id: 'dashu', name: 'DASHU FOR MEN', img: '/screenshots/dashu-store.png' },
+  { id: 'oasis', name: 'Piscina Oasis', img: '/screenshots/piscina-oasis.png' },
+  { id: 'viakids', name: 'ViaKids', img: '/screenshots/viakids.png' },
+  { id: 'bastian', name: 'Bastian.dev', img: '/screenshots/bastian-dev.png' },
 ];
 
 export default function LogoCarousel() {
@@ -27,8 +27,13 @@ export default function LogoCarousel() {
                 key={`${logo.id}-${i}`}
                 className="group flex items-center gap-3 flex-shrink-0 opacity-40 hover:opacity-80 transition-all duration-500 hover:scale-110"
               >
-                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${logo.color} flex items-center justify-center shadow-lg`}>
-                  <span className="text-white font-bold text-sm">{logo.initial}</span>
+                <div className="w-12 h-12 rounded-xl overflow-hidden shadow-lg ring-1 ring-white/10 flex-shrink-0 bg-slate-800">
+                  <img
+                    src={logo.img}
+                    alt={logo.name}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
                 <span className="text-slate-400 text-sm font-medium whitespace-nowrap group-hover:text-white transition-colors">
                   {logo.name}

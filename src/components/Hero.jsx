@@ -86,11 +86,11 @@ function CounterBlock({ target, suffix, label }) {
   const [ref, count, started] = useCountUp(target);
   const display = suffix === '%' ? `${count}%` : `${count}+`;
   return (
-    <div ref={ref} className="text-center">
-      <span className={`block text-2xl sm:text-3xl font-bold font-heading text-white transition-all duration-700 ${started ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+    <div ref={ref} className="text-center min-w-0">
+      <span className={`block text-xl sm:text-2xl md:text-3xl font-bold font-heading text-white transition-all duration-700 ${started ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         {started ? display : suffix === '%' ? '0%' : '0+'}
       </span>
-      <span className="text-xs text-slate-400">{label}</span>
+      <span className="text-[10px] sm:text-xs text-slate-400 whitespace-nowrap">{label}</span>
     </div>
   );
 }
@@ -169,7 +169,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="inicio" className="relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between py-12 sm:py-16 px-4 sm:px-6 max-w-7xl mx-auto gap-8 sm:gap-12 overflow-hidden bg-grid">
+    <section id="inicio" className="relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between py-12 sm:py-16 px-4 sm:px-6 max-w-7xl mx-auto gap-8 sm:gap-12 overflow-x-hidden bg-grid">
       {/* Particles */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {particles.map((p) => (
@@ -191,7 +191,7 @@ const Hero = () => {
         {floatingOwls.map((owl, i) => (
           <div
             key={i}
-            className="absolute pointer-events-auto group cursor-default"
+            className={`absolute pointer-events-auto group cursor-default ${i > 5 ? 'hidden sm:block' : ''}`}
             style={{
               top: owl.top,
               left: owl.left,
@@ -243,11 +243,11 @@ const Hero = () => {
             <span className="relative z-10">Ver Portafolio</span>
           </button>
         </div>
-        <div className="flex items-center justify-center lg:justify-start gap-6 sm:gap-8 pt-4 sm:pt-6">
-          <CounterBlock refKey="proy" target={20} suffix="+" label="Proyectos entregados" />
-          <div className="w-px h-10 bg-white/10" />
-          <CounterBlock refKey="cli" target={15} suffix="+" label="Clientes satisfechos" />
-          <div className="w-px h-10 bg-white/10" />
+        <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-8 pt-4 sm:pt-6 flex-wrap">
+          <CounterBlock refKey="proy" target={20} suffix="+" label="Proyectos" />
+          <div className="w-px h-8 sm:h-10 bg-white/10" />
+          <CounterBlock refKey="cli" target={15} suffix="+" label="Clientes" />
+          <div className="w-px h-8 sm:h-10 bg-white/10" />
           <CounterBlock refKey="disp" target={100} suffix="%" label="Disponibilidad" />
         </div>
       </Reveal>
