@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Reveal from './Reveal';
+import useCountUp from '../hooks/useCountUp';
+import useRipple from '../hooks/useRipple';
 
 const OwlSprite = ({ size = 24, className = '' }) => (
   <svg width={size} height={size} viewBox="0 2 40 26" fill="none" className={className}>
@@ -47,12 +49,59 @@ const particles = Array.from({ length: 30 }, (_, i) => ({
   delay: Math.random() * 5,
 }));
 
+function ROICalculator() {
+  const [hostingCost, setHostingCost] = useState(15000);
+  const yearly = hostingCost * 12;
+
+  return (
+    <div className="space-y-2 font-normal not-italic">
+      <div className="flex items-center justify-between text-xs">
+        <span className="text-slate-500">Hosting actual:</span>
+        <span className="text-white font-semibold">${hostingCost.toLocaleString('es-CL')}/mes</span>
+      </div>
+      <input
+        type="range"
+        min="5000"
+        max="50000"
+        step="1000"
+        value={hostingCost}
+        onChange={(e) => setHostingCost(Number(e.target.value))}
+        className="w-full"
+      />
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] text-slate-500">$5.000</span>
+        <span className="text-[10px] text-slate-500">$50.000</span>
+      </div>
+      <div className="pt-1 border-t border-white/5 mt-1">
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-slate-500">Ahorras al año:</span>
+          <span className="text-emerald-400 font-bold text-sm">${yearly.toLocaleString('es-CL')}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CounterBlock({ target, suffix, label }) {
+  const [ref, count, started] = useCountUp(target);
+  const display = suffix === '%' ? `${count}%` : `${count}+`;
+  return (
+    <div ref={ref} className="text-center">
+      <span className={`block text-2xl sm:text-3xl font-bold font-heading text-white transition-all duration-700 ${started ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        {started ? display : suffix === '%' ? '0%' : '0+'}
+      </span>
+      <span className="text-xs text-slate-400">{label}</span>
+    </div>
+  );
+}
+
 const Hero = () => {
   const innerRefs = useRef([]);
   const navigate = useNavigate();
   const location = useLocation();
   const [typewriterDone, setTypewriterDone] = useState(false);
   const [typewriterText, setTypewriterText] = useState('');
+  const createRipple = useRipple();
 
   const scrollTimeoutRef = useRef(null);
 
@@ -181,34 +230,25 @@ const Hero = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-3 sm:pt-4">
           <button
-            onClick={scrollToCotizador}
-            className="relative overflow-hidden group text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out border border-brand-cyan/30 bg-brand-cyan/5 shadow-lg shadow-brand-cyan/10 animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm sm:text-base"
+            onClick={(e) => { createRipple(e); scrollToCotizador(); }}
+            className="ripple-container relative overflow-hidden group text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out border border-brand-cyan/30 bg-brand-cyan/5 shadow-lg shadow-brand-cyan/10 animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm sm:text-base"
           >
             <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-brand-cyan -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
             <span className="relative z-10">Cotizar mi proyecto</span>
           </button>
           <button
-            onClick={() => navigate('/portafolio')}
-            className="relative overflow-hidden group border border-brand-cyan/30 text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out bg-brand-cyan/5 shadow-lg shadow-brand-cyan/10 animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm sm:text-base">
+            onClick={(e) => { createRipple(e); navigate('/portafolio'); }}
+            className="ripple-container relative overflow-hidden group border border-brand-cyan/30 text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out bg-brand-cyan/5 shadow-lg shadow-brand-cyan/10 animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm sm:text-base">
             <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-brand-cyan -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
             <span className="relative z-10">Ver Portafolio</span>
           </button>
         </div>
         <div className="flex items-center justify-center lg:justify-start gap-6 sm:gap-8 pt-4 sm:pt-6">
-          <div className="text-center">
-            <span className="block text-2xl sm:text-3xl font-bold font-heading text-white">+20</span>
-            <span className="text-xs text-slate-400">Proyectos entregados</span>
-          </div>
+          <CounterBlock refKey="proy" target={20} suffix="+" label="Proyectos entregados" />
           <div className="w-px h-10 bg-white/10" />
-          <div className="text-center">
-            <span className="block text-2xl sm:text-3xl font-bold font-heading text-white">+15</span>
-            <span className="text-xs text-slate-400">Clientes satisfechos</span>
-          </div>
+          <CounterBlock refKey="cli" target={15} suffix="+" label="Clientes satisfechos" />
           <div className="w-px h-10 bg-white/10" />
-          <div className="text-center">
-            <span className="block text-2xl sm:text-3xl font-bold font-heading text-white">100%</span>
-            <span className="text-xs text-slate-400">Disponibilidad</span>
-          </div>
+          <CounterBlock refKey="disp" target={100} suffix="%" label="Disponibilidad" />
         </div>
       </Reveal>
       <Reveal animation="fade-right" delay={200} className="relative z-10 flex-1 w-full max-w-xl">
@@ -240,8 +280,10 @@ const Hero = () => {
                 <div className="text-xl font-bold font-heading text-white">$0 CLP <span className="text-xs text-emerald-400">Serverless</span></div>
               </div>
               <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-brand-cyan/20 hover:bg-white/[0.05]">
-                <div className="text-xs text-slate-400 mb-1">Ventas Procesadas (Mes)</div>
-                <div className="text-xl font-bold font-heading bg-gradient-to-r from-brand-cyan to-cyan-300 bg-clip-text text-transparent">+99.9% Up</div>
+                <div className="text-xs text-slate-400 mb-1">Ahorro Anual vs Hosting</div>
+                <div className="text-xl font-bold font-heading">
+                  <ROICalculator />
+                </div>
               </div>
             </div>
 
