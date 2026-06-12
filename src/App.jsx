@@ -1,5 +1,6 @@
-import { useEffect, useState, useCallback, lazy, Suspense } from 'react';
+import { useEffect, useState, useCallback, useRef, lazy, Suspense } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+const Admin = lazy(() => import('./components/Admin'));
 import { Menu, X, Palette } from 'lucide-react';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -75,12 +76,33 @@ function App() {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [accent, setAccent] = useState(() => localStorage.getItem('bd-accent') || 'cyan');
+  const [accent, setAccent] = useState(() => {
+    try { return localStorage.getItem('bd-accent') || 'cyan'; } catch { return 'cyan'; }
+  });
+  const [logoClicks, setLogoClicks] = useState(0);
+  const logoTimeoutRef = useRef(null);
+
+  const handleLogoClick = useCallback(() => {
+    setLogoClicks((prev) => prev + 1);
+    clearTimeout(logoTimeoutRef.current);
+    logoTimeoutRef.current = setTimeout(() => setLogoClicks(0), 2000);
+  }, []);
+
+  useEffect(() => {
+    if (logoClicks >= 5) {
+      setLogoClicks(0);
+      navigate('/admin');
+    }
+  }, [logoClicks, navigate]);
 
   useEffect(() => {
     document.documentElement.dataset.accent = accent;
-    localStorage.setItem('bd-accent', accent);
+    try { localStorage.setItem('bd-accent', accent); } catch {}
   }, [accent]);
+
+  useEffect(() => {
+    return () => { clearTimeout(logoTimeoutRef.current); };
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -112,7 +134,7 @@ function App() {
         scrolled ? 'bg-slate-900/85 border-white/10 shadow-lg shadow-black/10' : 'bg-slate-900/40 border-white/5'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-          <Link to="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-1.5 sm:gap-2 group">
+          <Link to="/" onClick={(e) => { handleLogoClick(); setMenuOpen(false); }} className="flex items-center gap-1.5 sm:gap-2 group">
             <svg viewBox="0 2 40 26" fill="none" className="w-7 h-7 sm:w-8 sm:h-8 drop-shadow-[0_0_6px_rgba(34,211,238,0.4)]" style={{ animation: 'fade-slide-in 0.6s ease-out' }}>
               <path d="M20 6C12 6 7 12 7 19v4a3 3 0 003 3h20a3 3 0 003-3v-4c0-7-5-13-13-13z" stroke="#22d3ee" strokeWidth="1.8" strokeLinecap="round" className="group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-700" />
               <path d="M11 9L7 3l7 4" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-700" />
@@ -187,6 +209,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/portafolio" element={<PortfolioPage />} />
+          <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><Admin /></Suspense>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </ErrorBoundary>

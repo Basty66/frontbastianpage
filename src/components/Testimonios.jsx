@@ -40,7 +40,8 @@ const Testimonios = () => {
 
   useEffect(() => { cargarTestimonios(); }, []);
 
-  const todos = [...testimoniosDb, ...iniciales];
+  const aprobados = testimoniosDb.filter((t) => t.aprobado);
+  const todos = aprobados.length > 0 ? aprobados : iniciales;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
