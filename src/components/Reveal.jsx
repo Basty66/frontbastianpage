@@ -25,7 +25,7 @@ export default function Reveal({
   return (
     <Tag
       ref={ref}
-      className={`${className} transition-all duration-[900ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-transform ${
+      className={`${className} transition-[transform,opacity] duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-transform ${
         visible ? 'translate-x-0 translate-y-0 scale-100 opacity-100' : hiddenClass
       }`}
       style={{ transitionDelay: `${delay}ms` }}

@@ -117,12 +117,19 @@ function App() {
   }, []);
 
   useEffect(() => {
+    let ticking = false;
     const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 60);
-      setShowBackToTop(y > 300);
-      const docH = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(docH > 0 ? Math.min((y / docH) * 100, 100) : 0);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          setScrolled(y > 60);
+          setShowBackToTop(y > 300);
+          const docH = document.documentElement.scrollHeight - window.innerHeight;
+          setScrollProgress(docH > 0 ? Math.min((y / docH) * 100, 100) : 0);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -156,7 +163,7 @@ function App() {
       <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
       {/* Trust Bar */}
-      <nav className={`border-b transition-all duration-700 ease-out backdrop-blur-xl sticky top-0 z-50 ${
+      <nav className={`border-b transition-[background,border-color,box-shadow] duration-500 ease-out backdrop-blur-lg sticky top-0 z-50 ${
         scrolled ? 'bg-slate-900/85 border-white/10 shadow-lg shadow-black/10' : 'bg-slate-900/40 border-white/5'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
