@@ -142,12 +142,43 @@ function App() {
       <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
       {/* Trust Bar */}
-      <div className="hidden lg:flex items-center justify-center gap-6 py-1.5 bg-slate-900/60 border-b border-white/5 text-[10px] text-slate-400 fixed top-0 left-0 right-0 z-[100] backdrop-blur-xl">
-        <span className="flex items-center gap-1"><svg className="w-3 h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Hosting $0 de por vida</span>
-        <span className="flex items-center gap-1"><svg className="w-3 h-3 text-brand-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>SSL Incluido</span>
-        <span className="flex items-center gap-1"><svg className="w-3 h-3 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>15 días de soporte</span>
-        <span className="flex items-center gap-1"><svg className="w-3 h-3 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Lighthouse 100%</span>
-        <span className="flex items-center gap-1"><svg className="w-3 h-3 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Desarrollo a medida</span>
+      <div className="hidden lg:flex items-center justify-center gap-0 fixed top-0 left-0 right-0 z-[100]">
+        <div className="relative flex items-center justify-center gap-5 sm:gap-8 px-6 py-2 bg-gradient-to-r from-slate-900/90 via-slate-800/80 to-slate-900/90 border-x border-white/5 rounded-b-2xl shadow-[0_4px_30px_rgba(34,211,238,0.08)] animate-modal-content" style={{ animationDelay: '0.1s' }}>
+          <div className="absolute inset-0 rounded-b-2xl bg-gradient-to-r from-brand-cyan/5 via-transparent to-blue-500/5 pointer-events-none" />
+          <div className="absolute -bottom-[1px] left-[10%] right-[10%] h-[1px] bg-gradient-to-r from-transparent via-brand-cyan/40 to-transparent" />
+          <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+          {[
+            { icon: 'emerald', label: 'Hosting $0 de por vida', glow: 'rgba(16,185,129,0.25)' },
+            { icon: 'cyan', label: 'SSL Incluido', glow: 'rgba(34,211,238,0.25)' },
+            { icon: 'amber', label: '15 días de soporte', glow: 'rgba(245,158,11,0.25)' },
+            { icon: 'purple', label: 'Lighthouse 100%', glow: 'rgba(168,85,247,0.25)' },
+            { icon: 'blue', label: 'Desarrollo a medida', glow: 'rgba(59,130,246,0.25)' },
+          ].map((item, i) => {
+            const colors = {
+              emerald: { text: 'text-emerald-300', dot: 'bg-emerald-400', from: 'from-emerald-500/20', via: 'via-emerald-500/5' },
+              cyan: { text: 'text-cyan-300', dot: 'bg-cyan-400', from: 'from-cyan-500/20', via: 'via-cyan-500/5' },
+              amber: { text: 'text-amber-300', dot: 'bg-amber-400', from: 'from-amber-500/20', via: 'via-amber-500/5' },
+              purple: { text: 'text-purple-300', dot: 'bg-purple-400', from: 'from-purple-500/20', via: 'via-purple-500/5' },
+              blue: { text: 'text-blue-300', dot: 'bg-blue-400', from: 'from-blue-500/20', via: 'via-blue-500/5' },
+            };
+            const c = colors[item.icon];
+            return (
+              <div
+                key={i}
+                className="group relative flex items-center gap-1.5 py-1 px-2 rounded-lg transition-all duration-500 hover:scale-105"
+                style={{ animation: `modal-content-in 0.5s ease-out ${0.3 + i * 0.1}s both` }}
+              >
+                <span className={`relative w-1.5 h-1.5 rounded-full ${c.dot} animate-pulse`} style={{ animationDelay: `${i * 0.3}s` }} />
+                <span className={`relative text-[10px] sm:text-[11px] font-medium ${c.text} transition-all duration-500 group-hover:drop-shadow-[0_0_6px_${c.text.replace('text-', '').replace('300', '400')}]`}>
+                  {item.label}
+                </span>
+                <span className={`absolute inset-0 rounded-lg bg-gradient-to-r ${c.from} ${c.via} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                <span className="absolute -inset-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-md" style={{ background: `radial-gradient(circle, ${item.glow} 0%, transparent 70%)` }} />
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <nav className={`border-b transition-all duration-700 ease-out backdrop-blur-xl sticky lg:top-[24px] top-0 z-50 ${
