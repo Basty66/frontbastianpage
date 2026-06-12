@@ -129,6 +129,11 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-y: scroll;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 .animate-modal-overlay {
