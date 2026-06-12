@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Star, Quote, Send } from 'lucide-react';
 import Reveal from './Reveal';
 import { supabase } from '../lib/supabaseClient';
@@ -30,6 +30,17 @@ const Testimonios = () => {
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState('');
+  const [testimoniosDb, setTestimoniosDb] = useState([]);
+
+  const cargarTestimonios = async () => {
+    if (!supabase) return;
+    const { data, error } = await supabase.from('testimonios').select('*').order('created_at', { ascending: false }).limit(9);
+    if (!error && data) setTestimoniosDb(data);
+  };
+
+  useEffect(() => { cargarTestimonios(); }, []);
+
+  const todos = [...testimoniosDb, ...iniciales];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,6 +73,7 @@ const Testimonios = () => {
       localStorage.setItem('bd-testimonios', JSON.stringify(local));
       setEnviado(true);
       setFormData({ nombre: '', empresa: '', texto: '', estrellas: 5 });
+      cargarTestimonios();
     } catch (err) {
       console.error('Error al guardar testimonio:', err);
     } finally {
@@ -91,7 +103,7 @@ const Testimonios = () => {
         </Reveal>
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {iniciales.map((t, i) => (
+          {todos.map((t, i) => (
             <Reveal key={i} animation="fade-up" delay={i * 120}>
               <div className="group relative bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/10 p-6 sm:p-8 rounded-2xl backdrop-blur-lg transition-all duration-500 hover:-translate-y-2 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10 h-full flex flex-col">
                 <div className="absolute top-3 right-3 text-white/[0.03]">
