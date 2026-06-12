@@ -80,6 +80,7 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [accent, setAccent] = useState(() => {
     try { return localStorage.getItem('bd-accent') || 'cyan'; } catch { return 'cyan'; }
@@ -114,11 +115,16 @@ function App() {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 60);
+      setShowBackToTop(y > 300);
       const docH = document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(docH > 0 ? Math.min((y / docH) * 100, 100) : 0);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   const scrollTo = useCallback((id) => {
@@ -145,46 +151,7 @@ function App() {
       <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
       {/* Trust Bar */}
-      <div className="hidden lg:flex items-center justify-center gap-0 fixed top-0 left-0 right-0 z-[100]">
-        <div className="relative flex items-center justify-center gap-5 sm:gap-8 px-6 py-2 bg-gradient-to-r from-slate-900/90 via-slate-800/80 to-slate-900/90 border-x border-white/5 rounded-b-2xl shadow-[0_4px_30px_rgba(34,211,238,0.08)] animate-modal-content" style={{ animationDelay: '0.1s' }}>
-          <div className="absolute inset-0 rounded-b-2xl bg-gradient-to-r from-brand-cyan/5 via-transparent to-blue-500/5 pointer-events-none" />
-          <div className="absolute -bottom-[1px] left-[10%] right-[10%] h-[1px] bg-gradient-to-r from-transparent via-brand-cyan/40 to-transparent" />
-          <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
-          {[
-            { icon: 'emerald', label: 'Hosting $0 de por vida', glow: 'rgba(16,185,129,0.25)' },
-            { icon: 'cyan', label: 'SSL Incluido', glow: 'rgba(34,211,238,0.25)' },
-            { icon: 'amber', label: '15 días de soporte', glow: 'rgba(245,158,11,0.25)' },
-            { icon: 'purple', label: 'Lighthouse 100%', glow: 'rgba(168,85,247,0.25)' },
-            { icon: 'blue', label: 'Desarrollo a medida', glow: 'rgba(59,130,246,0.25)' },
-          ].map((item, i) => {
-            const colors = {
-              emerald: { text: 'text-emerald-300', dot: 'bg-emerald-400', from: 'from-emerald-500/20', via: 'via-emerald-500/5' },
-              cyan: { text: 'text-cyan-300', dot: 'bg-cyan-400', from: 'from-cyan-500/20', via: 'via-cyan-500/5' },
-              amber: { text: 'text-amber-300', dot: 'bg-amber-400', from: 'from-amber-500/20', via: 'via-amber-500/5' },
-              purple: { text: 'text-purple-300', dot: 'bg-purple-400', from: 'from-purple-500/20', via: 'via-purple-500/5' },
-              blue: { text: 'text-blue-300', dot: 'bg-blue-400', from: 'from-blue-500/20', via: 'via-blue-500/5' },
-            };
-            const c = colors[item.icon];
-            return (
-              <div
-                key={i}
-                className="group relative flex items-center gap-1.5 py-1 px-2 rounded-lg transition-all duration-500 hover:scale-105"
-                style={{ animation: `modal-content-in 0.5s ease-out ${0.3 + i * 0.1}s both` }}
-              >
-                <span className={`relative w-1.5 h-1.5 rounded-full ${c.dot} animate-pulse`} style={{ animationDelay: `${i * 0.3}s` }} />
-                <span className={`relative text-[10px] sm:text-[11px] font-medium ${c.text} transition-all duration-500 group-hover:drop-shadow-[0_0_6px_${c.text.replace('text-', '').replace('300', '400')}]`}>
-                  {item.label}
-                </span>
-                <span className={`absolute inset-0 rounded-lg bg-gradient-to-r ${c.from} ${c.via} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                <span className="absolute -inset-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-md" style={{ background: `radial-gradient(circle, ${item.glow} 0%, transparent 70%)` }} />
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <nav className={`border-b transition-all duration-700 ease-out backdrop-blur-xl sticky lg:top-[24px] top-0 z-50 ${
+      <nav className={`border-b transition-all duration-700 ease-out backdrop-blur-xl sticky top-0 z-50 ${
         scrolled ? 'bg-slate-900/85 border-white/10 shadow-lg shadow-black/10' : 'bg-slate-900/40 border-white/5'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
@@ -286,6 +253,17 @@ function App() {
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
       </a>
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md flex items-center justify-center shadow-lg shadow-black/20 hover:bg-white/[0.1] hover:border-white/20 hover:scale-110 transition-all duration-500 ${
+          showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+        }`}
+        aria-label="Volver arriba"
+      >
+        <svg className="w-5 h-5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+      </button>
       <ExitPopup />
     </div>
   );
