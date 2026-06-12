@@ -7,6 +7,7 @@ import Testimonios from './components/Testimonios';
 import PortfolioSection from './components/Portfolio';
 import About from './components/About';
 import Reveal from './components/Reveal';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const Cotizador = lazy(() => import('./components/Cotizador'));
 
@@ -182,11 +183,13 @@ function App() {
         </div>
       </nav>
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/portafolio" element={<PortfolioPage />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <ErrorBoundary>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/portafolio" element={<PortfolioPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </ErrorBoundary>
 
       <Reveal animation="fade-up" as="footer" className="border-t border-white/5 bg-slate-900/30 backdrop-blur-md py-6 sm:py-8 px-4 sm:px-6 text-center text-slate-300 text-xs sm:text-sm">
         <p>© 2026 Bastian.dev — Analista Programador. Desarrollado con React y Tailwind CSS.</p>

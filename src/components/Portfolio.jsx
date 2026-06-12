@@ -14,7 +14,6 @@ const colores = [
 
 function Thumbnail({ proj, idx }) {
   const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(false);
   const initials = proj.titulo
     .split(/[\s-]+/)
     .map((w) => w[0])
@@ -25,19 +24,20 @@ function Thumbnail({ proj, idx }) {
 
   return (
     <div className="relative w-full h-full bg-slate-800 overflow-hidden">
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} transition-opacity duration-700 ${!proj.screenshot || loaded || error ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-          <span className="text-white/15 text-5xl sm:text-6xl font-heading font-black select-none">{initials}</span>
+      {!proj.screenshot && (
+        <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`}>
+          <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
+            <span className="text-white/15 text-5xl sm:text-6xl font-heading font-black select-none">{initials}</span>
+          </div>
         </div>
-      </div>
-      {proj.screenshot && !error && (
+      )}
+      {proj.screenshot && (
         <img
           src={proj.screenshot}
           alt={proj.titulo}
           className={`w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-105 ${loaded ? 'opacity-100' : 'opacity-0'}`}
           loading="lazy"
           onLoad={() => setLoaded(true)}
-          onError={() => setError(true)}
         />
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 transition-opacity duration-500" />

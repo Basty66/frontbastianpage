@@ -262,13 +262,17 @@ const Cotizador = () => {
   }, []);
 
   const isCanvasEmpty = (ref) => {
-    const canvas = ref.current;
-    if (!canvas) return true;
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    if (!ctx) return true;
-    const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-    for (let i = 3; i < data.length; i += 4) {
-      if (data[i] !== 0) return false;
+    try {
+      const canvas = ref.current;
+      if (!canvas) return true;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return true;
+      const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      for (let i = 3; i < data.length; i += 4) {
+        if (data[i] !== 0) return false;
+      }
+    } catch {
+      return true;
     }
     return true;
   };
@@ -767,8 +771,12 @@ const Cotizador = () => {
 
     const embedSig = (canvasRef, xp, yp, bw) => {
       if (!canvasRef?.current) return;
-      const sigData = canvasRef.current.toDataURL('image/png');
-      doc.addImage(sigData, 'PNG', xp + 3, yp + 9, bw - 6, 14);
+      try {
+        const sigData = canvasRef.current.toDataURL('image/png');
+        doc.addImage(sigData, 'PNG', xp + 3, yp + 9, bw - 6, 14);
+      } catch (sigErr) {
+        console.error('Error al incrustar firma:', sigErr);
+      }
     };
 
     doc.setDrawColor(160, 170, 180);
