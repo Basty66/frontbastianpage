@@ -284,12 +284,29 @@ html {
 }
 
 .logo-carousel-track {
-  animation: logo-scroll 25s linear infinite;
+  animation: logo-scroll 35s linear infinite;
   width: fit-content;
 }
 
 .logo-carousel-track:hover {
   animation-play-state: paused;
+}
+
+.carousel-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
 }
 
 /* Exit popup */
