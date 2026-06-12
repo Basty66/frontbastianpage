@@ -1,28 +1,74 @@
-import { Zap, Gem, Shield } from 'lucide-react';
+import { Zap, Gem, Shield, Rocket, BarChart, Layers } from 'lucide-react';
 import Reveal from './Reveal';
 
 const services = [
   {
-    icon: Zap,
+    icon: Rocket,
     title: 'Velocidad Extrema',
-    desc: 'Plataformas desarrolladas con React + Vite. Tu página cargará en milisegundos, mejorando las ventas y el posicionamiento en Google (SEO).',
+    desc: 'Plataformas con React + Vite. Tu página carga en milisegundos, mejorando ventas y posicionamiento en Google.',
+    color: 'from-cyan-500/20 via-cyan-500/5 to-transparent',
+    border: 'border-cyan-500/20',
+    glow: 'rgba(34,211,238,0.15)',
+    iconColor: 'text-cyan-400',
+    size: 'md:col-span-1 md:row-span-1',
   },
   {
     icon: Gem,
-    title: 'Costo Fijo $0 CLP',
-    desc: 'Implementamos arquitectura sin servidor (Serverless). Olvídate de pagar hostings mensuales abusivos; solo pagas tu dominio anual .cl.',
+    title: 'Costo Fijo $0/mes',
+    desc: 'Serverless Edge. Olvídate de hostings mensuales. Solo pagas tu dominio .cl anual (~$10.000). Sin sorpresas.',
+    color: 'from-emerald-500/20 via-emerald-500/5 to-transparent',
+    border: 'border-emerald-500/20',
+    glow: 'rgba(16,185,129,0.15)',
+    iconColor: 'text-emerald-400',
+    size: 'md:col-span-1 md:row-span-1',
   },
   {
     icon: Shield,
-    title: 'Seguridad Integrada',
-    desc: 'Certificados SSL de por vida, conexiones cifradas y pasarelas de pago blindadas como Mercado Pago para la total tranquilidad de tus clientes.',
+    title: 'Seguridad Total',
+    desc: 'SSL de por vida, cifrado extremo a extremo, pasarelas Mercado Pago/Webpay. Tus clientes compran tranquilos.',
+    color: 'from-purple-500/20 via-purple-500/5 to-transparent',
+    border: 'border-purple-500/20',
+    glow: 'rgba(168,85,247,0.15)',
+    iconColor: 'text-purple-400',
+    size: 'md:col-span-1 md:row-span-1',
+  },
+  {
+    icon: BarChart,
+    title: 'SEO que vende',
+    desc: 'Optimización completa: meta tags, Open Graph, schema.org, sitemap XML. Aparece en Google desde el día 1.',
+    color: 'from-blue-500/20 via-blue-500/5 to-transparent',
+    border: 'border-blue-500/20',
+    glow: 'rgba(59,130,246,0.15)',
+    iconColor: 'text-blue-400',
+    size: 'md:col-span-1 md:row-span-1',
+  },
+  {
+    icon: Layers,
+    title: 'Panel Administrativo',
+    desc: 'Gestiona stock, precios, productos y contenido sin saber programar. Ideal para e-commerces y webs corporativas.',
+    color: 'from-amber-500/20 via-amber-500/5 to-transparent',
+    border: 'border-amber-500/20',
+    glow: 'rgba(245,158,11,0.15)',
+    iconColor: 'text-amber-400',
+    size: 'md:col-span-2 md:row-span-1',
+  },
+  {
+    icon: Zap,
+    title: 'Escalabilidad Ilimitada',
+    desc: 'Arquitectura serverless que escala automáticamente. Desde 100 hasta 100.000 visitas sin cambiar de plan ni pagar más.',
+    color: 'from-rose-500/20 via-rose-500/5 to-transparent',
+    border: 'border-rose-500/20',
+    glow: 'rgba(244,63,94,0.15)',
+    iconColor: 'text-rose-400',
+    size: 'md:col-span-1 md:row-span-1',
   },
 ];
 
 const Services = () => {
   return (
-    <section id="servicios" className="py-16 sm:py-20 px-4 sm:px-6 border-y border-white/5 bg-slate-900/20">
-      <div className="max-w-7xl mx-auto">
+    <section id="servicios" className="relative py-16 sm:py-20 px-4 sm:px-6 border-y border-white/5 bg-slate-900/20 overflow-hidden">
+      <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-brand-cyan/5 rounded-full blur-3xl animate-float-delayed pointer-events-none" />
+      <div className="max-w-7xl mx-auto relative z-10">
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight">
             <span className="text-white">Ingeniería Web orientada al </span>
@@ -33,17 +79,27 @@ const Services = () => {
           </p>
         </Reveal>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-4 sm:gap-6 auto-rows-[1fr]">
           {services.map((s, i) => {
             const Icon = s.icon;
             return (
-              <Reveal key={i} animation="fade-up" delay={i * 150}>
-                <div className="group bg-white/[0.02] border border-white/10 p-8 rounded-2xl backdrop-blur-lg transition-all duration-300 ease-in-out hover:-translate-y-2 hover:scale-[1.01] hover:border-brand-cyan/30 hover:shadow-lg hover:shadow-brand-cyan/10">
-                  <div className="w-14 h-14 mb-6 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-brand-cyan/10 group-hover:border-brand-cyan/30 transition-all duration-300">
-                    <Icon className="w-7 h-7 text-brand-cyan group-hover:text-cyan-200 group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-300" />
+              <Reveal key={i} animation="fade-up" delay={i * 100}>
+                <div
+                  className={`group relative overflow-hidden bg-gradient-to-br ${s.color} border ${s.border} p-6 sm:p-8 rounded-2xl backdrop-blur-lg transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl h-full flex flex-col ${s.size}`}
+                  style={{ boxShadow: `0 0 0px ${s.glow}`, transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 20px 60px ${s.glow}`; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.boxShadow = `0 0 0px ${s.glow}`; }}
+                >
+                  <span className={`absolute -top-12 -right-12 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${s.iconColor.replace('text', 'bg').replace('-400', '-500/10')}`} />
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={`w-12 h-12 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-white/[0.06] group-hover:scale-110 transition-all duration-500 ${s.iconColor}`}>
+                      <Icon className="w-6 h-6 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-500" />
+                    </div>
+                    <h3 className="text-lg font-heading font-semibold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-200 group-hover:bg-clip-text transition-all duration-500">
+                      {s.title}
+                    </h3>
                   </div>
-                  <h3 className="text-xl font-heading font-semibold text-white mb-3">{s.title}</h3>
-                  <p className="text-slate-300 text-sm leading-relaxed">{s.desc}</p>
+                  <p className="text-slate-300 text-sm leading-relaxed flex-1">{s.desc}</p>
                 </div>
               </Reveal>
             );

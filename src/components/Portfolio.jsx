@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { ExternalLink, ArrowUpRight } from 'lucide-react';
 import Reveal from './Reveal';
 import { proyectos } from '../data/portfolio';
@@ -49,6 +49,58 @@ function Thumbnail({ proj, idx }) {
   );
 }
 
+function TiltCard({ children, className = '' }) {
+  const cardRef = useRef(null);
+  const shineRef = useRef(null);
+  const rafRef = useRef(null);
+
+  const handleMove = useCallback((e) => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const card = cardRef.current;
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const angleX = ((y - cy) / cy) * -8;
+      const angleY = ((x - cx) / cx) * 8;
+      card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) scale3d(1.02,1.02,1.02)`;
+      if (shineRef.current) {
+        shineRef.current.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.08) 0%, transparent 60%)`;
+      }
+    });
+  }, []);
+
+  const handleLeave = useCallback(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const card = cardRef.current;
+    if (!card) return;
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+    if (shineRef.current) {
+      shineRef.current.style.background = 'transparent';
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, []);
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      className={`relative transition-transform duration-200 ease-out will-change-transform ${className}`}
+      style={{ transformStyle: 'preserve-3d' }}
+    >
+      <div ref={shineRef} className="absolute inset-0 pointer-events-none z-10 rounded-2xl transition-colors duration-300" />
+      {children}
+    </div>
+  );
+}
+
 const Portfolio = ({ fullPage = false }) => {
   return (
     <section id="portafolio" className="py-16 sm:py-20 px-4 sm:px-6">
@@ -73,6 +125,7 @@ const Portfolio = ({ fullPage = false }) => {
           <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
             {proyectos.map((proj, i) => (
               <Reveal key={proj.id} animation="fade-up" delay={i * 120}>
+                <TiltCard>
                 <div className="group relative bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden backdrop-blur-lg transition-all duration-500 hover:-translate-y-2 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10 h-full flex flex-col">
                   <a
                     href={proj.url}
@@ -127,6 +180,7 @@ const Portfolio = ({ fullPage = false }) => {
                     </div>
                   </div>
                 </div>
+                </TiltCard>
               </Reveal>
             ))}
           </div>

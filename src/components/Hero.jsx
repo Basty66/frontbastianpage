@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Reveal from './Reveal';
 
@@ -38,10 +38,21 @@ const floatingOwls = [
   { top: '50%', left: '30%', size: 10, delay: 2, duration: 3.7 },
 ];
 
+const particles = Array.from({ length: 30 }, (_, i) => ({
+  id: i,
+  top: `${Math.random() * 100}%`,
+  left: `${Math.random() * 100}%`,
+  size: Math.random() * 3 + 1.5,
+  duration: 4 + Math.random() * 6,
+  delay: Math.random() * 5,
+}));
+
 const Hero = () => {
   const innerRefs = useRef([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const [typewriterDone, setTypewriterDone] = useState(false);
+  const [typewriterText, setTypewriterText] = useState('');
 
   const scrollTimeoutRef = useRef(null);
 
@@ -63,6 +74,20 @@ const Hero = () => {
     return () => {
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
+  }, []);
+
+  useEffect(() => {
+    const text = 'mantención $0';
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setTypewriterText(text.slice(0, i));
+      if (i >= text.length) {
+        clearInterval(interval);
+        setTimeout(() => setTypewriterDone(true), 600);
+      }
+    }, 80);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -95,7 +120,24 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="inicio" className="relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between py-12 sm:py-16 px-4 sm:px-6 max-w-7xl mx-auto gap-8 sm:gap-12 overflow-hidden">
+    <section id="inicio" className="relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between py-12 sm:py-16 px-4 sm:px-6 max-w-7xl mx-auto gap-8 sm:gap-12 overflow-hidden bg-grid">
+      {/* Particles */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {particles.map((p) => (
+          <div
+            key={p.id}
+            className="absolute rounded-full bg-brand-cyan/30"
+            style={{
+              top: p.top,
+              left: p.left,
+              width: `${p.size}px`,
+              height: `${p.size}px`,
+              animation: `particle-float ${p.duration}s ease-in-out infinite`,
+              animationDelay: `${p.delay}s`,
+            }}
+          />
+        ))}
+      </div>
       <div className="absolute inset-0 z-0 pointer-events-none">
         {floatingOwls.map((owl, i) => (
           <div
@@ -131,7 +173,7 @@ const Hero = () => {
             Llevamos tu negocio al mundo digital con
           </span>{' '}
           <span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(34,211,238,0.3)]">
-            mantención $0
+            {typewriterText}{!typewriterDone && <span className="animate-typewriter-cursor text-brand-cyan">|</span>}
           </span>
         </h1>
         <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl">

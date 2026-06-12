@@ -7,6 +7,7 @@ import Services from './components/Services';
 import Testimonios from './components/Testimonios';
 import PortfolioSection from './components/Portfolio';
 import About from './components/About';
+import FAQ from './components/FAQ';
 import Reveal from './components/Reveal';
 import ErrorBoundary from './components/ErrorBoundary';
 
@@ -47,6 +48,7 @@ const Home = () => {
       <Testimonios />
       <PortfolioSection />
       <About />
+      <FAQ />
       <Suspense fallback={<CotizadorSkeleton />}>
         <Cotizador />
       </Suspense>
@@ -80,6 +82,7 @@ function App() {
     try { return localStorage.getItem('bd-accent') || 'cyan'; } catch { return 'cyan'; }
   });
   const [logoClicks, setLogoClicks] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const logoTimeoutRef = useRef(null);
 
   const handleLogoClick = useCallback(() => {
@@ -105,7 +108,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 60);
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(docH > 0 ? Math.min((y / docH) * 100, 100) : 0);
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -130,7 +138,19 @@ function App() {
 
   return (
     <div className="min-h-screen text-white selection:bg-brand-cyan/30 selection:text-white bg-gradient-to-tr from-[#030712] via-[#0b1329] to-[#0f172a]">
-      <nav className={`border-b transition-all duration-700 ease-out backdrop-blur-xl sticky top-0 z-50 ${
+      {/* Scroll Progress */}
+      <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
+
+      {/* Trust Bar */}
+      <div className="hidden lg:flex items-center justify-center gap-6 py-1.5 bg-slate-900/60 border-b border-white/5 text-[10px] text-slate-400 fixed top-0 left-0 right-0 z-[100] backdrop-blur-xl">
+        <span className="flex items-center gap-1"><svg className="w-3 h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Hosting $0 de por vida</span>
+        <span className="flex items-center gap-1"><svg className="w-3 h-3 text-brand-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>SSL Incluido</span>
+        <span className="flex items-center gap-1"><svg className="w-3 h-3 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>15 días de soporte</span>
+        <span className="flex items-center gap-1"><svg className="w-3 h-3 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Lighthouse 100%</span>
+        <span className="flex items-center gap-1"><svg className="w-3 h-3 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Desarrollo a medida</span>
+      </div>
+
+      <nav className={`border-b transition-all duration-700 ease-out backdrop-blur-xl sticky lg:top-[24px] top-0 z-50 ${
         scrolled ? 'bg-slate-900/85 border-white/10 shadow-lg shadow-black/10' : 'bg-slate-900/40 border-white/5'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
