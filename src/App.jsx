@@ -12,6 +12,9 @@ import LogoCarousel from './components/LogoCarousel';
 import ExitPopup from './components/ExitPopup';
 import Reveal from './components/Reveal';
 import ErrorBoundary from './components/ErrorBoundary';
+import Privacy from './components/Privacy';
+import Terms from './components/Terms';
+import Cookies from './components/Cookies';
 
 const Cotizador = lazy(() => import('./components/Cotizador'));
 
@@ -231,14 +234,22 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/portafolio" element={<PortfolioPage />} />
+            <Route path="/privacidad" element={<Privacy />} />
+            <Route path="/terminos" element={<Terms />} />
+            <Route path="/cookies" element={<Cookies />} />
             <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><Admin /></Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </ErrorBoundary>
 
-      <Reveal animation="fade-up" as="footer" className="border-t border-white/5 bg-slate-900/30 backdrop-blur-md py-6 sm:py-8 px-4 sm:px-6 text-center text-slate-300 text-xs sm:text-sm">
-        <p>© 2026 Bastian.dev — Analista Programador. Desarrollado con React y Tailwind CSS.</p>
+      <Reveal animation="fade-up" as="footer" className="border-t border-white/5 bg-slate-900/30 backdrop-blur-md py-6 sm:py-8 px-4 sm:px-6 text-center">
+        <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-4">
+          <Link to="/privacidad" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Política de Privacidad</Link>
+          <Link to="/terminos" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Términos y Condiciones</Link>
+          <Link to="/cookies" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Política de Cookies</Link>
+        </div>
+        <p className="text-slate-300 text-xs sm:text-sm">© 2026 Bastian.dev — Analista Programador. Desarrollado con React y Tailwind CSS.</p>
       </Reveal>
 
       <a
