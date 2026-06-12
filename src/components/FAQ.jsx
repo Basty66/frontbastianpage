@@ -62,8 +62,8 @@ export default function FAQ() {
           {preguntas.map((item, i) => {
             const isOpen = openId === i;
             return (
-              <Reveal key={i} animation="fade-up" delay={i * 60}>
-                <div className={`group rounded-2xl border transition-all duration-500 ${
+              <Reveal key={i} animation="fade-up" delay={40}>
+                <div className={`group rounded-2xl border transition-[border-color,background,box-shadow] duration-400 ${
                   isOpen
                     ? 'border-brand-cyan/30 bg-brand-cyan/[0.03] shadow-lg shadow-brand-cyan/5'
                     : 'border-white/5 bg-white/[0.01] hover:border-white/10 hover:bg-white/[0.02]'
@@ -97,7 +97,7 @@ export default function FAQ() {
           })}
         </div>
 
-        <Reveal animation="fade-up" delay={200} className="text-center mt-10">
+        <Reveal animation="fade-up" delay={120} className="text-center mt-10">
           <p className="text-slate-400 text-sm mb-4">¿Tienes otra pregunta?</p>
           <a
             href={WHATSAPP_FULL}

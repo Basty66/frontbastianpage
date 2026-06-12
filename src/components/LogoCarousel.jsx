@@ -52,11 +52,8 @@ function ProjectCard({ project, index }) {
       className="group relative flex-shrink-0 w-[280px] sm:w-[320px] md:w-[360px]"
     >
       <div
-        className={`relative rounded-2xl overflow-hidden border ${project.border} bg-gradient-to-b ${project.gradient} backdrop-blur-sm transition-all duration-700 hover:scale-[1.02] hover:-translate-y-1 cursor-pointer`}
-        style={{
-          boxShadow: `0 8px 32px ${project.glow}`,
-          transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-        }}
+        className={`relative rounded-2xl overflow-hidden border ${project.border} bg-gradient-to-b ${project.gradient} backdrop-blur-sm transition-[transform,box-shadow] duration-500 hover:scale-[1.02] hover:-translate-y-1 cursor-pointer`}
+        style={{ boxShadow: `0 8px 32px ${project.glow}` }}
       >
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
@@ -144,7 +141,7 @@ export default function LogoCarousel() {
         <div className="relative">
           {/* Edge fade using CSS mask — cards smoothly disappear/reappear at edges */}
           <div className="carousel-mask">
-            <div className="flex logo-carousel-track gap-5 sm:gap-6 md:gap-8 items-center py-2">
+            <div className="flex logo-carousel-track gap-3 sm:gap-6 md:gap-8 items-center py-2">
               {items.map((project, i) => (
                 <ProjectCard key={`${project.id}-${i}`} project={project} index={i} />
               ))}

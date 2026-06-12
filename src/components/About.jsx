@@ -34,12 +34,12 @@ const About = () => {
 
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
           <Reveal animation="fade-left" className="lg:col-span-2">
-            <div className="group relative bg-white/[0.02] border border-white/10 p-6 sm:p-8 rounded-2xl backdrop-blur-lg transition-all duration-500 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10 hover:-translate-y-1">
+            <div className="group relative bg-white/[0.02] border border-white/10 p-6 sm:p-8 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10">
               <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-brand-cyan/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-cyan/[0.02] to-transparent pointer-events-none" />
 
-              <div className="relative mx-auto max-w-[260px] aspect-square rounded-xl overflow-hidden">
-                <div className="absolute -inset-6 bg-brand-cyan/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-float pointer-events-none" />
+              <div className="relative mx-auto max-w-[220px] sm:max-w-[260px] aspect-square rounded-xl overflow-hidden">
+                <div className="absolute -inset-6 bg-brand-cyan/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-cyan/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" />
                 <div className="relative w-full h-full rounded-xl bg-gradient-to-br from-slate-800 to-[#030712] border border-white/10 flex items-center justify-center overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-cyan/15 via-transparent to-transparent" />
@@ -49,7 +49,7 @@ const About = () => {
               </div>
 
               <div className="relative text-center mt-6">
-                <svg viewBox="0 2 40 26" fill="none" className="absolute inset-0 w-full h-full text-brand-cyan/[0.04] group-hover:text-brand-cyan/[0.08] transition-all duration-700 pointer-events-none scale-[2] origin-center">
+                <svg viewBox="0 2 40 26" fill="none" className="absolute inset-0 w-full h-full text-brand-cyan/[0.04] group-hover:text-brand-cyan/[0.08] transition-opacity duration-700 pointer-events-none scale-[2] origin-center">
                   <path d="M20 6C12 6 7 12 7 19v4a3 3 0 003 3h20a3 3 0 003-3v-4c0-7-5-13-13-13z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
                   <path d="M11 9L7 3l7 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M29 9l4-6-7 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -71,7 +71,7 @@ const About = () => {
 
           <div className="lg:col-span-3 space-y-6 sm:space-y-8">
             <Reveal animation="fade-right">
-              <div className="group relative bg-white/[0.02] border border-white/10 p-6 sm:p-8 rounded-2xl backdrop-blur-lg transition-all duration-500 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10">
+              <div className="group relative bg-white/[0.02] border border-white/10 p-6 sm:p-8 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg transition-[border-color,box-shadow] duration-500 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10">
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-cyan/[0.02] to-transparent pointer-events-none" />
                 <h3 className="relative text-xl sm:text-2xl font-heading font-bold text-white mb-4 flex items-center gap-3">
                   <span className="w-1 h-6 bg-brand-cyan rounded-full inline-block group-hover:shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-shadow duration-500" />
@@ -100,11 +100,11 @@ const About = () => {
             </Reveal>
 
             <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-              <Reveal animation="fade-up" delay={100}>
-                <div className="group relative bg-white/[0.02] border border-white/10 p-5 sm:p-6 rounded-2xl backdrop-blur-lg h-full transition-all duration-500 hover:-translate-y-1 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10">
+              <Reveal animation="fade-up" delay={80}>
+                <div className="group relative bg-white/[0.02] border border-white/10 p-5 sm:p-6 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg h-full transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10">
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-cyan/[0.02] to-transparent pointer-events-none" />
                   <div className="relative flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-brand-cyan/10 group-hover:border-brand-cyan/30 group-hover:shadow-[0_0_12px_rgba(34,211,238,0.15)] transition-all duration-500">
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-brand-cyan/10 group-hover:border-brand-cyan/30 group-hover:shadow-[0_0_12px_rgba(34,211,238,0.15)] transition-[background,border-color,box-shadow] duration-500">
                       <Code2 className="w-5 h-5 text-brand-cyan group-hover:text-cyan-200 group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-500" />
                     </div>
                     <h4 className="text-sm font-heading font-semibold text-white">Conocimientos <span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent">Clave</span></h4>
@@ -126,11 +126,11 @@ const About = () => {
                 </div>
               </Reveal>
 
-              <Reveal animation="fade-up" delay={200}>
-                <div className="group relative bg-white/[0.02] border border-white/10 p-5 sm:p-6 rounded-2xl backdrop-blur-lg h-full transition-all duration-500 hover:-translate-y-1 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10">
+              <Reveal animation="fade-up" delay={120}>
+                <div className="group relative bg-white/[0.02] border border-white/10 p-5 sm:p-6 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg h-full transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10">
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-cyan/[0.02] to-transparent pointer-events-none" />
                   <div className="relative flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-brand-cyan/10 group-hover:border-brand-cyan/30 group-hover:shadow-[0_0_12px_rgba(34,211,238,0.15)] transition-all duration-500">
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-brand-cyan/10 group-hover:border-brand-cyan/30 group-hover:shadow-[0_0_12px_rgba(34,211,238,0.15)] transition-[background,border-color,box-shadow] duration-500">
                       <Briefcase className="w-5 h-5 text-brand-cyan group-hover:text-cyan-200 group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-500" />
                     </div>
                     <h4 className="text-sm font-heading font-semibold"><span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent">Trayectoria</span></h4>

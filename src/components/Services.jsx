@@ -83,16 +83,16 @@ const Services = () => {
           {services.map((s, i) => {
             const Icon = s.icon;
             return (
-              <Reveal key={i} animation="fade-up" delay={i * 100}>
+              <Reveal key={i} animation="fade-up" delay={i * 60}>
                 <div
-                  className={`group relative overflow-hidden bg-gradient-to-br ${s.color} border ${s.border} p-4 sm:p-6 md:p-8 rounded-2xl backdrop-blur-lg transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl h-full flex flex-col ${s.size}`}
-                  style={{ boxShadow: `0 0 0px ${s.glow}`, transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}
+                  className={`group relative overflow-hidden bg-gradient-to-br ${s.color} border ${s.border} p-4 sm:p-6 md:p-8 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg transition-[transform,box-shadow] duration-400 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl h-full flex flex-col ${s.size}`}
+                  style={{ boxShadow: `0 0 0px ${s.glow}` }}
                   onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 20px 60px ${s.glow}`; }}
                   onMouseLeave={(e) => { e.currentTarget.style.boxShadow = `0 0 0px ${s.glow}`; }}
                 >
                   <span className={`absolute -top-12 -right-12 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${s.iconColor.replace('text', 'bg').replace('-400', '-500/10')}`} />
                   <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                    <div className={`w-8 h-8 sm:w-10 md:w-12 sm:h-10 md:h-12 rounded-lg sm:rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-white/[0.06] group-hover:scale-110 transition-all duration-500 ${s.iconColor}`}>
+                    <div className={`w-8 h-8 sm:w-10 md:w-12 sm:h-10 md:h-12 rounded-lg sm:rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-white/[0.06] group-hover:scale-110 transition-[transform,background] duration-400 ${s.iconColor}`}>
                       <Icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-500" />
                     </div>
                     <h3 className="text-sm sm:text-base md:text-lg font-heading font-semibold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-200 group-hover:bg-clip-text transition-all duration-500">
@@ -106,7 +106,7 @@ const Services = () => {
           })}
         </div>
 
-        <Reveal animation="fade-up" delay={500} className="mt-10 sm:mt-14">
+        <Reveal animation="fade-up" delay={300} className="mt-10 sm:mt-14">
           <div className="text-center mb-8">
             <h3 className="text-xl sm:text-2xl font-heading font-bold text-white mb-2">
               <span className="text-emerald-400">$0/mes</span> vs Hosting Tradicional
@@ -114,7 +114,7 @@ const Services = () => {
             <p className="text-slate-400 text-sm">Infraestructura serverless de última generación sin costos mensuales.</p>
           </div>
           <div className="grid md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
-            <div className="relative group bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-2 border-emerald-500/30 rounded-2xl p-6 sm:p-8 backdrop-blur-lg transition-all duration-500 hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1">
+            <div className="relative group bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-2 border-emerald-500/30 rounded-2xl p-6 sm:p-8 backdrop-blur-sm md:backdrop-blur-lg transition-[transform,box-shadow] duration-400 hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1">
               <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
@@ -140,13 +140,13 @@ const Services = () => {
                     <svg className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
-                    <span className="text-slate-300 flex-1">{item.label}:</span>
-                    <span className="text-white font-medium text-right flex-shrink-0 max-w-[55%] sm:max-w-none">{item.value}</span>
+                    <span className="text-slate-300">{item.label}:</span>
+                    <span className="text-white font-medium text-right flex-shrink-0 ml-auto">{item.value}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="relative group bg-gradient-to-br from-red-500/5 to-red-500/[0.02] border border-red-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-lg transition-all duration-500 hover:shadow-xl hover:shadow-red-500/5 hover:-translate-y-1">
+            <div className="relative group bg-gradient-to-br from-red-500/5 to-red-500/[0.02] border border-red-500/20 rounded-2xl p-6 sm:p-8 backdrop-blur-sm md:backdrop-blur-lg transition-[transform,box-shadow] duration-400 hover:shadow-xl hover:shadow-red-500/5 hover:-translate-y-1">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
                   <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
