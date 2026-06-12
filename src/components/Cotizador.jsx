@@ -4,6 +4,7 @@ import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle, C
 import Reveal from './Reveal';
 import useAnimatedNumber from '../hooks/useAnimatedNumber';
 import { supabase } from '../lib/supabaseClient';
+import { WHATSAPP_NUMBER } from '../lib/constants';
 import bastianSigImg from '/firma-bastian.png';
 
 const steps = [
@@ -1248,7 +1249,7 @@ const Cotizador = () => {
               </div>
 
               <a
-                href={`https://wa.me/56928122947?text=${encodeURIComponent(
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
                   `¡Hola Bastian! Soy ${formData.nombre}. Tengo una consulta sobre mi cotización.`
                 )}`}
                 target="_blank"

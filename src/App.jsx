@@ -12,9 +12,11 @@ import LogoCarousel from './components/LogoCarousel';
 import ExitPopup from './components/ExitPopup';
 import Reveal from './components/Reveal';
 import ErrorBoundary from './components/ErrorBoundary';
+import CookieConsent from './components/CookieConsent';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
 import Cookies from './components/Cookies';
+import { WHATSAPP_FULL } from './lib/constants';
 
 const Cotizador = lazy(() => import('./components/Cotizador'));
 
@@ -253,7 +255,7 @@ function App() {
       </Reveal>
 
       <a
-        href="https://wa.me/56928122947?text=Hola%20Bastian%2C%20tengo%20una%20consulta%20sobre%20tus%20servicios%20de%20desarrollo%20web."
+        href={WHATSAPP_FULL}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg shadow-[#25D366]/30 hover:shadow-xl hover:shadow-[#25D366]/50 hover:scale-110 transition-all duration-300 animate-float group"
@@ -275,6 +277,7 @@ function App() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
         </svg>
       </button>
+      <CookieConsent />
       <ExitPopup />
     </div>
   );

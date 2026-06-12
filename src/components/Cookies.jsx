@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Reveal from './Reveal';
+import { WHATSAPP_LINK } from '../lib/constants';
 
 export default function Cookies() {
   return (
@@ -63,7 +64,7 @@ export default function Cookies() {
             <h2 className="text-xl sm:text-2xl font-heading font-semibold text-white mt-8 mb-3">5. Más información</h2>
             <p>
               Si tienes preguntas sobre el uso de cookies, puedes contactarme por{' '}
-              <a href="https://wa.me/56928122947" target="_blank" rel="noopener noreferrer" className="text-brand-cyan hover:text-cyan-300 transition-colors">
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-brand-cyan hover:text-cyan-300 transition-colors">
                 WhatsApp
               </a>.
             </p>

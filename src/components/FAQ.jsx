@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import Reveal from './Reveal';
+import { WHATSAPP_FULL } from '../lib/constants';
 
 const preguntas = [
   {
@@ -99,7 +100,7 @@ export default function FAQ() {
         <Reveal animation="fade-up" delay={200} className="text-center mt-10">
           <p className="text-slate-400 text-sm mb-4">¿Tienes otra pregunta?</p>
           <a
-            href="https://wa.me/56928122947?text=Hola%20Bastian%2C%20tengo%20una%20consulta%20sobre%20tus%20servicios%20de%20desarrollo%20web."
+            href={WHATSAPP_FULL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm text-brand-cyan hover:text-cyan-300 transition-colors font-medium group"

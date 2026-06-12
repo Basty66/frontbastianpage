@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { X, Mail, Send, Sparkles } from 'lucide-react';
+import { WHATSAPP_NUMBER } from '../lib/constants';
 
 export default function ExitPopup() {
   const [show, setShow] = useState(false);
@@ -24,7 +25,7 @@ export default function ExitPopup() {
     if (!email.trim()) return;
     setSent(true);
     const link = document.createElement('a');
-    link.href = `https://wa.me/56928122947?text=${encodeURIComponent(
+    link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
       `¡Hola Bastian! Soy ${email.split('@')[0] || 'un cliente'}. Me interesa recibir un presupuesto personalizado. Mi correo es ${email}`
     )}`;
     link.target = '_blank';

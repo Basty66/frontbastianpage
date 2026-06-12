@@ -7,7 +7,7 @@ export default function Reveal({
   className = '',
   as: Tag = 'div',
   threshold,
-  once = false,
+  once = true,
 }) {
   const [ref, visible] = useReveal({ threshold, once })
 
