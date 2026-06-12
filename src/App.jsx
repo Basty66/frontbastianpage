@@ -161,7 +161,7 @@ function App() {
   }, [navigate, location.pathname]);
 
   return (
-    <div className="min-h-screen text-white selection:bg-brand-cyan/30 selection:text-white bg-gradient-to-tr from-[#030712] via-[#0b1329] to-[#0f172a]">
+    <div className="min-h-screen flex flex-col text-white selection:bg-brand-cyan/30 selection:text-white bg-gradient-to-tr from-[#030712] via-[#0b1329] to-[#0f172a]">
       {/* Scroll Progress */}
       <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
@@ -191,10 +191,10 @@ function App() {
               <button
                 key={link.id}
                 onClick={() => scrollTo(link.id)}
-                className="group relative px-3 sm:px-4 py-2 text-sm font-medium text-slate-400 hover:text-white transition-all duration-300 rounded-lg hover:bg-white/[0.03] hover:scale-105"
+                className="group relative px-3 sm:px-4 py-2 text-sm font-medium text-slate-400 hover:text-white transition-[color,background,transform] duration-300 rounded-lg hover:bg-white/[0.03] hover:scale-105"
                 style={{ animation: `fade-slide-in 0.5s ease-out ${0.2 + i * 0.08}s both` }}
               >
-                <span className="relative z-10 transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">
+                <span className="relative z-10 transition-[filter] duration-300 group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">
                   {link.label}
                 </span>
                 <span className="absolute inset-x-3 bottom-1.5 h-[2px] bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-center" />
@@ -241,21 +241,23 @@ function App() {
         </div>
       </nav>
 
-      <ErrorBoundary>
-        <div key={location.pathname} className="page-enter">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/portafolio" element={<PortfolioPage />} />
-            <Route path="/privacidad" element={<Privacy />} />
-            <Route path="/terminos" element={<Terms />} />
-            <Route path="/cookies" element={<Cookies />} />
-            <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><Admin /></Suspense>} />
-            <Route path="/blog" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><BlogList /></Suspense>} />
-            <Route path="/blog/:slug" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><BlogPost /></Suspense>} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </ErrorBoundary>
+      <div className="flex-1">
+        <ErrorBoundary>
+          <div key={location.pathname} className="page-enter">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/portafolio" element={<PortfolioPage />} />
+              <Route path="/privacidad" element={<Privacy />} />
+              <Route path="/terminos" element={<Terms />} />
+              <Route path="/cookies" element={<Cookies />} />
+              <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><Admin /></Suspense>} />
+              <Route path="/blog" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><BlogList /></Suspense>} />
+              <Route path="/blog/:slug" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><BlogPost /></Suspense>} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </ErrorBoundary>
+      </div>
 
       <Reveal animation="fade-up" as="footer" className="border-t border-white/5 bg-slate-900/30 backdrop-blur-md py-6 sm:py-8 px-4 sm:px-6 text-center">
         <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-4">
@@ -282,7 +284,7 @@ function App() {
       </a>
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md flex items-center justify-center shadow-lg shadow-black/20 hover:bg-white/[0.1] hover:border-white/20 hover:scale-110 transition-all duration-500 ${
+        className={`fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md flex items-center justify-center shadow-lg shadow-black/20 hover:bg-white/[0.1] hover:border-white/20 hover:scale-110 transition-[background,border-color,transform,opacity] duration-500 ${
           showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
         aria-label="Volver arriba"
