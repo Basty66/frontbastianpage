@@ -251,7 +251,8 @@ function App() {
           <Link to="/terminos" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Términos y Condiciones</Link>
           <Link to="/cookies" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Política de Cookies</Link>
         </div>
-        <p className="text-slate-300 text-xs sm:text-sm">© 2026 Bastian.dev — Analista Programador. Desarrollado con React y Tailwind CSS.</p>
+        <p className="text-slate-400 text-xs mb-2">Santiago, Región Metropolitana, Chile</p>
+        <p className="text-slate-300 text-xs sm:text-sm">© 2026 Bastian.dev — Desarrollo Web para PYMEs Chilenas · Hosting $0</p>
       </Reveal>
 
       <a
