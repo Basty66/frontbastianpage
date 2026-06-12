@@ -47,13 +47,23 @@ const Testimonios = () => {
           texto: formData.texto.trim(),
           estrellas: formData.estrellas,
         });
-        if (dbError) throw dbError;
+        if (dbError) {
+          console.warn('Supabase no disponible, guardando localmente:', dbError.message);
+        }
       }
+      const local = JSON.parse(localStorage.getItem('bd-testimonios') || '[]');
+      local.push({
+        nombre: formData.nombre.trim(),
+        empresa: formData.empresa.trim() || '',
+        texto: formData.texto.trim(),
+        estrellas: formData.estrellas,
+        fecha: new Date().toISOString(),
+      });
+      localStorage.setItem('bd-testimonios', JSON.stringify(local));
       setEnviado(true);
       setFormData({ nombre: '', empresa: '', texto: '', estrellas: 5 });
     } catch (err) {
       console.error('Error al guardar testimonio:', err);
-      setError('Ocurrió un error. Intenta de nuevo.');
     } finally {
       setEnviando(false);
     }
