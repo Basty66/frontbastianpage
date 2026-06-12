@@ -170,8 +170,8 @@ const Hero = () => {
 
   return (
     <section id="inicio" className="relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between py-12 sm:py-16 px-4 sm:px-6 max-w-7xl mx-auto gap-8 sm:gap-12 overflow-x-hidden bg-grid">
-      {/* Particles */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      {/* Particles - hidden on mobile for perf */}
+      <div className="hidden md:block absolute inset-0 z-0 pointer-events-none">
         {particles.map((p) => (
           <div
             key={p.id}
@@ -191,7 +191,7 @@ const Hero = () => {
         {floatingOwls.map((owl, i) => (
           <div
             key={i}
-            className={`absolute pointer-events-auto group cursor-default ${i > 5 ? 'hidden sm:block' : ''}`}
+            className={`absolute pointer-events-auto group cursor-default ${i > 2 ? 'hidden sm:block' : ''}`}
             style={{
               top: owl.top,
               left: owl.left,
@@ -231,14 +231,14 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-3 sm:pt-4">
           <button
             onClick={(e) => { createRipple(e); scrollToCotizador(); }}
-            className="ripple-container relative overflow-hidden group text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out border border-brand-cyan/30 bg-brand-cyan/5 shadow-lg shadow-brand-cyan/10 animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm sm:text-base"
+            className="ripple-container relative overflow-hidden group text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out border border-brand-cyan/30 bg-brand-cyan/5 shadow-lg shadow-brand-cyan/10 md:animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm sm:text-base"
           >
             <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-brand-cyan -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
             <span className="relative z-10">Cotizar mi proyecto</span>
           </button>
           <button
             onClick={(e) => { createRipple(e); navigate('/portafolio'); }}
-            className="ripple-container relative overflow-hidden group border border-brand-cyan/30 text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out bg-brand-cyan/5 shadow-lg shadow-brand-cyan/10 animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm sm:text-base">
+            className="ripple-container relative overflow-hidden group border border-brand-cyan/30 text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out bg-brand-cyan/5 shadow-lg shadow-brand-cyan/10 md:animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm sm:text-base">
             <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-brand-cyan -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
             <span className="relative z-10">Ver Portafolio</span>
           </button>
@@ -252,13 +252,13 @@ const Hero = () => {
         </div>
       </Reveal>
       <Reveal animation="fade-right" delay={200} className="relative z-10 flex-1 w-full max-w-xl">
-        <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-lg animate-float">
+        <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-sm md:backdrop-blur-lg md:animate-float">
           <div className="absolute top-0 right-0 w-64 h-64 bg-brand-cyan/5 rounded-full blur-3xl -z-10" />
           <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
             <div className="flex gap-2">
-              <span className="w-3 h-3 bg-red-500/80 rounded-full animate-pulse" />
-              <span className="w-3 h-3 bg-yellow-500/80 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }} />
-              <span className="w-3 h-3 bg-green-500/80 rounded-full animate-pulse" style={{ animationDelay: '0.6s' }} />
+              <span className="w-3 h-3 bg-red-500/80 rounded-full md:animate-pulse" />
+              <span className="w-3 h-3 bg-yellow-500/80 rounded-full md:animate-pulse md:[animation-delay:0.3s]" />
+              <span className="w-3 h-3 bg-green-500/80 rounded-full md:animate-pulse md:[animation-delay:0.6s]" />
             </div>
             <span className="text-xs text-slate-400 font-heading">frontbastianpage.cl</span>
           </div>
@@ -269,7 +269,7 @@ const Hero = () => {
               <div className="flex items-center gap-3">
                 <div className="text-2xl font-bold font-heading text-emerald-400">100%</div>
                 <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
-                  <div className="bg-gradient-to-r from-emerald-400 to-emerald-300 h-full w-full rounded-full animate-gradient" />
+                  <div className="bg-gradient-to-r from-emerald-400 to-emerald-300 h-full w-full rounded-full" />
                 </div>
               </div>
             </div>

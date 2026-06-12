@@ -106,7 +106,7 @@ const Testimonios = () => {
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           {todos.map((t, i) => (
             <Reveal key={i} animation="fade-up" delay={i * 120}>
-              <div className="group relative bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/10 p-6 sm:p-8 rounded-2xl backdrop-blur-lg transition-all duration-500 hover:-translate-y-2 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10 h-full flex flex-col">
+              <div className="group relative bg-gradient-to-br from-white/[0.03] to-white/[0.01] border border-white/10 p-6 sm:p-8 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-2 hover:border-brand-cyan/30 hover:shadow-xl hover:shadow-brand-cyan/10 h-full flex flex-col">
                 <div className="absolute top-3 right-3 text-white/[0.03]">
                   <Quote className="w-16 h-16" />
                 </div>
