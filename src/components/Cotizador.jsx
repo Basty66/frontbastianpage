@@ -438,12 +438,10 @@ const Cotizador = () => {
             nombre: formData.nombre,
             email: formData.email,
             telefono: `${codigoPais} ${formData.telefono}`,
-            empresa: formData.empresa || null,
-            mensaje: formData.mensaje || '',
+            mensaje: (formData.mensaje || '') + (formData.empresa ? ` | Empresa: ${formData.empresa}` : '') + (selectedPlan ? ` | Plan: ${selectedPlan}` : ''),
             tipo_web: tipoId,
             extras: extras,
             total_estimado: total,
-            plan: selectedPlan || null,
           });
           if (insertError) console.error('Error al guardar cotización:', insertError);
         }

@@ -10,7 +10,9 @@ create table if not exists cotizaciones (
   mensaje text default '',
   tipo_web text not null,
   extras jsonb default '[]'::jsonb,
-  total_estimado integer not null
+  total_estimado integer not null,
+  empresa text,
+  plan text
 );
 
 -- Habilita Row Level Security (opcional, pero recomendado)
