@@ -548,62 +548,59 @@ const Cotizador = () => {
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
     const pw = doc.internal.pageSize.getWidth();
     const ph = doc.internal.pageSize.getHeight();
-    const mg = 14;
-    const cw = pw - 2 * mg;
+    const mg = 18;
+    const cw = pw - mg * 2;
 
-    const navy = [11, 19, 41];
+    // PALETA: blanco y negro, con un acento cian mínimo
+    const black = [0, 0, 0];
+    const dark = [40, 40, 40];
+    const gray = [120, 120, 120];
+    const light = [235, 235, 235];
     const cyan = [6, 182, 212];
-    const darkGray = [55, 65, 81];
-    const midGray = [107, 114, 128];
-    const lightGray = [243, 244, 246];
-    const white = [255, 255, 255];
-    const green = [16, 185, 129];
 
-    let yy = 0;
+    let y = 18;
+    let pageNum = 1;
 
-    function sectionTitle(text, y) {
+    // =============== HELPERS ===============
+    function text(txt, x, yy, size, weight = 'normal', color = black, align = 'left') {
+      doc.setFont('helvetica', weight);
+      doc.setFontSize(size);
+      doc.setTextColor(color[0], color[1], color[2]);
+      if (align === 'right') doc.text(txt, x, yy, { align: 'right' });
+      else doc.text(txt, x, yy);
+    }
+
+    function hr(yp, color = black) {
+      doc.setDrawColor(color[0], color[1], color[2]);
+      doc.setLineWidth(0.4);
+      doc.line(mg, yp, pw - mg, yp);
+    }
+
+    function section(title, needed) {
+      if (y + needed > ph - 20) { doc.addPage(); pageNum++; y = 20; }
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.setTextColor(...navy);
-      doc.text(text, mg, y);
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.text(title, mg, y);
       doc.setDrawColor(...cyan);
-      doc.setLineWidth(0.5);
-      doc.line(mg, y + 2, mg + 35, y + 2);
+      doc.setLineWidth(0.6);
+      doc.line(mg, y + 2.5, mg + 50, y + 2.5);
+      y += 10;
     }
 
-    function body(text, x, y, opts = {}) {
-      const { sz = 7, color = darkGray, bold = false, align = 'left' } = opts;
-      doc.setFont('helvetica', bold ? 'bold' : 'normal');
-      doc.setFontSize(sz);
-      doc.setTextColor(...color);
-      const options = align !== 'left' ? { align } : {};
-      doc.text(text, x, y, options);
+    function ensureSpace(needed) {
+      if (y + needed > ph - 20) { doc.addPage(); pageNum++; y = 20; }
     }
 
-    function bodyRight(text, x, y, sz = 7, color = darkGray) {
-      body(text, x, y, { sz, color, align: 'right' });
+    function addPage() {
+      doc.addPage();
+      pageNum++;
+      y = 20;
     }
 
-    function bodyBold(text, x, y, sz = 7, color = navy) {
-      body(text, x, y, { sz, color, bold: true });
-    }
-
-    function bodyBoldRight(text, x, y, sz = 7, color = navy) {
-      body(text, x, y, { sz, color, bold: true, align: 'right' });
-    }
-
-    function grayBox(h) {
-      doc.setFillColor(...lightGray);
-      doc.setDrawColor(229, 231, 235);
-      doc.setLineWidth(0.15);
-      doc.roundedRect(mg, yy, cw, h, 1.5, 1.5, 'FD');
-      const start = yy;
-      yy += h + 3;
-      return start;
-    }
-
-    function checkVSpace(needed) {
-      if (yy + needed > ph - 15) { doc.addPage(); yy = mg; }
+    function addFooter() {
+      text(`Bastian.dev  |  ${propuestaNum}  |  ${formatDate(hoy)}  |  Pagina ${pageNum}`,
+        mg, ph - 8, 7, 'normal', gray);
     }
 
     const propuestaNum = `PRO-${String(Date.now()).slice(-6)}`;
@@ -611,265 +608,249 @@ const Cotizador = () => {
     const venc = new Date(hoy);
     venc.setDate(venc.getDate() + 15);
 
-    // ==================== HEADER ====================
-    doc.setFillColor(...navy);
-    doc.rect(0, 0, pw, 28, 'F');
+    // =============== HEADER ===============
+    text('Bastian.dev', mg, y, 22, 'bold', black);
+    text('Soluciones Web Profesionales', mg, y + 8, 9, 'normal', dark);
+    text('Serverless  |  Hosting $0', mg, y + 13, 8, 'normal', gray);
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(16);
-    doc.setTextColor(...white);
-    doc.text('Bastian', mg, 10);
-    doc.setTextColor(...cyan);
-    doc.text('.dev', mg + 24, 10);
+    text(propuestaNum, pw - mg, y, 14, 'bold', black, 'right');
+    text('PROPUESTA', pw - mg, y + 6, 7, 'normal', gray, 'right');
+    text(`Emitida: ${formatDate(hoy)}`, pw - mg, y + 11, 8, 'normal', dark, 'right');
+    text(`Valida hasta: ${formatDate(venc)}`, pw - mg, y + 16, 8, 'normal', dark, 'right');
 
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(6.5);
-    doc.setTextColor(148, 163, 184);
-    doc.text('Soluciones Web Profesionales  •  Serverless  •  Hosting $0', mg, 16);
+    y += 26;
+    hr(y);
+    y += 10;
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7);
-    doc.setTextColor(...white);
-    doc.text('PROPUESTA DE DESARROLLO WEB', mg, 23);
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7);
-    doc.setTextColor(...cyan);
-    doc.text(propuestaNum, pw - mg, 10, { align: 'right' });
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(6);
-    doc.setTextColor(148, 163, 184);
-    doc.text(`Emitida: ${formatDate(hoy)}`, pw - mg, 14.5, { align: 'right' });
-    doc.text(`Válida hasta: ${formatDate(venc)}`, pw - mg, 19, { align: 'right' });
-
-    yy = 32;
-
-    // ==================== CLIENTE ====================
-    sectionTitle('DATOS DEL CLIENTE', yy);
-    yy += 2;
-    const clientStart = grayBox(formData.empresa ? 22 : 18);
-    body('Nombre', mg + 2, clientStart + 2, { sz: 6.5, color: midGray });
-    body(formData.nombre || '—', mg + 2, clientStart + 8, { sz: 8, color: navy, bold: true });
-    body('Email', mg + 2 + cw / 2, clientStart + 2, { sz: 6.5, color: midGray });
-    body(formData.email || '—', mg + 2 + cw / 2, clientStart + 8, { sz: 7, color: navy });
-    body('Teléfono', mg + 2, clientStart + 16, { sz: 6.5, color: midGray });
-    body(`${codigoPais} ${formData.telefono || '—'}`, mg + 2, clientStart + 14, { sz: 7, color: navy });
+    // =============== CLIENTE ===============
+    section('Datos del Cliente', 35);
+    const cH = formData.empresa ? 30 : 22;
+    ensureSpace(cH);
+    const cY = y;
+    doc.setDrawColor(...light);
+    doc.setLineWidth(0.4);
+    doc.rect(mg, cY, cw, cH);
+    text('Nombre completo', mg + 4, cY + 7, 8, 'normal', gray);
+    text(formData.nombre || '---', mg + 4, cY + 14, 10, 'bold', black);
+    text('Email', mg + cw / 2 + 4, cY + 7, 8, 'normal', gray);
+    text(formData.email || '---', mg + cw / 2 + 4, cY + 14, 9, 'normal', black);
     if (formData.empresa) {
-      body('Empresa', mg + 2 + cw / 2, clientStart + 16, { sz: 6.5, color: midGray });
-      body(formData.empresa, mg + 2 + cw / 2, clientStart + 14, { sz: 7, color: navy });
+      text('Telefono', mg + 4, cY + 22, 8, 'normal', gray);
+      text(`${codigoPais} ${formData.telefono || '---'}`, mg + 4, cY + 28, 9, 'normal', black);
+      text('Empresa', mg + cw / 2 + 4, cY + 22, 8, 'normal', gray);
+      text(formData.empresa, mg + cw / 2 + 4, cY + 28, 9, 'normal', black);
+    } else {
+      text('Telefono', mg + 4, cY + 22, 8, 'normal', gray);
+      text(`${codigoPais} ${formData.telefono || '---'}`, mg + 4, cY + 22, 9, 'normal', black);
     }
+    y = cY + cH + 8;
 
-    // ==================== PROVEEDOR ====================
-    sectionTitle('PROVEEDOR', yy);
-    yy += 2;
-    const provStart = grayBox(12);
-    body('Cristian Bastian Cerda  |  Analista Programador  |  RUT: 19.876.543-2', mg + 2, provStart + 3, { sz: 6.5, color: darkGray });
-    body('cristianbastian.dev@gmail.com  |  +56 9 2812 2947  |  Santiago, Chile', mg + 2, provStart + 8, { sz: 6.5, color: darkGray });
+    // =============== PROVEEDOR ===============
+    section('Proveedor', 22);
+    ensureSpace(18);
+    const pY = y;
+    doc.setDrawColor(...light);
+    doc.rect(mg, pY, cw, 16);
+    text('Cristian Bastian Cerda', mg + 4, pY + 7, 10, 'bold', black);
+    text('Analista Programador', mg + 4, pY + 13, 8, 'normal', gray);
+    text('cristianbastian.dev@gmail.com  |  +56 9 2812 2947', mg + 4 + cw / 2, pY + 7, 8, 'normal', dark);
+    text('Santiago, Chile  |  RUT: 19.876.543-2', mg + 4 + cw / 2, pY + 13, 8, 'normal', gray);
+    y = pY + 24;
 
-    // ==================== SERVICIO ====================
-    sectionTitle('SERVICIO COTIZADO', yy);
-    yy += 2;
-    const svcStart = grayBox(9);
-    bodyBold(getTipoLabel(), mg + 2, svcStart + 2.5, 8, navy);
-    body(`${getDias()} días hábiles estimados  |  50% anticipo / 50% contra entrega`, pw / 2, svcStart + 2.5, { sz: 6, color: midGray });
+    // =============== SERVICIO ===============
+    section('Servicio Cotizado', 22);
+    ensureSpace(18);
+    const sY = y;
+    doc.setDrawColor(...light);
+    doc.rect(mg, sY, cw, 14);
+    text(getTipoLabel(), mg + 4, sY + 7, 11, 'bold', black);
+    text(`${getDias()} dias habiles`, mg + 4, sY + 12, 8, 'normal', gray);
+    text('Plazo de entrega', mg + cw / 2 + 4, sY + 5, 7, 'normal', gray);
+    text('Pago 50% / 50%', mg + cw / 2 + 4, sY + 12, 9, 'bold', black);
+    y = sY + 22;
 
-    // ==================== TABLA PRESUPUESTO ====================
-    const colW = [60, 57, 30];
-    const tblX = mg;
+    // =============== PRESUPUESTO ===============
+    section('Resumen del Presupuesto', 50);
+    ensureSpace(45);
 
-    // Header
-    doc.setFillColor(...navy);
-    doc.rect(tblX, yy, cw, 6.5, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7);
-    doc.setTextColor(...white);
-    doc.text('Concepto', tblX + 2, yy + 4.5);
-    doc.text('Descripción', tblX + colW[0] + 2, yy + 4.5);
-    doc.text('Valor (CLP)', pw - mg - 1, yy + 4.5, { align: 'right' });
-    yy += 6.5;
+    const tH = 9;
+    const tx = mg;
+    const tConcep = 70;
+    const tDesc = cw - tConcep - 40;
+
+    // Cabecera tabla
+    doc.setFillColor(0, 0, 0);
+    doc.rect(tx, y, cw, tH, 'F');
+    text('Concepto', tx + 3, y + 6, 9, 'bold', [255, 255, 255]);
+    text('Descripcion', tx + tConcep + 3, y + 6, 9, 'bold', [255, 255, 255]);
+    text('Valor', pw - mg - 3, y + 6, 9, 'bold', [255, 255, 255], 'right');
+    y += tH;
 
     let hasRows = false;
+    let rowH = 9;
+
+    function drawRow(c1, c2, c3, bold = false) {
+      doc.setDrawColor(...light);
+      doc.setLineWidth(0.3);
+      doc.rect(tx, y, cw, rowH);
+      text(c1, tx + 3, y + 6, 9, bold ? 'bold' : 'normal', dark);
+      text(c2, tx + tConcep + 3, y + 6, 8, 'normal', gray);
+      text(c3, pw - mg - 3, y + 6, 9, bold ? 'bold' : 'normal', black, 'right');
+      y += rowH;
+    }
 
     if (planActual && selectedPlan !== 'custom') {
-      doc.setFillColor(249, 250, 251);
-      doc.rect(tblX, yy, cw, 7, 'F');
-      bodyBold(`Plan ${planActual.label}`, tblX + 2, yy + 2, 7, navy);
-      body(planActual.desc, tblX + colW[0] + 2, yy + 2, { sz: 6, color: midGray });
-      bodyBoldRight(formatCurrency(planActual.total), pw - mg - 1, yy + 2, 7, cyan);
-      yy += 7;
+      drawRow(`Plan ${planActual.label}`, planActual.desc, formatCurrency(planActual.total), true);
       hasRows = true;
     } else if (proyectoActual) {
-      doc.setFillColor(249, 250, 251);
-      doc.rect(tblX, yy, cw, 7, 'F');
-      bodyBold(proyectoActual.label, tblX + 2, yy + 2, 7, navy);
-      body(proyectoActual.desc, tblX + colW[0] + 2, yy + 2, { sz: 6, color: midGray });
-      bodyBoldRight(formatCurrency(proyectoActual.precio), pw - mg - 1, yy + 2, 7, cyan);
-      yy += 7;
+      drawRow(proyectoActual.label, proyectoActual.desc, formatCurrency(proyectoActual.precio), true);
       hasRows = true;
 
       extras.forEach((id) => {
         const item = adicionales.find((a) => a.id === id);
         if (!item) return;
-        body(`+ ${item.label}`, tblX + 2, yy + 2, { sz: 6.5, color: darkGray });
-        body(item.desc, tblX + colW[0] + 2, yy + 2, { sz: 5.5, color: midGray });
-        bodyRight(`+ ${formatCurrency(item.precio)}`, pw - mg - 1, yy + 2, 6.5, cyan);
-        yy += 5.5;
+        ensureSpace(rowH);
+        drawRow(`+ ${item.label}`, item.desc, `+ ${formatCurrency(item.precio)}`, false);
       });
     }
 
     if (hasRows) {
-      doc.setFillColor(...navy);
-      doc.rect(tblX, yy, cw, 8, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8);
-      doc.setTextColor(...white);
-      doc.text('INVERSIÓN TOTAL', tblX + 2, yy + 5.5);
-      doc.setFontSize(10);
-      doc.setTextColor(...cyan);
-      doc.text(`${formatCurrency(total)} CLP`, pw - mg - 1, yy + 5.5, { align: 'right' });
-      yy += 9;
+      ensureSpace(13);
+      // Total row highlighted
+      doc.setFillColor(240, 240, 240);
+      doc.rect(tx, y, cw, 12, 'F');
+      doc.setDrawColor(...black);
+      doc.setLineWidth(0.4);
+      doc.rect(tx, y, cw, 12);
+      text('INVERSION TOTAL', tx + 3, y + 8, 11, 'bold', black);
+      text(`${formatCurrency(total)} CLP`, pw - mg - 3, y + 8, 12, 'bold', black, 'right');
+      y += 18;
     }
 
-    yy += 2;
-
-    // ==================== ALCANCE ====================
-    checkVSpace(55);
-    sectionTitle('ALCANCE DEL SERVICIO', yy);
-    yy += 2;
-    const alcStart = grayBox(30);
-    yy = alcStart + 2;
+    // =============== ALCANCE ===============
+    section('Alcance del Servicio', 60);
+    ensureSpace(55);
+    const incY = y;
     const includes = [
-      ['Desarrollo web responsivo', 'React, Vite y Tailwind CSS. Adaptable a todo dispositivo.'],
+      ['Desarrollo web responsivo', 'React, Vite, Tailwind. Adaptable a todo dispositivo.'],
       ['Hosting serverless $0/mes', 'Infraestructura en Vercel Edge. Sin costo de por vida.'],
-      ['Optimización SEO', 'Meta tags, Open Graph, sitemap.xml, Schema.org, Lighthouse 100%.'],
-      ['Garantía y soporte', '30 días de garantía + 15 días de soporte técnico post-entrega.'],
-      ['Seguridad SSL', 'Certificado HTTPS sin costo adicional ni renovaciones.'],
+      ['Optimizacion SEO', 'Meta tags, Open Graph, sitemap.xml, Schema.org.'],
+      ['Garantia y soporte', '30 dias de garantia + 15 dias de soporte tecnico.'],
+      ['Seguridad SSL', 'Certificado HTTPS sin costo adicional.'],
     ];
-    includes.forEach(([title, desc], i) => {
-      bodyBold(title, mg + 2, yy + i * 5.5, 6.5, green);
-      body(desc, mg + colW[0] + 8, yy + i * 5.5, { sz: 5.5, color: midGray });
+    const incH = includes.length * 9 + 6;
+    doc.setDrawColor(...light);
+    doc.rect(mg, incY, cw, incH);
+    includes.forEach(([t, d], i) => {
+      text('OK', mg + 4, incY + 7 + i * 9, 8, 'bold', [16, 185, 129]);
+      text(t, mg + 14, incY + 7 + i * 9, 9, 'bold', black);
+      text(d, mg + 14, incY + 11 + i * 9, 7, 'normal', gray);
     });
-    yy = alcStart + 30 + 3;
+    y = incY + incH + 8;
 
-    // ==================== EXCLUSIONES ====================
-    sectionTitle('EXCLUSIONES', yy);
-    yy += 2;
-    const excludes = [
-      'Costo del dominio .cl. El cliente lo gestiona directamente con NIC Chile.',
-      'Redacción de contenido editorial ni traducción profesional de textos.',
-      'Cambios estructurales posteriores a la aprobación del diseño acordado.',
+    // =============== EXCLUSIONES ===============
+    section('Exclusiones', 30);
+    ensureSpace(28);
+    const exc = [
+      'Costo anual del dominio .cl. El cliente lo gestiona con NIC Chile.',
+      'Redaccion de contenido editorial ni traduccion profesional.',
+      'Cambios estructurales posteriores a la aprobacion del diseno.',
     ];
-    excludes.forEach((text, i) => {
-      body(text, mg + 2, yy + i * 5, { sz: 6.5, color: midGray });
-      body('✗', mg, yy + i * 5, { sz: 6.5, color: [239, 68, 68] });
+    const excH = exc.length * 7 + 4;
+    doc.setDrawColor(...light);
+    doc.rect(mg, y, cw, excH);
+    exc.forEach((t, i) => {
+      text('-', mg + 4, y + 5 + i * 7, 9, 'bold', [220, 38, 38]);
+      text(t, mg + 10, y + 5 + i * 7, 8, 'normal', dark);
     });
-    yy += excludes.length * 5 + 4;
+    y += excH + 8;
 
-    // ==================== CONDICIONES DE PAGO ====================
-    checkVSpace(40);
+    // =============== CONDICIONES DE PAGO ===============
+    section('Condiciones de Pago', 45);
+    ensureSpace(40);
     const anticipo = Math.round(total * 0.5);
     const saldo = total - anticipo;
-
-    sectionTitle('CONDICIONES DE PAGO', yy);
-    yy += 2;
-    const payStart = grayBox(22);
-    yy = payStart + 3;
-    bodyBold('Esquema 50% / 50%', mg + 2, yy, 7, navy);
-    yy += 5;
-    body(`1. Anticipo: ${formatCurrency(anticipo)} CLP — Para iniciar el desarrollo del proyecto.`, mg + 2, yy, { sz: 6.5, color: darkGray });
-    yy += 5;
-    body(`2. Saldo: ${formatCurrency(saldo)} CLP — Contra entrega y conformidad final.`, mg + 2, yy, { sz: 6.5, color: darkGray });
-    yy += 5;
-    body(`3. Plazo: ${getDias()} días hábiles desde recepción del anticipo y materiales.`, mg + 2, yy, { sz: 6.5, color: darkGray });
-    yy = payStart + 22 + 3;
-
-    // ==================== PRÓXIMOS PASOS ====================
-    checkVSpace(40);
-    sectionTitle('PRÓXIMOS PASOS', yy);
-    yy += 2;
-    const nextStart = grayBox(22);
-    yy = nextStart + 2;
-    [
-      'Me comunicaré contigo en máximo 24 horas hábiles.',
-      'Agendamos una reunión para definir requerimientos detallados.',
-      'Definimos alcance final, diseño preliminar y resolvemos dudas.',
-      'Coordinamos el anticipo e iniciamos el desarrollo.',
-    ].forEach((text, i) => {
-      bodyBold(`${i + 1}.`, mg + 2, yy + i * 5, 6.5, cyan);
-      body(text, mg + 9, yy + i * 5, { sz: 6.5, color: darkGray });
-    });
-    yy = nextStart + 22 + 3;
-
-    // ==================== FIRMAS ====================
-    checkVSpace(55);
-    doc.setDrawColor(...cyan);
+    const pH = 38;
+    doc.setDrawColor(...black);
     doc.setLineWidth(0.5);
-    doc.line(mg, yy, pw - mg, yy);
-    yy += 5;
+    doc.rect(mg, y, cw, pH);
+    text('Esquema de pago 50% / 50%', mg + 4, y + 8, 10, 'bold', black);
+    text(`1.  Anticipo: ${formatCurrency(anticipo)} CLP`, mg + 4, y + 18, 9, 'normal', dark);
+    text('Para iniciar el desarrollo del proyecto.', mg + 12, y + 23, 8, 'normal', gray);
+    text(`2.  Saldo: ${formatCurrency(saldo)} CLP`, mg + 4, y + 28, 9, 'normal', dark);
+    text('Contra entrega y conformidad final.', mg + 12, y + 33, 8, 'normal', gray);
+    text(`Plazo total: ${getDias()} dias habiles desde el anticipo.`, pw - mg - 4, y + pH - 4, 8, 'bold', dark, 'right');
+    y += pH + 8;
 
-    sectionTitle('FIRMAS DE CONFORMIDAD', yy);
-    yy += 2;
-    body('Ambas partes aceptan los términos, alcance y condiciones descritos en esta propuesta.', mg, yy, { sz: 6.5, color: midGray });
-    yy += 7;
+    // =============== PROXIMOS PASOS ===============
+    section('Proximos Pasos', 45);
+    ensureSpace(40);
+    const nH = 36;
+    doc.setDrawColor(...light);
+    doc.rect(mg, y, cw, nH);
+    const steps = [
+      'Me comunicare contigo en maximo 24 horas habiles.',
+      'Agendamos una reunion para definir requerimientos detallados.',
+      'Definimos alcance final, diseno preliminar y resolvemos dudas.',
+      'Coordinamos el pago del anticipo e iniciamos el desarrollo.',
+    ];
+    steps.forEach((t, i) => {
+      text(`${i + 1}.`, mg + 4, y + 7 + i * 7, 9, 'bold', [6, 182, 212]);
+      text(t, mg + 12, y + 7 + i * 7, 9, 'normal', dark);
+    });
+    y += nH + 8;
 
-    const sigW = (cw - 5) / 2;
-    const sigH = 30;
-    const sigY = yy;
+    // =============== FIRMAS ===============
+    ensureSpace(55);
+    y += 4;
+    hr(y);
+    y += 8;
+    section('Firmas de Conformidad', 55);
+
+    text('Ambas partes aceptan los terminos, alcance y condiciones descritos en esta propuesta.',
+      mg, y, 8, 'normal', gray);
+    y += 10;
+
+    const sigW = (cw - 8) / 2;
+    const sigH = 38;
+    const sigY = y;
 
     // Cliente
-    doc.setDrawColor(209, 213, 219);
-    doc.setLineWidth(0.3);
+    doc.setDrawColor(...light);
+    doc.setLineWidth(0.4);
     doc.rect(mg, sigY, sigW, sigH);
-    body('CLIENTE', mg + 2, sigY + 4, { sz: 7, color: navy, bold: true });
-    body(formData.nombre || '[Nombre del cliente]', mg + 2, sigY + 9, { sz: 7, color: darkGray });
-
+    text('CLIENTE', mg + 4, sigY + 8, 10, 'bold', black);
+    text(formData.nombre || '[Nombre del cliente]', mg + 4, sigY + 14, 9, 'normal', dark);
     if (clientSigRef?.current) {
       try {
         const sigData = clientSigRef.current.toDataURL('image/png');
-        doc.addImage(sigData, 'PNG', mg + 2, sigY + 11, sigW - 4, 12);
+        doc.addImage(sigData, 'PNG', mg + 4, sigY + 16, sigW - 8, 12);
       } catch {}
     }
-    doc.setFontSize(6);
-    doc.setTextColor(...midGray);
-    doc.text('Firma', mg + 2, sigY + sigH - 5);
-    doc.setDrawColor(...midGray);
-    doc.setLineWidth(0.2);
-    doc.line(mg + 10, sigY + sigH - 7.5, mg + sigW - 4, sigY + sigH - 7.5);
-    doc.text(`Fecha: __ / __ / ${hoy.getFullYear()}`, mg + 2, sigY + sigH - 2);
+    doc.setDrawColor(...gray);
+    doc.setLineWidth(0.3);
+    doc.line(mg + 4, sigY + sigH - 6, mg + sigW - 4, sigY + sigH - 6);
+    text('Firma', mg + 4, sigY + sigH - 2, 7, 'normal', gray);
+    text(`Fecha: __ / __ / ${hoy.getFullYear()}`, mg + 4, sigY + sigH + 2, 7, 'normal', gray);
 
     // Proveedor
-    const pX = mg + sigW + 5;
-    doc.setDrawColor(209, 213, 219);
-    doc.setLineWidth(0.3);
-    doc.rect(pX, sigY, sigW, sigH);
-    body('PROVEEDOR', pX + 2, sigY + 4, { sz: 7, color: navy, bold: true });
-    body('Cristian Bastian Cerda', pX + 2, sigY + 9, { sz: 7, color: darkGray });
-    body('Analista Programador', pX + 2, sigY + 13, { sz: 6, color: midGray });
-
+    const px2 = mg + sigW + 8;
+    doc.setDrawColor(...light);
+    doc.rect(px2, sigY, sigW, sigH);
+    text('PROVEEDOR', px2 + 4, sigY + 8, 10, 'bold', black);
+    text('Cristian Bastian Cerda', px2 + 4, sigY + 14, 9, 'normal', dark);
+    text('Analista Programador', px2 + 4, sigY + 19, 7, 'normal', gray);
     if (bastianImgRef.current) {
-      doc.addImage(bastianImgRef.current, 'PNG', pX + 2, sigY + 15, sigW - 4, 10);
+      doc.addImage(bastianImgRef.current, 'PNG', px2 + 4, sigY + 20, sigW - 8, 11);
     }
-    doc.setFontSize(6);
-    doc.setTextColor(...midGray);
-    doc.text('Firma', pX + 2, sigY + sigH - 5);
-    doc.setDrawColor(...midGray);
-    doc.setLineWidth(0.2);
-    doc.line(pX + 10, sigY + sigH - 7.5, pX + sigW - 4, sigY + sigH - 7.5);
-    doc.text(`Fecha: __ / __ / ${hoy.getFullYear()}`, pX + 2, sigY + sigH - 2);
+    doc.setDrawColor(...gray);
+    doc.line(px2 + 4, sigY + sigH - 6, px2 + sigW - 4, sigY + sigH - 6);
+    text('Firma', px2 + 4, sigY + sigH - 2, 7, 'normal', gray);
+    text(`Fecha: __ / __ / ${hoy.getFullYear()}`, px2 + 4, sigY + sigH + 2, 7, 'normal', gray);
 
-    yy = sigY + sigH + 4;
+    y = sigY + sigH + 8;
 
-    // ==================== FOOTER ====================
-    doc.setDrawColor(...cyan);
-    doc.setLineWidth(0.4);
-    doc.line(mg, yy, pw - mg, yy);
-    yy += 3;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(5.5);
-    doc.setTextColor(...midGray);
-    doc.text(`Bastian.dev  •  ${propuestaNum}  •  ${formatDate(hoy)}`, mg, yy);
-    doc.text('Pág. 1/1', pw - mg, yy, { align: 'right' });
-
+    addFooter();
     return doc;
   };
 
