@@ -1571,7 +1571,7 @@ const Cotizador = () => {
             role="dialog"
             aria-modal="true"
             aria-label="Vista previa de cotización"
-            className="relative w-full max-w-md bg-gradient-to-b from-[#0a0e1a] to-[#030712] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/50 max-h-[90vh] overflow-y-auto animate-modal-content"
+            className="relative w-full max-w-lg sm:max-w-xl bg-gradient-to-b from-[#0a0e1a] to-[#030712] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black/50 max-h-[92vh] overflow-y-auto animate-modal-content"
             ref={previewModalRef}
             style={{ animationDelay: '0.05s' }}
             onClick={(e) => e.stopPropagation()}
