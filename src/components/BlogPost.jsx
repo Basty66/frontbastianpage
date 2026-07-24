@@ -4,6 +4,22 @@ import { supabase } from '../lib/supabaseClient';
 import Reveal from './Reveal';
 import { Calendar, ArrowLeft, RefreshCw } from 'lucide-react';
 
+function sanitizeHTML(html) {
+  if (!html) return '';
+  let sanitized = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+  sanitized = sanitized.replace(/<script[^>]*\/>/gi, '');
+  sanitized = sanitized.replace(/on\w+\s*=\s*"[^"]*"/gi, '');
+  sanitized = sanitized.replace(/on\w+\s*=\s*'[^']*'/gi, '');
+  sanitized = sanitized.replace(/on\w+\s*=\s*\S+/gi, '');
+  sanitized = sanitized.replace(/javascript\s*:/gi, '');
+  sanitized = sanitized.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
+  sanitized = sanitized.replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '');
+  sanitized = sanitized.replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '');
+  sanitized = sanitized.replace(/<link[^>]*>/gi, '');
+  sanitized = sanitized.replace(/<meta[^>]*>/gi, '');
+  return sanitized;
+}
+
 export default function BlogPost() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
@@ -108,7 +124,7 @@ export default function BlogPost() {
         <Reveal animation="fade-up" delay={120}>
           <div
             className="prose prose-invert prose-sm sm:prose-base max-w-none text-slate-300 leading-relaxed prose-headings:text-white prose-headings:font-heading prose-headings:font-semibold prose-a:text-brand-cyan prose-a:no-underline hover:prose-a:underline prose-code:text-brand-cyan prose-code:bg-white/[0.03] prose-code:border prose-code:border-white/10 prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:text-xs prose-code:font-mono prose-strong:text-white prose-li:text-slate-300"
-            dangerouslySetInnerHTML={{ __html: post.contenido }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.contenido) }}
           />
         </Reveal>
 

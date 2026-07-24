@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect, memo } from 'react';
 import { jsPDF } from 'jspdf';
-import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle, Check, Star } from 'lucide-react';
+import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle, Check, Star, PenTool } from 'lucide-react';
 import Reveal from './Reveal';
 import useAnimatedNumber from '../hooks/useAnimatedNumber';
 import { supabase } from '../lib/supabaseClient';
@@ -75,43 +75,54 @@ const planes = [
   { id: 'custom', label: 'A Medida', desc: 'Tú eliges cada componente', precio: null, total: 0, tipoId: null, extras: [], incluye: ['Selección libre de tipo y extras', 'Precio según elección'], color: 'cyan', popular: false, dias: null },
 ];
 
+
 const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
   const isDrawing = useRef(false);
   const drawRef = useRef(null);
+  const containerRef = useRef(null);
 
   const getCtx = (canvas) => canvas?.getContext('2d', { willReadFrequently: true });
+
+  const getPos = useCallback((e, canvas) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY,
+    };
+  }, []);
 
   const startDrawing = useCallback((e) => {
     isDrawing.current = true;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
     const ctx = getCtx(canvas);
     if (!ctx) return;
-    const x = (e.clientX || e.touches?.[0]?.clientX) - rect.left;
-    const y = (e.clientY || e.touches?.[0]?.clientY) - rect.top;
+    const pos = getPos(e, canvas);
     ctx.beginPath();
-    ctx.moveTo(x, y);
-  }, [canvasRef]);
+    ctx.moveTo(pos.x, pos.y);
+  }, [canvasRef, getPos]);
 
   const draw = useCallback((e) => {
     if (!isDrawing.current) return;
     e.preventDefault();
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
     const ctx = getCtx(canvas);
     if (!ctx) return;
-    const x = (e.clientX || e.touches?.[0]?.clientX) - rect.left;
-    const y = (e.clientY || e.touches?.[0]?.clientY) - rect.top;
-    ctx.lineWidth = 2;
+    const pos = getPos(e, canvas);
+    ctx.lineWidth = 3;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = '#fff';
-    ctx.lineTo(x, y);
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#22d3ee';
+    ctx.lineTo(pos.x, pos.y);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(x, y);
-  }, [canvasRef]);
+    ctx.moveTo(pos.x, pos.y);
+  }, [canvasRef, getPos]);
 
   useEffect(() => {
     drawRef.current = draw;
@@ -121,8 +132,12 @@ const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const handler = (e) => drawRef.current(e);
+    canvas.addEventListener('mousemove', handler);
     canvas.addEventListener('touchmove', handler, { passive: false });
-    return () => canvas.removeEventListener('touchmove', handler);
+    return () => {
+      canvas.removeEventListener('mousemove', handler);
+      canvas.removeEventListener('touchmove', handler);
+    };
   }, [canvasRef]);
 
   const stopDrawing = useCallback(() => {
@@ -139,33 +154,74 @@ const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
     if (onClear) onClear();
   }, [canvasRef, onClear]);
 
+  useEffect(() => {
+    const resize = () => {
+      const canvas = canvasRef.current;
+      const container = containerRef.current;
+      if (!canvas || !container) return;
+      const pixelRatio = window.devicePixelRatio || 1;
+      const containerWidth = container.clientWidth;
+      const containerHeight = container.clientHeight || 160;
+      const dpiWidth = Math.round(containerWidth * pixelRatio);
+      const dpiHeight = Math.round(containerHeight * pixelRatio);
+      if (canvas.width !== dpiWidth || canvas.height !== dpiHeight) {
+        const currentData = canvas.toDataURL();
+        canvas.width = dpiWidth;
+        canvas.height = dpiHeight;
+        const ctx = getCtx(canvas);
+        if (ctx) {
+          const img = new Image();
+          img.onload = () => ctx.drawImage(img, 0, 0);
+          img.src = currentData;
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+        }
+      }
+    };
+    resize();
+    const observer = new ResizeObserver(resize);
+    if (containerRef.current) observer.observe(containerRef.current);
+    window.addEventListener('resize', resize);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', resize);
+    };
+  }, [canvasRef]);
+
   return (
     <div className="space-y-2">
-      <div className="relative bg-black/40 border border-white/10 rounded-xl overflow-hidden" style={{ touchAction: 'none' }}>
+      <div
+        ref={containerRef}
+        className="signature-pad-container relative bg-gradient-to-b from-slate-800/60 to-slate-900/60 border border-white/10 rounded-xl overflow-hidden group hover:border-brand-cyan/30 transition-all duration-300"
+        style={{ touchAction: 'none' }}
+      >
         <canvas
           ref={canvasRef}
-          width={400}
-          height={120}
-          className="w-full h-[120px] cursor-crosshair"
+          width={800}
+          height={320}
+          className="w-full h-[160px] cursor-crosshair touch-none"
           onMouseDown={startDrawing}
-          onMouseMove={draw}
           onMouseUp={stopDrawing}
           onMouseLeave={stopDrawing}
           onTouchStart={startDrawing}
           onTouchEnd={stopDrawing}
         />
-        <div className="absolute bottom-2 right-2 flex gap-1">
+        <div className="absolute inset-0 pointer-events-none rounded-xl border border-transparent group-hover:border-brand-cyan/10 transition-all duration-500" />
+        <div className="absolute bottom-3 right-3 flex gap-2 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
           <button
             type="button"
             onClick={clear}
-            className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all"
+            className="p-2 rounded-lg bg-white/5 hover:bg-white/15 text-slate-400 hover:text-white transition-all backdrop-blur-sm border border-white/5 hover:border-white/20"
             title="Limpiar firma"
           >
-            <Eraser className="w-3.5 h-3.5" />
+            <Eraser className="w-4 h-4" />
           </button>
         </div>
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.07] group-hover:opacity-[0.03] transition-opacity duration-500">
+          <PenTool className="w-12 h-12 text-white" />
+        </div>
       </div>
-      <p className="text-[10px] text-slate-500">Firma digitalmente arrastrando el mouse o tu dedo</p>
+      <p className="text-[11px] text-slate-500 text-center">Firma aquí arrastrando el mouse o tu dedo</p>
     </div>
   );
 });
@@ -202,7 +258,7 @@ const Cotizador = () => {
     if (field === 'nombre') {
       if (!value.trim()) return 'El nombre es obligatorio';
       if (value.trim().length < 3) return 'Debe tener al menos 3 caracteres';
-      if (!/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]+$/.test(value.trim())) return 'Solo se permiten letras';
+      if (!/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s'-]+$/.test(value.trim())) return 'Solo se permiten letras, espacios y guiones';
       return '';
     }
     if (field === 'email') {
@@ -1224,7 +1280,7 @@ const Cotizador = () => {
           </div>
         </div>
 
-        <Reveal animation="fade-right" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg sticky top-28 transition-all duration-700 ease-out ${
+        <Reveal animation="fade-right" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg lg:sticky lg:top-28 transition-all duration-700 ease-out ${
           step === 4 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-30 pointer-events-none scale-[0.96] blur-[1px]'
         }`}>
           <h3 className="text-2xl font-heading font-bold mb-2">
@@ -1570,58 +1626,98 @@ const Cotizador = () => {
         </div>
       )}
 
-      {/* Modal Firmas - siempre montado para preservar el canvas */}
+      {/* Modal Firmas */}
       <div
-        className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ease-out ${
+        className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 transition-all duration-300 ease-out ${
           showSignatures ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
         onClick={() => setShowSignatures(false)}
       >
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
           <div
             role="dialog"
             aria-modal="true"
             aria-label="Firmar conformidad"
-            className="relative w-full max-w-md bg-gradient-to-b from-[#0a0e1a] to-[#030712] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/50"
+            className="relative w-full max-w-lg bg-gradient-to-b from-[#0a0e1a] to-[#030712] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black/50 max-h-[95vh] overflow-y-auto animate-modal-content"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setShowSignatures(false)}
-              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
+              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
+              aria-label="Cerrar"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
-            <h4 className="text-lg font-heading font-bold text-white mb-5 flex items-center gap-2">
-              <svg className="w-5 h-5 text-brand-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-              Firmar conformidad
-            </h4>
+            <div className="text-center mb-6">
+              <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-brand-cyan/20 to-blue-500/10 border border-brand-cyan/20 flex items-center justify-center">
+                <PenTool className="w-7 h-7 text-brand-cyan" />
+              </div>
+              <h4 className="text-xl sm:text-2xl font-heading font-bold text-white mb-1">
+                Firma Digital
+              </h4>
+              <p className="text-sm text-slate-400 max-w-xs mx-auto">
+                Dibuja tu firma en el recuadro para aprobar la cotización
+              </p>
+            </div>
 
             <div className="space-y-5">
               <div>
-                <label className="text-xs text-slate-300 block mb-1.5 font-medium">
-                  Firma del Cliente
-                  {clientSigned && <span className="text-emerald-400 ml-1">✓</span>}
+                <label className="text-sm text-slate-300 block mb-2 font-medium flex items-center justify-between">
+                  <span>Tu firma</span>
+                  {clientSigned && (
+                    <span className="text-emerald-400 text-xs flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
+                      <Check className="w-3 h-3" />
+                      Completada
+                    </span>
+                  )}
                 </label>
                 <SignaturePad canvasRef={clientSigRef} onDraw={handleClientDraw} onClear={handleClientClear} />
               </div>
-              <div className="text-center">
+
+              {clientSigned && (
+                <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl p-4 flex items-start gap-3 animate-modal-content">
+                  <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="w-4 h-4 text-emerald-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-emerald-300">Firma registrada</p>
+                    <p className="text-xs text-slate-400 mt-0.5">Tu firma digital será incluida en el PDF de la propuesta.</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const canvas = clientSigRef.current;
+                    if (canvas) {
+                      const ctx = canvas.getContext('2d');
+                      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+                      handleClientClear();
+                    }
+                  }}
+                  className="flex-1 px-4 py-3 rounded-xl border border-white/10 text-slate-300 hover:text-white hover:border-white/30 hover:bg-white/[0.03] transition-all text-sm font-medium flex items-center justify-center gap-2"
+                >
+                  <Eraser className="w-4 h-4" />
+                  Limpiar y volver a firmar
+                </button>
                 <button
                   onClick={() => {
                     if (isCanvasEmpty(clientSigRef)) {
-                      setError('La firma del cliente es obligatoria.');
+                      setError('Debes dibujar tu firma antes de confirmar.');
                       return;
                     }
                     setError(null);
                     setShowSignatures(false);
                   }}
-                  className="text-sm text-brand-cyan hover:text-cyan-300 transition-colors font-medium"
+                  className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-brand-cyan to-blue-500 text-white font-bold text-sm transition-all hover:shadow-lg hover:shadow-brand-cyan/25 hover:-translate-y-0.5 flex items-center justify-center gap-2"
                 >
-                  Confirmar firma y cerrar
+                  <Check className="w-4 h-4" />
+                  Confirmar firma
                 </button>
               </div>
             </div>

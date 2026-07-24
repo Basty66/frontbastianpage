@@ -112,7 +112,7 @@ function App() {
 
   useEffect(() => {
     document.documentElement.dataset.accent = accent;
-    try { localStorage.setItem('bd-accent', accent); } catch {}
+    try { localStorage.setItem('bd-accent', accent); } catch { /* localStorage no disponible */ }
   }, [accent]);
 
   useEffect(() => {
@@ -148,6 +148,19 @@ function App() {
       navigate(`/${id}`);
       return;
     }
+    if (id === 'cotizador') {
+      if (location.pathname !== '/') {
+        navigate('/');
+        setTimeout(() => {
+          const el = document.getElementById('cotizador');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      } else {
+        const el = document.getElementById('cotizador');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
     if (location.pathname !== '/') {
       navigate('/');
       setTimeout(() => {
@@ -170,7 +183,7 @@ function App() {
         scrolled ? 'bg-slate-900/85 border-white/10 shadow-lg shadow-black/10' : 'bg-slate-900/40 border-white/5'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-          <Link to="/" onClick={(e) => { handleLogoClick(); setMenuOpen(false); }} className="flex items-center gap-1.5 sm:gap-2 group">
+          <Link to="/" onClick={() => { handleLogoClick(); setMenuOpen(false); }} className="flex items-center gap-1.5 sm:gap-2 group">
             <svg viewBox="0 2 40 26" fill="none" className="w-7 h-7 sm:w-8 sm:h-8 drop-shadow-[0_0_6px_rgba(34,211,238,0.4)]" style={{ animation: 'fade-slide-in 0.6s ease-out' }}>
               <path d="M20 6C12 6 7 12 7 19v4a3 3 0 003 3h20a3 3 0 003-3v-4c0-7-5-13-13-13z" stroke="#22d3ee" strokeWidth="1.8" strokeLinecap="round" className="group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-700" />
               <path d="M11 9L7 3l7 4" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-700" />
@@ -292,6 +305,19 @@ function App() {
         <svg className="w-5 h-5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
         </svg>
+      </button>
+
+      <button
+        onClick={() => scrollTo('cotizador')}
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-brand-cyan to-blue-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-brand-cyan/25 hover:shadow-xl hover:shadow-brand-cyan/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
+          showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+        }`}
+        aria-label="Cotizar ahora"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+        Cotizar ahora
       </button>
       <CookieConsent />
       <ExitPopup />

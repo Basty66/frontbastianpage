@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import {
   Shield, Check, Trash2, Lock, ArrowLeft, Star, RefreshCw,
-  LogIn, AlertTriangle, X, Eye, EyeOff, UserCheck, Clock,
+  LogIn, AlertTriangle, X, Eye, EyeOff, UserCheck,
   Plus, Edit3, GripVertical, Save, FolderKanban, FileText,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';

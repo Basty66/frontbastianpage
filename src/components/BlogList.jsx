@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 import Reveal from './Reveal';
-import { Calendar, ArrowRight, FileText, RefreshCw } from 'lucide-react';
+import { Calendar, ArrowRight, FileText } from 'lucide-react';
 
 export default function BlogList() {
   const [posts, setPosts] = useState([]);
