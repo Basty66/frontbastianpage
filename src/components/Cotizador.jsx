@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect, memo } from 'react';
+import { createPortal } from 'react-dom';
 import { jsPDF } from 'jspdf';
-import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle, Check, Star, PenTool } from 'lucide-react';
+import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle, Check, Star, PenTool, Eye } from 'lucide-react';
 import Reveal from './Reveal';
 import useAnimatedNumber from '../hooks/useAnimatedNumber';
 import { supabase } from '../lib/supabaseClient';
@@ -318,31 +319,28 @@ const Cotizador = () => {
 
   useEffect(() => {
     if (anyModalOpen) {
-      const scrollY = window.scrollY;
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
+      const scrollbarW = window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarW}px`;
       return () => {
-        document.body.style.overflow = '';
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        window.scrollTo(0, scrollY);
+        document.documentElement.style.overflow = '';
+        document.body.style.paddingRight = '';
       };
     }
   }, [anyModalOpen]);
 
   useEffect(() => {
-    if (showPreview && previewModalRef.current) {
-      previewModalRef.current.scrollTop = 0;
-    }
-    if (showSignatures && signatureModalRef.current) {
-      signatureModalRef.current.scrollTop = 0;
-    }
-    if (showPdfPreview && pdfModalRef.current) {
-      pdfModalRef.current.scrollTop = 0;
-    }
+    const scrollToTop = (ref) => {
+      if (ref?.current) {
+        ref.current.scrollTop = 0;
+        requestAnimationFrame(() => {
+          if (ref.current) ref.current.scrollTop = 0;
+        });
+      }
+    };
+    if (showPreview) setTimeout(() => scrollToTop(previewModalRef), 50);
+    if (showSignatures) setTimeout(() => scrollToTop(signatureModalRef), 50);
+    if (showPdfPreview) setTimeout(() => scrollToTop(pdfModalRef), 50);
   }, [showPreview, showSignatures, showPdfPreview]);
 
   useEffect(() => {
@@ -1566,7 +1564,7 @@ const Cotizador = () => {
       </div>
 
       {/* Modal Vista Previa */}
-      {showPreview && (
+      {showPreview && createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-modal-overlay" onClick={() => setShowPreview(false)}>
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
           <div
@@ -1581,87 +1579,113 @@ const Cotizador = () => {
             <button
               onClick={() => setShowPreview(false)}
               className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
+              aria-label="Cerrar"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
-            <h4 className="text-lg font-heading font-bold text-white mb-5 flex items-center gap-2 opacity-0 animate-modal-content" style={{ animationDelay: '0.12s', animationFillMode: 'forwards' }}>
-              <svg className="w-5 h-5 text-brand-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              Vista previa de tu cotización
-            </h4>
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-brand-cyan/20 to-blue-500/10 border border-brand-cyan/20 flex items-center justify-center">
+                <Eye className="w-6 h-6 text-brand-cyan" />
+              </div>
+              <h4 className="text-lg font-heading font-bold text-white">
+                Vista previa de cotización
+              </h4>
+              <p className="text-xs text-slate-500 mt-1">Revisa el detalle antes de enviar</p>
+            </div>
 
-            <div className="space-y-4">
-              {planActual && selectedPlan !== 'custom' && (
-                <div className="flex justify-between items-center py-2 border-b border-white/5 opacity-0 animate-modal-content-right" style={{ animationDelay: '0.17s', animationFillMode: 'forwards' }}>
-                  <span className="text-sm text-slate-300">Plan {planActual.label}</span>
-                  <span className="text-sm font-semibold text-white">{formatCurrency(planActual.total)}</span>
+            <div className="space-y-0">
+              <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 space-y-3 mb-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-brand-cyan" />
+                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Servicios contratados</span>
                 </div>
-              )}
-              <div className="flex justify-between items-center py-2 border-b border-white/5 opacity-0 animate-modal-content-right" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-                <span className="text-sm text-slate-300">{getTipoLabel()}</span>
-                <span className="text-sm font-semibold text-white">{formatCurrency(tipoWeb)}</span>
+                {planActual && selectedPlan !== 'custom' && (
+                  <div className="flex justify-between items-center bg-brand-cyan/5 border border-brand-cyan/10 rounded-lg px-3 py-2.5">
+                    <div>
+                      <span className="text-sm font-medium text-white">{planActual.label}</span>
+                      <p className="text-[10px] text-slate-500">{planActual.desc}</p>
+                    </div>
+                    <span className="text-sm font-bold text-brand-cyan">{formatCurrency(planActual.total)}</span>
+                  </div>
+                )}
+                <div className="flex justify-between items-center px-1">
+                  <span className="text-sm text-slate-300">{getTipoLabel()}</span>
+                  <span className="text-sm font-semibold text-white">{formatCurrency(tipoWeb)}</span>
+                </div>
+                {extras.length > 0 && (
+                  <div className="border-t border-white/5 pt-2">
+                    {extras.map((id) => {
+                      const item = adicionales.find((a) => a.id === id);
+                      return item ? (
+                        <div key={id} className="flex justify-between items-center py-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-brand-cyan text-xs">+</span>
+                            <span className="text-sm text-slate-400">{item.label}</span>
+                          </div>
+                          <span className="text-xs text-slate-300">{formatCurrency(item.precio)}</span>
+                        </div>
+                      ) : null;
+                    })}
+                  </div>
+                )}
               </div>
 
-              {extras.length > 0 && (
-                <div className="space-y-1.5 opacity-0 animate-modal-content-right" style={{ animationDelay: '0.25s', animationFillMode: 'forwards' }}>
-                  {extras.map((id) => {
-                    const item = adicionales.find((a) => a.id === id);
-                    return item ? (
-                      <div key={id} className="flex justify-between items-center">
-                        <span className="text-sm text-slate-400">+ {item.label}</span>
-                        <span className="text-sm text-slate-300">{formatCurrency(item.precio)}</span>
-                      </div>
-                    ) : null;
-                  })}
+              <div className="bg-gradient-to-r from-brand-cyan/10 via-brand-cyan/5 to-transparent border border-brand-cyan/20 rounded-xl px-5 py-4 flex justify-between items-center mb-4">
+                <div>
+                  <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Inversión total</span>
+                  <p className="text-[10px] text-emerald-400 mt-1 flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-emerald-400" />
+                    Hosting $0 de por vida
+                  </p>
                 </div>
-              )}
-
-              <div className="flex justify-between items-center pt-3 border-t border-brand-cyan/30 opacity-0 animate-modal-content-right" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>
-                <span className="text-sm font-bold text-white">Total Inversión</span>
-                <span className="text-lg font-extrabold text-brand-cyan drop-shadow-[0_0_8px_rgba(34,211,238,0.3)]">
-                  {formatCurrency(total)} {moneda === 'CLP' ? 'CLP' : ''}
+                <span className="text-2xl font-extrabold font-heading text-white drop-shadow-[0_0_12px_rgba(34,211,238,0.3)]">
+                  {formatCurrency(total)}{' '}
+                  <span className="text-xs font-normal text-slate-400">{moneda === 'CLP' ? 'CLP' : ''}</span>
                 </span>
               </div>
 
-              <div className="pt-2 border-t border-white/5 opacity-0 animate-modal-content-right" style={{ animationDelay: '0.35s', animationFillMode: 'forwards' }}>
-                <p className="text-xs text-slate-500 font-medium mb-2">Incluye:</p>
+              <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 space-y-3 mb-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Incluye</span>
+                </div>
                 {[
-                  'Hosting serverless — $0 de por vida',
-                  'Desarrollo responsive con React + Vite',
-                  'Optimización SEO base',
-                  '30 días de garantía post-entrega',
-                  '15 días de soporte técnico',
+                  { label: 'Hosting serverless', detail: '$0 de por vida', icon: '✓' },
+                  { label: 'Desarrollo responsive', detail: 'React + Vite + Tailwind', icon: '✓' },
+                  { label: 'Optimización SEO base', detail: 'Lighthouse 100%', icon: '✓' },
+                  { label: 'Garantía post-entrega', detail: '30 días', icon: '✓' },
+                  { label: 'Soporte técnico', detail: '15 días', icon: '✓' },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-2 text-xs text-slate-400 py-0.5">
-                    <span className="text-emerald-400 mt-0.5">✓</span>
-                    {item}
+                  <div key={i} className="flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="text-emerald-400 text-[10px]">{item.icon}</span>
+                      <span className="text-slate-300">{item.label}</span>
+                    </div>
+                    <span className="text-slate-500">{item.detail}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="grid grid-cols-2 gap-4 pt-2 border-t border-white/5 text-xs opacity-0 animate-modal-content-right" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-                <div>
-                  <span className="text-slate-500">Tiempo estimado</span>
-                  <p className="text-white font-semibold mt-0.5">
-                    {getDias()} días hábiles
-                  </p>
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3 text-center">
+                  <span className="text-slate-500 block mb-1">Tiempo estimado</span>
+                  <span className="text-white font-bold text-sm">{getDias()} días hábiles</span>
                 </div>
-                <div>
-                  <span className="text-slate-500">Pago</span>
-                  <p className="text-white font-semibold mt-0.5">50% anticipo + 50% entrega</p>
+                <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3 text-center">
+                  <span className="text-slate-500 block mb-1">Forma de pago</span>
+                  <span className="text-white font-bold text-sm">50% / 50%</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* Modal Firmas */}
+      {createPortal(
       <div
         className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 transition-all duration-300 ease-out ${
           showSignatures ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
@@ -1759,8 +1783,10 @@ const Cotizador = () => {
             </div>
           </div>
         </div>
+      , document.body)}
 
       {/* Modal PDF Preview */}
+      {createPortal(
       <div
         className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ease-out ${
           showPdfPreview && pdfPreviewUrl ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
@@ -1830,6 +1856,7 @@ const Cotizador = () => {
           </div>
         </div>
       </div>
+      , document.body)}
     </section>
   );
 };
