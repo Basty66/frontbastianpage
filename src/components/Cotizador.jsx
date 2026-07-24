@@ -252,6 +252,9 @@ const Cotizador = () => {
   const pdfDocRef = useRef(null);
   const mountedRef = useRef(false);
   const bastianImgRef = useRef(null);
+  const previewModalRef = useRef(null);
+  const signatureModalRef = useRef(null);
+  const pdfModalRef = useRef(null);
   const [clientSigned, setClientSigned] = useState(false);
 
   const validateField = (field, value) => {
@@ -310,6 +313,37 @@ const Cotizador = () => {
       if (planTimeoutRef.current) clearTimeout(planTimeoutRef.current);
     };
   }, []);
+
+  const anyModalOpen = showPreview || showSignatures || showPdfPreview;
+
+  useEffect(() => {
+    if (anyModalOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      return () => {
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [anyModalOpen]);
+
+  useEffect(() => {
+    if (showPreview && previewModalRef.current) {
+      previewModalRef.current.scrollTop = 0;
+    }
+    if (showSignatures && signatureModalRef.current) {
+      signatureModalRef.current.scrollTop = 0;
+    }
+    if (showPdfPreview && pdfModalRef.current) {
+      pdfModalRef.current.scrollTop = 0;
+    }
+  }, [showPreview, showSignatures, showPdfPreview]);
 
   useEffect(() => {
     const img = new Image();
@@ -1540,6 +1574,7 @@ const Cotizador = () => {
             aria-modal="true"
             aria-label="Vista previa de cotización"
             className="relative w-full max-w-md bg-gradient-to-b from-[#0a0e1a] to-[#030712] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/50 max-h-[90vh] overflow-y-auto animate-modal-content"
+            ref={previewModalRef}
             style={{ animationDelay: '0.05s' }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -1638,6 +1673,7 @@ const Cotizador = () => {
             role="dialog"
             aria-modal="true"
             aria-label="Firmar conformidad"
+            ref={signatureModalRef}
             className="relative w-full max-w-lg bg-gradient-to-b from-[#0a0e1a] to-[#030712] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black/50 max-h-[95vh] overflow-y-auto animate-modal-content"
             onClick={(e) => e.stopPropagation()}
           >
@@ -1736,6 +1772,7 @@ const Cotizador = () => {
             role="dialog"
             aria-modal="true"
             aria-label="Vista previa del PDF"
+            ref={pdfModalRef}
             className="relative w-full max-w-4xl bg-gradient-to-b from-[#0a0e1a] to-[#030712] border border-white/10 rounded-3xl p-4 sm:p-6 shadow-2xl shadow-black/50 max-h-[95vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
