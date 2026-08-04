@@ -1,0 +1,38 @@
+export const proyectos = [
+  {
+    id: 'frontbastianpage',
+    titulo: 'Bastian.dev',
+    desc: 'Landing page profesional con cotizador interactivo de presupuestos web, generación de PDF con firma digital, testimonios con Supabase y hosting serverless $0.',
+    url: 'https://frontbastianpage.vercel.app',
+    repo: 'https://github.com/Basty66/frontbastianpage',
+    tags: ['React', 'Vite', 'Tailwind CSS', 'Supabase', 'jsPDF', 'Vercel'],
+    screenshot: '/screenshots/bastian-dev.png',
+  },
+  {
+    id: 'piscina-oasis',
+    titulo: 'Piscina Oasis',
+    desc: 'Sistema de reservas para eventos en piscina. Landing con agenda interactiva, selección de fecha y generación automática de contrato al instante.',
+    url: 'https://sistema-reservas-ruddy.vercel.app',
+    repo: 'https://github.com/Basty66/Sistema-Reservas',
+    tags: ['React', 'Vite', 'Tailwind CSS', 'jsPDF', 'Vercel'],
+    screenshot: '/screenshots/piscina-oasis.png',
+  },
+  {
+    id: 'dashu-store',
+    titulo: 'DASHU FOR MEN',
+    desc: 'E-commerce de alisado coreano profesional. Catálogo de productos con Webpay Plus, Mercado Pago, SEO completo y schema.org para tienda.',
+    url: 'https://dashu-store.vercel.app',
+    repo: 'https://github.com/Basty66/dashu-store',
+    tags: ['React', 'Vite', 'Tailwind CSS', 'SEO', 'Webpay', 'Vercel'],
+    screenshot: '/screenshots/dashu-store.png',
+  },
+  {
+    id: 'viakids',
+    titulo: 'ViaKids',
+    desc: 'Plataforma de transporte escolar seguro con landing informativo, rutas, precios y formulario de contacto. Diseño responsivo con enfoque mobile-first.',
+    url: 'https://via-kids-completo.vercel.app',
+    repo: 'https://github.com/Basty66/ViaKidsCompleto',
+    tags: ['React', 'Vite', 'Tailwind CSS', 'Mobile First', 'Vercel'],
+    screenshot: '/screenshots/viakids.png',
+  },
+];
