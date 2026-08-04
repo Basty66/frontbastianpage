@@ -36,7 +36,7 @@ export default function ExitPopup() {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 exit-popup-overlay" onClick={() => setDismissed(true)}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
       <div
-        className="relative w-full max-w-md bg-gradient-to-b from-[#0a0e1a] to-[#030712] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/50 exit-popup-content"
+        className="relative w-full max-w-md bg-gradient-to-b from-[#18181B] to-[#09090B] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/50 exit-popup-content"
         onClick={(e) => e.stopPropagation()}
       >
         <button

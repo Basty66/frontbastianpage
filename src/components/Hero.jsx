@@ -207,7 +207,7 @@ const Hero = () => {
               style={{ transform: 'translate(0px, 0px)' }}
             >
               <div className="relative transition-all duration-500 ease-out group-hover:scale-[2.5] group-hover:drop-shadow-[0_0_16px_rgba(34,211,238,0.9)]">
-                <OwlSprite size={owl.size} className="text-cyan-400 transition-all duration-500 group-hover:text-white" />
+                <OwlSprite size={owl.size} className="text-[#06B6D4] transition-all duration-500 group-hover:text-white" />
                 <span className="absolute inset-0 rounded-full bg-cyan-400/0 scale-0 transition-all duration-500 ease-out group-hover:scale-[2] group-hover:bg-cyan-400/10" />
               </div>
             </div>
@@ -232,9 +232,9 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-3 sm:pt-4">
           <button
             onClick={(e) => { createRipple(e); scrollToCotizador(); }}
-            className="ripple-container relative overflow-hidden group text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out border border-brand-cyan/30 bg-brand-cyan/5 shadow-lg shadow-brand-cyan/10 md:animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm sm:text-base"
+            className="ripple-container relative overflow-hidden group text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out border border-[#F97316]/30 bg-[#F97316]/5 shadow-lg shadow-[#F97316]/10 md:animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-[#F97316]/25 hover:-translate-y-0.5 text-sm sm:text-base"
           >
-            <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-brand-cyan -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+            <span className="absolute inset-0 bg-gradient-to-r from-[#F97316] to-[#FB923C] -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
             <span className="relative z-10">Cotizar mi proyecto</span>
           </button>
           <button
@@ -255,7 +255,7 @@ const Hero = () => {
           <div className="flex items-center gap-3 bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 backdrop-blur-sm max-w-sm mx-auto lg:mx-0">
             <div className="flex -space-x-2">
               {['M', 'C', 'P'].map((initial, i) => (
-                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-cyan/30 to-blue-500/30 border-2 border-[#030712] flex items-center justify-center text-white text-xs font-bold">
+                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-cyan/30 to-blue-500/30 border-2 border-[#09090B] flex items-center justify-center text-white text-xs font-bold">
                   {initial}
                 </div>
               ))}

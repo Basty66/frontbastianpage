@@ -1378,7 +1378,7 @@ const Cotizador = () => {
                       style={{ minWidth: '80px' }}
                     >
                       {codigosPais.map((c) => (
-                        <option key={c.code} value={c.code} className="bg-[#030712]">{c.label} {c.pais}</option>
+                        <option key={c.code} value={c.code} className="bg-[#09090B]">{c.label} {c.pais}</option>
                       ))}
                     </select>
                     <div className="flex-1">
@@ -1507,7 +1507,7 @@ const Cotizador = () => {
             role="dialog"
             aria-modal="true"
             aria-label="Vista previa de cotización"
-            className="relative w-full max-w-lg sm:max-w-xl bg-gradient-to-b from-[#0a0e1a] to-[#030712] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black/50 max-h-[92vh] overflow-y-auto animate-modal-content"
+            className="relative w-full max-w-lg sm:max-w-xl bg-gradient-to-b from-[#18181B] to-[#09090B] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black/50 max-h-[92vh] overflow-y-auto animate-modal-content"
             ref={previewModalRef}
             style={{ animationDelay: '0.05s' }}
             onClick={(e) => e.stopPropagation()}
@@ -1634,7 +1634,7 @@ const Cotizador = () => {
             aria-modal="true"
             aria-label="Firmar conformidad"
             ref={signatureModalRef}
-            className="relative w-full max-w-lg bg-gradient-to-b from-[#0a0e1a] to-[#030712] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black/50 max-h-[95vh] overflow-y-auto animate-modal-content"
+            className="relative w-full max-w-lg bg-gradient-to-b from-[#18181B] to-[#09090B] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black/50 max-h-[95vh] overflow-y-auto animate-modal-content"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -1735,7 +1735,7 @@ const Cotizador = () => {
             aria-modal="true"
             aria-label="Vista previa del PDF"
             ref={pdfModalRef}
-            className="relative w-full max-w-4xl bg-gradient-to-b from-[#0a0e1a] to-[#030712] border border-white/10 rounded-3xl p-4 sm:p-6 shadow-2xl shadow-black/50 max-h-[95vh] flex flex-col"
+            className="relative w-full max-w-4xl bg-gradient-to-b from-[#18181B] to-[#09090B] border border-white/10 rounded-3xl p-4 sm:p-6 shadow-2xl shadow-black/50 max-h-[95vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <button
