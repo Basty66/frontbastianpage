@@ -42,7 +42,7 @@ export default function BlogList() {
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold mb-4 tracking-tight">
             <span className="text-white">Blog </span>
-            <span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent">Técnico</span>
+            <span className="text-white">Técnico</span>
           </h1>
           <p className="text-slate-300">
             Artículos sobre desarrollo web, consejos para PYMEs chilenas y novedades tecnológicas.
@@ -69,7 +69,7 @@ export default function BlogList() {
               <Reveal key={post.id} animation="fade-up" delay={i * 60}>
                 <Link
                   to={`/blog/${post.slug}`}
-                  className="group block bg-white/[0.01] border border-white/5 rounded-2xl p-6 sm:p-8 transition-[border-color,background,box-shadow,transform] duration-500 hover:-translate-y-1 hover:border-brand-cyan/30 hover:bg-white/[0.03] hover:shadow-xl hover:shadow-brand-cyan/5"
+                  className="group block bg-white/[0.01] border border-white/5 rounded-2xl p-6 sm:p-8 transition-[border-color,background,box-shadow,transform] duration-500 hover:-translate-y-1 hover:border-white/[0.12] hover:bg-white/[0.03] hover:shadow-xl hover:shadow-white/[0.03]"
                 >
                   <div className="flex items-center gap-2 text-xs text-slate-500 mb-3">
                     <Calendar className="w-3.5 h-3.5" />
@@ -78,7 +78,7 @@ export default function BlogList() {
                       <>
                         <span className="text-slate-600">·</span>
                         {post.tags.map((tag) => (
-                          <span key={tag} className="text-brand-cyan bg-brand-cyan/10 border border-brand-cyan/20 px-2 py-0.5 rounded-full">{tag}</span>
+                          <span key={tag} className="text-white/60 bg-white/[0.03] border border-white/[0.06] px-2 py-0.5 rounded-full">{tag}</span>
                         ))}
                       </>
                     )}
@@ -89,7 +89,7 @@ export default function BlogList() {
                   {post.extracto && (
                     <p className="text-slate-400 text-sm leading-relaxed mb-4">{post.extracto}</p>
                   )}
-                  <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-cyan group-hover:gap-2 transition-all duration-300">
+                  <span className="inline-flex items-center gap-1 text-xs font-medium text-white/60 group-hover:gap-2 transition-all duration-300">
                     Leer más <ArrowRight className="w-3 h-3" />
                   </span>
                 </Link>

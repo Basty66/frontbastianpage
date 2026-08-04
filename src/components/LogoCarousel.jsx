@@ -104,8 +104,8 @@ function ProjectCard({ project, index }) {
               {project.tag}
             </span>
           </div>
-          <div className="w-6 h-6 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:bg-brand-cyan/10 group-hover:border-brand-cyan/30">
-            <svg className="w-3 h-3 text-slate-400 group-hover:text-brand-cyan transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <div className="w-6 h-6 rounded-full bg-white/[0.04] border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:bg-white/[0.06] group-hover:border-white/[0.12]">
+            <svg className="w-3 h-3 text-slate-400 group-hover:text-white/60 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </div>
@@ -126,12 +126,12 @@ export default function LogoCarousel() {
       <div className="max-w-7xl mx-auto relative">
         <Reveal animation="fade-up" className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/5 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-white/[0.06] animate-pulse" />
             <span className="text-[10px] sm:text-xs font-medium text-slate-400 uppercase tracking-widest">Proyectos recientes</span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-white mb-3">
             Trabajos que{' '}
-            <span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent">hablan</span>
+            <span className="text-white">hablan</span>
           </h2>
           <p className="text-sm sm:text-base text-slate-400 max-w-xl mx-auto">
             Cada proyecto es una historia de código, diseño y resultados medibles.

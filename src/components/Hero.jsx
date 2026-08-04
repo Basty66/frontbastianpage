@@ -127,7 +127,7 @@ const Hero = () => {
   }, []);
 
   useEffect(() => {
-    const text = 'mantención $0';
+    const text = 'venda más';
     let i = 0;
     const interval = setInterval(() => {
       i++;
@@ -176,7 +176,7 @@ const Hero = () => {
         {particles.map((p) => (
           <div
             key={p.id}
-            className="absolute rounded-full bg-brand-cyan/30"
+            className="absolute rounded-full bg-white/30"
             style={{
               top: p.top,
               left: p.left,
@@ -220,14 +220,14 @@ const Hero = () => {
         </span>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight">
           <span className="bg-gradient-to-r from-white via-white to-slate-300 bg-clip-text text-transparent">
-            Desarrollamos Web para PYMEs en Chile con
+            Tu negocio necesita una web que
           </span>{' '}
-          <span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(34,211,238,0.3)]">
-            {typewriterText}{!typewriterDone && <span className="animate-typewriter-cursor text-brand-cyan">|</span>}
+          <span className="text-white">
+            {typewriterText}{!typewriterDone && <span className="animate-typewriter-cursor text-white/60">|</span>}
           </span>
         </h1>
-        <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl">
-          Creamos landing pages, e-commerce y webs corporativas para negocios chilenos. Arquitectura serverless con hosting $0 — sin costos mensuales, sin servidores, sin sorpresas.
+        <p className="text-base sm:text-lg md:text-xl text-[#A1A1AA] max-w-2xl">
+          Creamos páginas web profesionales para negocios chilenos. Sin costos mensuales, sin complicaciones técnicas, sin sorpresas.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-3 sm:pt-4">
           <button
@@ -294,7 +294,7 @@ const Hero = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]">
                 <div className="text-xs text-[#A1A1AA] mb-1">Costo Fijo de Servidor</div>
-                <div className="text-xl font-bold font-heading text-white">$0 CLP <span className="text-xs text-[#A1A1AA]">Serverless</span></div>
+                <div className="text-xl font-bold font-heading text-white">$0 CLP <span className="text-xs text-[#A1A1AA]">Hosting incluido</span></div>
               </div>
               <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]">
                 <div className="text-xs text-[#A1A1AA] mb-1">Ahorro Anual vs Hosting</div>

@@ -7,7 +7,7 @@ export default function Privacy() {
     <div className="min-h-screen pt-24 sm:pt-28 pb-16 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <Reveal animation="fade-up">
-          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-brand-cyan hover:text-cyan-300 transition-colors mb-8">
+          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-white/60 hover:text-white transition-colors mb-8">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
@@ -76,7 +76,7 @@ export default function Privacy() {
             <h2 className="text-xl sm:text-2xl font-heading font-semibold text-white mt-8 mb-3">6. Contacto</h2>
             <p>
               Si tienes preguntas sobre esta política, puedes contactarme a través de{' '}
-              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-brand-cyan hover:text-cyan-300 transition-colors">
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-white transition-colors">
                 WhatsApp
               </a>{' '}
               o mi correo electrónico.

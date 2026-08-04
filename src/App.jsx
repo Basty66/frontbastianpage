@@ -72,14 +72,14 @@ const Home = () => {
 const PortfolioPage = () => <PortfolioSection fullPage />;
 
 const NotFound = () => (
-  <div className="min-h-screen flex items-center justify-center px-4 sm:px-6">
+  <div className="min-h-screen flex items-center justify-center px-4 sm:px-6" style={{ background: '#09090B' }}>
     <Reveal animation="fade-up" className="text-center max-w-lg">
-      <div className="w-16 sm:w-20 h-16 sm:h-20 mx-auto mb-6 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center">
-        <span className="text-3xl sm:text-4xl font-bold font-heading text-brand-cyan">404</span>
+      <div className="w-16 sm:w-20 h-16 sm:h-20 mx-auto mb-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center">
+        <span className="text-3xl sm:text-4xl font-bold font-heading text-white/60">404</span>
       </div>
       <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4 text-white">Página no encontrada</h2>
-      <p className="text-slate-300 mb-8">La página que buscas no existe o fue movida.</p>
-      <Link to="/" className="inline-flex items-center gap-2 text-brand-cyan hover:text-cyan-300 transition-colors font-medium">
+      <p className="text-[#A1A1AA] mb-8">La página que buscas no existe o fue movida.</p>
+      <Link to="/" className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors font-medium">
         <span>&larr;</span> Volver al inicio
       </Link>
     </Reveal>
@@ -176,7 +176,7 @@ function App() {
   }, [navigate, location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col text-white selection:bg-brand-cyan/30 selection:text-white" style={{ background: '#09090B' }}>
+    <div className="min-h-screen flex flex-col text-white selection:bg-white/30 selection:text-white" style={{ background: '#09090B' }}>
       {/* Scroll Progress */}
       <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
@@ -267,15 +267,15 @@ function App() {
         </ErrorBoundary>
       </div>
 
-      <Reveal animation="fade-up" as="footer" className="border-t border-white/5 bg-slate-900/30 backdrop-blur-md py-6 sm:py-8 px-4 sm:px-6 text-center">
+      <Reveal animation="fade-up" as="footer" className="border-t border-white/5 backdrop-blur-md py-6 sm:py-8 px-4 sm:px-6 text-center" style={{ background: '#09090B' }}>
         <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-4">
-          <Link to="/privacidad" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Política de Privacidad</Link>
-          <Link to="/terminos" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Términos y Condiciones</Link>
-          <Link to="/cookies" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Política de Cookies</Link>
-          <Link to="/blog" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Blog</Link>
+          <Link to="/privacidad" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-white transition-colors">Política de Privacidad</Link>
+          <Link to="/terminos" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-white transition-colors">Términos y Condiciones</Link>
+          <Link to="/cookies" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-white transition-colors">Política de Cookies</Link>
+          <Link to="/blog" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-white transition-colors">Blog</Link>
         </div>
-        <p className="text-slate-400 text-xs mb-2">Santiago, Región Metropolitana, Chile</p>
-        <p className="text-slate-300 text-xs sm:text-sm">© 2026 BS DigitalTech — Desarrollo Web para PYMEs Chilenas · Hosting $0</p>
+        <p className="text-[#A1A1AA] text-xs mb-2">Santiago, Región Metropolitana, Chile</p>
+        <p className="text-[#A1A1AA] text-xs sm:text-sm">© 2026 BS DigitalTech — Desarrollo Web para PYMEs Chilenas · Hosting $0</p>
       </Reveal>
 
       <a
@@ -304,7 +304,7 @@ function App() {
 
       <button
         onClick={() => scrollTo('cotizador')}
-        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-brand-cyan to-blue-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-brand-cyan/25 hover:shadow-xl hover:shadow-brand-cyan/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-white text-black font-bold text-xs sm:text-sm shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
           showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
         aria-label="Cotizar ahora"

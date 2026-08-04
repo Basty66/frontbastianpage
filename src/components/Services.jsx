@@ -4,57 +4,33 @@ import Reveal from './Reveal';
 const services = [
   {
     icon: Rocket,
-    title: 'Velocidad Extrema',
-    desc: 'Plataformas con React + Vite. Tu página carga en milisegundos, mejorando ventas y posicionamiento en Google.',
-    color: 'from-white/[0.03] via-transparent to-transparent',
-    border: 'border-white/[0.06]',
-    glow: 'rgba(255,255,255,0.03)',
-    size: 'md:col-span-1 md:row-span-1',
+    title: 'Velocidad que Vende',
+    desc: 'Tu página carga en segundos, no en minutos. Los clientes no esperan y Google te premia por ello.',
   },
   {
     icon: Gem,
-    title: 'Costo Fijo $0/mes',
-    desc: 'Serverless Edge. Olvídate de hostings mensuales. Solo pagas tu dominio .cl anual (~$10.000). Sin sorpresas.',
-    color: 'from-white/[0.03] via-transparent to-transparent',
-    border: 'border-white/[0.06]',
-    glow: 'rgba(255,255,255,0.03)',
-    size: 'md:col-span-1 md:row-span-1',
+    title: 'Sin Costos Fijos',
+    desc: 'Olvídate de pagar hosting mensual. Solo pagas tu dominio una vez al año. Sin sorpresas.',
   },
   {
     icon: Shield,
     title: 'Seguridad Total',
-    desc: 'SSL de por vida, cifrado extremo a extremo, pasarelas Mercado Pago/Webpay. Tus clientes compran tranquilos.',
-    color: 'from-white/[0.03] via-transparent to-transparent',
-    border: 'border-white/[0.06]',
-    glow: 'rgba(255,255,255,0.03)',
-    size: 'md:col-span-1 md:row-span-1',
+    desc: 'Tus datos y los de tus clientes están protegidos. Certificados de seguridad y pasarelas de pago seguras.',
   },
   {
     icon: BarChart,
-    title: 'SEO que vende',
-    desc: 'Optimización completa: meta tags, Open Graph, schema.org, sitemap XML. Aparece en Google desde el día 1.',
-    color: 'from-white/[0.03] via-transparent to-transparent',
-    border: 'border-white/[0.06]',
-    glow: 'rgba(255,255,255,0.03)',
-    size: 'md:col-span-1 md:row-span-1',
+    title: 'Aparece en Google',
+    desc: 'Tu página está optimizada para que los clientes te encuentren cuando buscan lo que vendes.',
   },
   {
     icon: Layers,
-    title: 'Panel Administrativo',
-    desc: 'Gestiona stock, precios, productos y contenido sin saber programar. Ideal para e-commerces y webs corporativas.',
-    color: 'from-white/[0.03] via-transparent to-transparent',
-    border: 'border-white/[0.06]',
-    glow: 'rgba(255,255,255,0.03)',
-    size: 'md:col-span-2 md:row-span-1',
+    title: 'Tú Mismo Actualizas',
+    desc: 'Panel fácil para que cambies textos, precios y productos sin depender de nadie.',
   },
   {
     icon: Zap,
-    title: 'Escalabilidad Ilimitada',
-    desc: 'Arquitectura serverless que escala automáticamente. Desde 100 hasta 100.000 visitas sin cambiar de plan ni pagar más.',
-    color: 'from-white/[0.03] via-transparent to-transparent',
-    border: 'border-white/[0.06]',
-    glow: 'rgba(255,255,255,0.03)',
-    size: 'md:col-span-1 md:row-span-1',
+    title: 'Crece Sin Límites',
+    desc: 'Desde 100 hasta 100.000 visitas, tu página funciona igual. Sin cambiar de plan ni pagar más.',
   },
 ];
 
@@ -65,8 +41,8 @@ const Services = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight">
-            <span className="text-white">Ingeniería Web orientada al </span>
-            <span className="text-white">Retorno de Inversión</span>
+            <span className="text-white">Todo lo que tu negocio necesita para </span>
+            <span className="text-white">vender más</span>
           </h2>
           <p className="text-[#A1A1AA]">
             Desarrollo soluciones pensadas para reducir tus costos fijos y multiplicar el alcance de tu empresa.
@@ -105,7 +81,7 @@ const Services = () => {
             <h3 className="text-xl sm:text-2xl font-heading font-bold text-white mb-2">
               <span className="text-white">$0/mes</span> vs Hosting Tradicional
             </h3>
-            <p className="text-[#A1A1AA] text-sm">Infraestructura serverless de última generación sin costos mensuales.</p>
+            <p className="text-[#A1A1AA] text-sm">Sin pagos mensuales, sin mantenimiento, sin preocupaciones.</p>
           </div>
           <div className="grid md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
             <div className="relative group bg-white/[0.02] border border-white/[0.08] rounded-2xl p-6 sm:p-8 backdrop-blur-sm md:backdrop-blur-lg transition-[transform,box-shadow] duration-400 hover:shadow-xl hover:-translate-y-1">
@@ -116,18 +92,18 @@ const Services = () => {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-white font-heading font-bold text-lg">Serverless Edge</p>
+                  <p className="text-white font-heading font-bold text-lg">Nuestra Solución</p>
                   <p className="text-white text-sm font-semibold">$0 CLP / mes</p>
                 </div>
               </div>
               <ul className="space-y-3">
                 {[
-                  { label: 'Velocidad global', value: 'Edge CDN — ~50ms' },
-                  { label: 'SSL / HTTPS', value: 'Incluido de por vida' },
-                  { label: 'Mantenimiento', value: 'Automático (nosotros)' },
-                  { label: 'Escalabilidad', value: 'Ilimitada (serverless)' },
-                  { label: 'Ancho de banda', value: 'Sin límite' },
-                  { label: 'Backups', value: 'Automáticos diarios' },
+                  { label: 'Velocidad', value: 'Carga instantánea' },
+                  { label: 'Seguridad', value: 'Incluida de por vida' },
+                  { label: 'Mantenimiento', value: 'Nosotros nos encargamos' },
+                  { label: 'Capacidad', value: 'Sin límites' },
+                  { label: 'Ancho de banda', value: 'Sin límites' },
+                  { label: 'Respaldos', value: 'Automáticos diarios' },
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm">
                     <svg className="w-4 h-4 text-white/60 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -153,12 +129,12 @@ const Services = () => {
               </div>
               <ul className="space-y-3">
                 {[
-                  { label: 'Velocidad global', value: 'Servidor único — ~300ms+' },
-                  { label: 'SSL / HTTPS', value: 'Pagas extra o manual' },
-                  { label: 'Mantenimiento', value: 'Tú lo gestionas' },
-                  { label: 'Escalabilidad', value: 'Limitada al plan' },
-                  { label: 'Ancho de banda', value: 'Caps mensuales' },
-                  { label: 'Backups', value: 'Manuales o pagas' },
+                  { label: 'Velocidad', value: 'Lenta, depende del servidor' },
+                  { label: 'Seguridad', value: 'Pagas extra o la configuras' },
+                  { label: 'Mantenimiento', value: 'Tú lo haces' },
+                  { label: 'Capacidad', value: 'Limitada al plan' },
+                  { label: 'Ancho de banda', value: 'Con límites' },
+                  { label: 'Respaldos', value: 'Manuales o pagas extra' },
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm">
                     <svg className="w-4 h-4 text-white/20 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

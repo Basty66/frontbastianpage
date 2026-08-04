@@ -2,15 +2,15 @@ import { Code2, Briefcase, Cpu, Users, GraduationCap, Server } from 'lucide-reac
 import Reveal from './Reveal';
 
 const knowledge = [
-  { icon: Code2, title: 'Frontend', desc: 'React, Tailwind CSS, JavaScript, HTML5, CSS3, Vite' },
-  { icon: Server, title: 'Backend & Arquitectura', desc: 'Node.js, APIs RESTful, Serverless, Cloud Functions' },
-  { icon: Cpu, title: 'Infraestructura', desc: 'Arquitecturas serverless, Git, CI/CD, despliegue automatizado' },
-  { icon: GraduationCap, title: 'Formación Continua', desc: 'Analista Programador, certificaciones en tecnologías web modernas' },
+  { icon: Code2, title: 'Diseño Moderno', desc: 'Sitios web atractivos y fáciles de usar que convierten visitantes en clientes' },
+  { icon: Server, title: 'Tecnología Confiable', desc: 'Plataformas estables, rápidas y seguras que no fallan cuando más importa' },
+  { icon: Cpu, title: 'Infraestructura Incluida', desc: 'Hosting, dominio y mantenimiento incluidos. Sin costos ocultos.' },
+  { icon: GraduationCap, title: 'Compromiso', desc: 'Nos aseguramos de que quedes conforme. Soporte incluido después de la entrega.' },
 ];
 
 const trajectory = [
-  { icon: Briefcase, title: 'Experiencia', desc: 'Desarrollo de plataformas web para PYMEs chilenas con enfoque en rendimiento y escalabilidad' },
-  { icon: Users, title: 'Enfoque al Cliente', desc: 'Soluciones a medida que reducen costos operativos y multiplican el alcance digital' },
+  { icon: Briefcase, title: 'Experiencia', desc: 'Hemos ayudado a negocios chilenos a profesionalizar su presencia digital y vender más' },
+  { icon: Users, title: 'Enfoque al Cliente', desc: 'Cada proyecto es una solución personalizada que reduce costos y aumenta ventas' },
 ];
 
 const About = () => {
@@ -47,8 +47,8 @@ const About = () => {
                 <h3 className="relative z-10 text-xl font-heading font-semibold text-white">
                   Cristian Bastian Cerda
                 </h3>
-                <p className="relative z-10 text-white/60 text-sm font-medium mt-1">Fundador & Director Técnico</p>
-                <p className="relative z-10 text-white/30 text-xs mt-2">BS DigitalTech · Full-Stack · Arq. Serverless</p>
+                <p className="relative z-10 text-white/60 text-sm font-medium mt-1">Fundador & Director</p>
+                <p className="relative z-10 text-white/30 text-xs mt-2">BS DigitalTech</p>
               </div>
             </div>
           </Reveal>
@@ -64,18 +64,17 @@ const About = () => {
                 </h3>
                 <div className="relative space-y-4 text-[#A1A1AA] text-sm sm:text-base leading-relaxed">
                   <p>
-                    Somos BS DigitalTech, una agencia digital especializada en desarrollo web moderno.
-                    Nuestro enfoque combina principios full-stack con arquitecturas serverless para ofrecer
-                    plataformas rápidas, seguras y sin costos fijos de infraestructura.
+                    Somos BS DigitalTech, una agencia digital especializada en crear páginas web que generan resultados.
+                    Nos enfocamos en lo que importa: que tu negocio se vea profesional y consiga más clientes.
                   </p>
                   <p>
                     Cada proyecto que desarrollamos está pensado para resolver problemas reales de las PYMEs chilenas:
-                    reducir costos operativos, automatizar procesos y multiplicar su alcance digital.
-                    Trabajamos codo a codo con cada cliente para traducir sus necesidades en soluciones técnicas efectivas.
+                    reducir costos, ahorrar tiempo y multiplicar su alcance digital.
+                    Trabajamos codo a codo con cada cliente para entender sus necesidades y entregar soluciones que funcionen.
                   </p>
                   <p>
-                    Creemos firmemente en el aprendizaje continuo y en aplicar las mejores prácticas de la industria
-                    para entregar productos que no solo se vean bien, sino que realmente funcionen y generen resultados.
+                    No somos una fábrica de templates. Cada página es única, diseñada específicamente para tu negocio
+                    y tus clientes.
                   </p>
                 </div>
               </div>

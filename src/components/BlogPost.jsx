@@ -66,7 +66,7 @@ export default function BlogPost() {
     return (
       <section className="min-h-[60vh] flex items-center justify-center px-4">
         <div className="flex flex-col items-center gap-3 text-slate-500">
-          <RefreshCw className="w-6 h-6 animate-spin text-brand-cyan" />
+          <RefreshCw className="w-6 h-6 animate-spin text-white/60" />
           <p className="text-sm">Cargando artículo...</p>
         </div>
       </section>
@@ -78,11 +78,11 @@ export default function BlogPost() {
       <section className="min-h-[60vh] flex items-center justify-center px-4 sm:px-6">
         <Reveal animation="fade-up" className="text-center max-w-lg">
           <div className="w-16 sm:w-20 h-16 sm:h-20 mx-auto mb-6 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center">
-            <span className="text-3xl sm:text-4xl font-bold font-heading text-brand-cyan">404</span>
+            <span className="text-3xl sm:text-4xl font-bold font-heading text-white/60">404</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4 text-white">Artículo no encontrado</h2>
           <p className="text-slate-300 mb-8">El artículo que buscas no existe o fue eliminado.</p>
-          <Link to="/blog" className="inline-flex items-center gap-2 text-brand-cyan hover:text-cyan-300 transition-colors font-medium">
+          <Link to="/blog" className="inline-flex items-center gap-2 text-white/60 hover:text-cyan-300 transition-colors font-medium">
             <ArrowLeft className="w-4 h-4" /> Volver al blog
           </Link>
         </Reveal>
@@ -94,7 +94,7 @@ export default function BlogPost() {
     <article className="py-16 sm:py-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <Reveal animation="fade-up">
-          <Link to="/blog" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-brand-cyan transition-colors mb-8 group">
+          <Link to="/blog" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white/60 transition-colors mb-8 group">
             <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
             Volver al blog
           </Link>
@@ -108,7 +108,7 @@ export default function BlogPost() {
               <>
                 <span className="text-slate-600">·</span>
                 {post.tags.map((tag) => (
-                  <span key={tag} className="text-brand-cyan bg-brand-cyan/10 border border-brand-cyan/20 px-2 py-0.5 rounded-full">{tag}</span>
+                  <span key={tag} className="text-white/60 bg-white/[0.03] border border-white/[0.06] px-2 py-0.5 rounded-full">{tag}</span>
                 ))}
               </>
             )}
@@ -123,14 +123,14 @@ export default function BlogPost() {
 
         <Reveal animation="fade-up" delay={120}>
           <div
-            className="prose prose-invert prose-sm sm:prose-base max-w-none text-slate-300 leading-relaxed prose-headings:text-white prose-headings:font-heading prose-headings:font-semibold prose-a:text-brand-cyan prose-a:no-underline hover:prose-a:underline prose-code:text-brand-cyan prose-code:bg-white/[0.03] prose-code:border prose-code:border-white/10 prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:text-xs prose-code:font-mono prose-strong:text-white prose-li:text-slate-300"
+            className="prose prose-invert prose-sm sm:prose-base max-w-none text-slate-300 leading-relaxed prose-headings:text-white prose-headings:font-heading prose-headings:font-semibold prose-a:text-white/60 prose-a:no-underline hover:prose-a:underline prose-code:text-white/60 prose-code:bg-white/[0.03] prose-code:border prose-code:border-white/10 prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:text-xs prose-code:font-mono prose-strong:text-white prose-li:text-slate-300"
             dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.contenido) }}
           />
         </Reveal>
 
         <Reveal animation="fade-up" delay={150}>
           <div className="mt-12 pt-8 border-t border-white/5">
-            <Link to="/blog" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-brand-cyan transition-colors group">
+            <Link to="/blog" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white/60 transition-colors group">
               <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
               Volver al blog
             </Link>

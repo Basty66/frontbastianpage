@@ -193,7 +193,7 @@ const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
     <div className="space-y-2">
       <div
         ref={containerRef}
-        className="signature-pad-container relative bg-gradient-to-b from-slate-800/60 to-slate-900/60 border border-white/10 rounded-xl overflow-hidden group hover:border-brand-cyan/30 transition-all duration-300"
+        className="signature-pad-container relative bg-gradient-to-b from-slate-800/60 to-slate-900/60 border border-white/10 rounded-xl overflow-hidden group hover:border-white/[0.08] transition-all duration-300"
         style={{ touchAction: 'none' }}
       >
         <canvas
@@ -207,12 +207,12 @@ const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
           onTouchStart={startDrawing}
           onTouchEnd={stopDrawing}
         />
-        <div className="absolute inset-0 pointer-events-none rounded-xl border border-transparent group-hover:border-brand-cyan/10 transition-all duration-500" />
+        <div className="absolute inset-0 pointer-events-none rounded-xl border border-transparent group-hover:border-white/[0.04] transition-all duration-500" />
         <div className="absolute bottom-3 right-3 flex gap-2 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
           <button
             type="button"
             onClick={clear}
-            className="p-2 rounded-lg bg-white/5 hover:bg-white/15 text-slate-400 hover:text-white transition-all backdrop-blur-sm border border-white/5 hover:border-white/20"
+            className="p-2 rounded-lg bg-white/5 hover:bg-white/15 text-[#A1A1AA] hover:text-white transition-all backdrop-blur-sm border border-white/5 hover:border-white/20"
             title="Limpiar firma"
           >
             <Eraser className="w-4 h-4" />
@@ -865,11 +865,11 @@ const Cotizador = () => {
       <Reveal animation="fade-up" className="text-center mb-10 sm:mb-12">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-white mb-3 tracking-tight">
           Simulador de{' '}
-          <span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent">
+          <span className="bg-white text-white">
             Presupuesto
           </span>
         </h2>
-        <p className="text-slate-300 text-lg max-w-xl mx-auto">
+        <p className="text-[#A1A1AA] text-lg max-w-xl mx-auto">
           Selecciona lo que necesitas y obtén tu cotización en tiempo real.
         </p>
         <div className="flex items-center justify-center gap-1 mt-4">
@@ -879,8 +879,8 @@ const Cotizador = () => {
               onClick={() => setMoneda(m.id)}
               className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all duration-300 ${
                 moneda === m.id
-                  ? 'border-brand-cyan/50 bg-brand-cyan/10 text-cyan-200'
-                  : 'border-white/10 text-slate-500 hover:text-slate-300 hover:border-white/20'
+                  ? 'border-white/[0.12] bg-white/[0.03] text-white/60'
+                  : 'border-white/10 text-slate-500 hover:text-[#A1A1AA] hover:border-white/20'
               }`}
             >
               {m.label}
@@ -901,15 +901,15 @@ const Cotizador = () => {
               onClick={() => canClick && setStep(stepNum)}
               className={`group relative flex items-center gap-1.5 sm:gap-3 px-2 sm:px-5 py-2 sm:py-2.5 rounded-xl border transition-all duration-500 ease-out flex-shrink-0 min-w-0 ${
                 isActive
-                  ? 'border-brand-cyan/60 bg-brand-cyan/15 text-white shadow-lg shadow-brand-cyan/10 scale-[1.02]'
+                  ? 'border-white/[0.15] bg-white/[0.04] text-white shadow-lg shadow-white/5 scale-[1.02]'
                   : isCompleted
-                    ? 'border-brand-cyan/30 bg-brand-cyan/5 text-white'
-                    : 'border-white/10 bg-white/[0.02] text-slate-400 hover:border-white/20'
+                    ? 'border-white/[0.08] bg-white/[0.02] text-white'
+                    : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/20'
               } ${!canClick ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
-              {isActive && <span className="absolute inset-0 rounded-xl bg-brand-cyan/5 animate-pulse" />}
+              {isActive && <span className="absolute inset-0 rounded-xl bg-white/[0.02] animate-pulse" />}
               <span className={`relative w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold transition-all duration-500 flex-shrink-0 ${
-                isActive ? 'bg-brand-cyan text-[#030712] shadow-[0_0_12px_rgba(34,211,238,0.5)]' : isCompleted ? 'bg-brand-cyan/20 text-cyan-200' : 'bg-white/10 text-white/60'
+                isActive ? 'bg-white text-black shadow-[0_0_12px_rgba(34,211,238,0.5)]' : isCompleted ? 'bg-white/[0.06] text-white/60' : 'bg-white/10 text-white/60'
               }`}>
                 {isCompleted ? (
                   <svg className="w-3 sm:w-3.5 h-3 sm:h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -920,7 +920,7 @@ const Cotizador = () => {
               <span className={`hidden sm:inline text-[10px] sm:text-xs font-semibold leading-tight truncate transition-colors duration-300 ${isActive ? 'text-white' : ''}`}>{s.label}</span>
             </button>
             {i < steps.length - 1 && (
-              <div className={`h-px w-3 sm:w-12 transition-all duration-700 ease-out flex-shrink-0 ${isCompleted ? 'bg-brand-cyan/50' : isActive ? 'bg-gradient-to-r from-brand-cyan/50 to-white/10' : 'bg-white/10'}`} />
+              <div className={`h-px w-3 sm:w-12 transition-all duration-700 ease-out flex-shrink-0 ${isCompleted ? 'bg-white/[0.02]0' : isActive ? 'bg-gradient-to-r from-white/50 to-white/10' : 'bg-white/10'}`} />
             )}
           </React.Fragment>
           );
@@ -935,7 +935,7 @@ const Cotizador = () => {
             <Reveal animation="fade-up">
               <div className="space-y-3">
                 <label className="text-white font-heading font-semibold text-lg flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center text-xs font-bold">1</span>
+                  <span className="w-7 h-7 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-xs font-bold">1</span>
                   Elige tu plan
                 </label>
                 <div className="grid sm:grid-cols-2 gap-3">
@@ -948,7 +948,7 @@ const Cotizador = () => {
                         className={`group relative overflow-hidden p-4 rounded-xl border cursor-pointer transition-all duration-500 ease-out ${
                           selected
                             ? `${c.border} text-white scale-[1.02]`
-                            : 'border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/30 hover:bg-white/[0.04] hover:scale-[1.01]'
+                            : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/30 hover:bg-white/[0.04] hover:scale-[1.01]'
                         }`}
                         style={{ boxShadow: selected ? `0 0 24px ${c.glow}, 0 8px 32px ${c.glow}` : undefined }}
                         onClick={() => {
@@ -1021,7 +1021,7 @@ const Cotizador = () => {
                               className={`flex items-center justify-between px-3 py-2.5 rounded-lg border cursor-pointer transition-all duration-300 ${
                                 sel
                                   ? 'border-cyan-500/50 bg-cyan-500/10 text-white'
-                                  : 'border-white/10 bg-white/[0.02] text-slate-400 hover:border-white/20'
+                                  : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/20'
                               }`}
                             >
                               <div className="flex items-center gap-2.5">
@@ -1048,7 +1048,7 @@ const Cotizador = () => {
                               className={`flex items-center justify-between px-3 py-2 rounded-lg border cursor-pointer transition-all duration-300 ${
                                 active
                                   ? 'border-cyan-500/50 bg-cyan-500/10 text-white'
-                                  : 'border-white/10 bg-white/[0.02] text-slate-400 hover:border-white/20'
+                                  : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/20'
                               }`}
                             >
                               <div className="flex items-center gap-2">
@@ -1085,7 +1085,7 @@ const Cotizador = () => {
             <Reveal animation="fade-up">
               <div className="space-y-3">
                 <label className="text-white font-heading font-semibold text-lg flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center text-xs font-bold">2</span>
+                  <span className="w-7 h-7 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-xs font-bold">2</span>
                   Tipo de plataforma
                 </label>
                 <div className="grid sm:grid-cols-1 gap-3">
@@ -1098,7 +1098,7 @@ const Cotizador = () => {
                         className={`group relative overflow-hidden p-5 rounded-xl border flex justify-between items-center cursor-pointer transition-all duration-500 ease-out ${
                           selected
                             ? `${c.border} text-white`
-                            : 'border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/30 hover:bg-white/[0.04]'
+                            : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/30 hover:bg-white/[0.04]'
                         }`}
                         style={{ boxShadow: selected ? `0 0 24px ${c.glow}` : undefined }}
                         onClick={() => { setTipoWeb(item.precio); setTimeout(() => setStep(3), 400); }}
@@ -1115,9 +1115,9 @@ const Cotizador = () => {
                           </div>
                           <div className="flex-1">
                             <p className="font-medium text-sm sm:text-base">{item.label}</p>
-                            <p className="text-xs text-slate-400">{item.desc}</p>
+                            <p className="text-xs text-[#A1A1AA]">{item.desc}</p>
                           </div>
-                          <span className={`font-bold font-heading text-lg ${selected ? 'text-white' : 'text-brand-cyan'}`}>
+                          <span className={`font-bold font-heading text-lg ${selected ? 'text-white' : 'text-white/60'}`}>
                             {formatCurrency(item.precio)}
                           </span>
                         </span>
@@ -1126,10 +1126,10 @@ const Cotizador = () => {
                   })}
                 </div>
                 <div className="flex justify-between pt-2">
-                  <button onClick={() => setStep(1)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1">
+                  <button onClick={() => setStep(1)} className="text-sm text-[#A1A1AA] hover:text-white transition-colors font-medium flex items-center gap-1">
                     <span className="text-lg">&larr;</span> Anterior
                   </button>
-                  <button onClick={() => setStep(3)} className="text-sm text-brand-cyan hover:text-cyan-300 transition-colors font-medium flex items-center gap-1">
+                  <button onClick={() => setStep(3)} className="text-sm text-white/60 hover:text-cyan-300 transition-colors font-medium flex items-center gap-1">
                     Siguiente paso <span className="text-lg">&rarr;</span>
                   </button>
                 </div>
@@ -1141,7 +1141,7 @@ const Cotizador = () => {
             <Reveal animation="fade-up">
               <div className="space-y-3">
                 <label className="text-white font-heading font-semibold text-lg flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center text-xs font-bold">3</span>
+                  <span className="w-7 h-7 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-xs font-bold">3</span>
                   Complementos
                 </label>
                 <div className="grid sm:grid-cols-2 gap-3">
@@ -1156,7 +1156,7 @@ const Cotizador = () => {
                         className={`group relative overflow-hidden p-4 rounded-xl border flex flex-col cursor-pointer transition-all duration-500 ease-out ${
                           active
                             ? `${c.border} text-white`
-                            : 'border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/30 hover:bg-white/[0.04]'
+                            : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/30 hover:bg-white/[0.04]'
                         }`}
                         style={{ boxShadow: active ? `0 0 24px ${c.glow}` : undefined }}
                       >
@@ -1193,10 +1193,10 @@ const Cotizador = () => {
                   })}
                 </div>
                 <div className="flex justify-between pt-2">
-                  <button onClick={() => setStep(1)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1">
+                  <button onClick={() => setStep(1)} className="text-sm text-[#A1A1AA] hover:text-white transition-colors font-medium flex items-center gap-1">
                     <span className="text-lg">&larr;</span> Anterior
                   </button>
-                  <button onClick={() => setStep(4)} className="text-sm text-brand-cyan hover:text-cyan-300 transition-colors font-medium flex items-center gap-1">
+                  <button onClick={() => setStep(4)} className="text-sm text-white/60 hover:text-cyan-300 transition-colors font-medium flex items-center gap-1">
                     Siguiente paso <span className="text-lg">&rarr;</span>
                   </button>
                 </div>
@@ -1215,10 +1215,10 @@ const Cotizador = () => {
                 </div>
               </Reveal>
               <Reveal animation="fade-up" delay={100}>
-                <p className="text-slate-300 text-lg">Revisa tu inversión estimada y completa tus datos.</p>
+                <p className="text-[#A1A1AA] text-lg">Revisa tu inversión estimada y completa tus datos.</p>
               </Reveal>
               <Reveal animation="fade-up" delay={200}>
-                <button onClick={() => setStep(selectedPlan === 'custom' ? 1 : 3)} className="text-sm text-slate-400 hover:text-white transition-colors font-medium flex items-center gap-1 justify-center">
+                <button onClick={() => setStep(selectedPlan === 'custom' ? 1 : 3)} className="text-sm text-[#A1A1AA] hover:text-white transition-colors font-medium flex items-center gap-1 justify-center">
                   <span className="text-lg">&larr;</span> {selectedPlan === 'custom' ? 'Volver a servicios' : 'Volver a complementos'}
                 </button>
               </Reveal>
@@ -1227,35 +1227,35 @@ const Cotizador = () => {
 
           <div className={`p-6 rounded-2xl border backdrop-blur-sm flex justify-between items-center transition-all duration-700 ease-out ${
             total > 0
-              ? 'bg-gradient-to-r from-brand-cyan/10 via-brand-cyan/5 to-transparent border-brand-cyan/30 shadow-[0_0_30px_rgba(34,211,238,0.1)]'
+              ? 'bg-gradient-to-r from-white/10 via-white/5 to-transparent border-white/[0.08] shadow-[0_0_30px_rgba(34,211,238,0.1)]'
               : 'bg-white/[0.03] border-white/10'
           }`}>
             <div>
-              <div className="text-xs text-slate-400 uppercase font-semibold tracking-wider">Inversión Estimada</div>
+              <div className="text-xs text-[#A1A1AA] uppercase font-semibold tracking-wider">Inversión Estimada</div>
               <div className="text-xs text-emerald-400 mt-1 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 Costo de servidor: $0 de por vida
               </div>
             </div>
             <div className={`text-3xl sm:text-4xl font-extrabold font-heading tracking-tight transition-all duration-500 ${
-              total > 0 ? 'text-white drop-shadow-[0_0_12px_rgba(34,211,238,0.3)]' : 'text-slate-400'
+              total > 0 ? 'text-white drop-shadow-[0_0_12px_rgba(34,211,238,0.3)]' : 'text-[#A1A1AA]'
             }`}>
               <span key={total} className="inline-block animate-[count-up_0.4s_ease-out]">
                 {formatCurrency(animatedTotal)}
               </span>{' '}
-              <span className="text-xs font-normal text-slate-400">{moneda === 'CLP' ? 'CLP' : ''}</span>
+              <span className="text-xs font-normal text-[#A1A1AA]">{moneda === 'CLP' ? 'CLP' : ''}</span>
             </div>
           </div>
         </div>
 
-        <Reveal animation="fade-right" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg lg:sticky lg:top-28 transition-all duration-700 ease-out ${
-          step === 4 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-30 pointer-events-none scale-[0.96] blur-[1px]'
+        <Reveal animation="fade-right" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg lg:sticky lg:top-28 transition-all duration-500 ease-out ${
+          step === 4 ? 'opacity-100' : 'opacity-40 pointer-events-none'
         }`}>
           <h3 className="text-2xl font-heading font-bold mb-2">
             <span className="text-white">¿Trabajamos </span>
-            <span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent">juntos?</span>
+            <span className="text-white">juntos?</span>
           </h3>
-          <p className="text-slate-300 text-sm mb-6">Recibe esta cotización en tu correo y agendemos una reunión sin costo.</p>
+          <p className="text-[#A1A1AA] text-sm mb-6">Recibe esta cotización en tu correo y agendemos una reunión sin costo.</p>
 
           {enviado ? (
             <div className="space-y-6">
@@ -1269,7 +1269,7 @@ const Cotizador = () => {
                   </svg>
                 </div>
                 <h4 className="font-heading font-semibold text-xl text-white mb-2">¡Cotización enviada!</h4>
-                <p className="text-sm text-slate-400 leading-relaxed">Gracias por tu interés. El PDF se ha descargado automáticamente y enseguida me pondré en contacto contigo por WhatsApp.</p>
+                <p className="text-sm text-[#A1A1AA] leading-relaxed">Gracias por tu interés. El PDF se ha descargado automáticamente y enseguida me pondré en contacto contigo por WhatsApp.</p>
               </div>
 
               <a
@@ -1291,9 +1291,9 @@ const Cotizador = () => {
                 href="https://calendly.com/cristianbastian/30min"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl transition-all duration-500 ease-out border border-brand-cyan/30 bg-brand-cyan/5 hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2"
+                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl transition-all duration-500 ease-out border border-white/[0.08] bg-white/[0.02] hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-brand-cyan -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+                <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-white -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
                 <svg className="w-4 h-4 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -1304,9 +1304,9 @@ const Cotizador = () => {
                 type="button"
                 onClick={generatePDF}
                 disabled={generating}
-                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl transition-all duration-500 ease-out border border-brand-cyan/30 bg-brand-cyan/5 hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl transition-all duration-500 ease-out border border-white/[0.08] bg-white/[0.02] hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-brand-cyan -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+                <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-white -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
                 <FileDown className="w-4 h-4 relative z-10" />
                 <span className="relative z-10">{generating ? 'Generando...' : 'Descargar Propuesta en PDF'}</span>
               </button>
@@ -1315,7 +1315,7 @@ const Cotizador = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <Reveal animation="fade-up" delay={0}>
                 <div>
-                  <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Nombre completo</label>
+                  <label className="text-xs text-[#A1A1AA] block mb-1.5 font-medium tracking-wide">Nombre completo</label>
                   <input
                     required
                     type="text"
@@ -1323,12 +1323,12 @@ const Cotizador = () => {
                     value={formData.nombre}
                     onChange={(e) => handleFormChange('nombre', e.target.value)}
                     onBlur={() => handleFormBlur('nombre')}
-                    className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                    className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:ring-2 transition-all duration-300 ${
                       formErrors.nombre
                         ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20'
                         : formData.nombre
-                          ? 'border-brand-cyan/50 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
-                          : 'border-white/10 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
+                          ? 'border-white/[0.12] focus:border-white/20 focus:ring-white/10'
+                          : 'border-white/10 focus:border-white/20 focus:ring-white/10'
                     }`}
                   />
                   {formErrors.nombre && <p className="text-[10px] text-red-400 mt-1">{formErrors.nombre}</p>}
@@ -1336,19 +1336,19 @@ const Cotizador = () => {
               </Reveal>
               <Reveal animation="fade-up" delay={40}>
                 <div>
-                  <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Empresa (Opcional)</label>
+                  <label className="text-xs text-[#A1A1AA] block mb-1.5 font-medium tracking-wide">Empresa (Opcional)</label>
                   <input
                     type="text"
                     placeholder="Ej: Mi Empresa SpA"
                     value={formData.empresa}
                     onChange={(e) => { setError(null); setFormData({ ...formData, empresa: e.target.value }); }}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-brand-cyan/80 focus:ring-2 focus:ring-brand-cyan/20 transition-all duration-300"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-white/20 focus:ring-white/10 transition-all duration-300"
                   />
                 </div>
               </Reveal>
               <Reveal animation="fade-up" delay={80}>
                 <div>
-                  <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Correo electrónico</label>
+                  <label className="text-xs text-[#A1A1AA] block mb-1.5 font-medium tracking-wide">Correo electrónico</label>
                   <input
                     required
                     type="email"
@@ -1356,12 +1356,12 @@ const Cotizador = () => {
                     value={formData.email}
                     onChange={(e) => handleFormChange('email', e.target.value)}
                     onBlur={() => handleFormBlur('email')}
-                    className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                    className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:ring-2 transition-all duration-300 ${
                       formErrors.email
                         ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20'
                         : formData.email
-                          ? 'border-brand-cyan/50 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
-                          : 'border-white/10 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
+                          ? 'border-white/[0.12] focus:border-white/20 focus:ring-white/10'
+                          : 'border-white/10 focus:border-white/20 focus:ring-white/10'
                     }`}
                   />
                   {formErrors.email && <p className="text-[10px] text-red-400 mt-1">{formErrors.email}</p>}
@@ -1369,12 +1369,12 @@ const Cotizador = () => {
               </Reveal>
               <Reveal animation="fade-up" delay={120}>
                 <div>
-                  <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Teléfono</label>
+                  <label className="text-xs text-[#A1A1AA] block mb-1.5 font-medium tracking-wide">Teléfono</label>
                   <div className="flex gap-2">
                     <select
                       value={codigoPais}
                       onChange={(e) => setCodigoPais(e.target.value)}
-                      className="bg-black/40 border border-white/10 rounded-xl px-3 py-3 text-white text-sm focus:outline-none focus:border-brand-cyan/80 focus:ring-2 focus:ring-brand-cyan/20 transition-all duration-300 appearance-none cursor-pointer flex-shrink-0"
+                      className="bg-black/40 border border-white/10 rounded-xl px-3 py-3 text-white text-sm focus:outline-none focus:border-white/20 focus:ring-white/10 transition-all duration-300 appearance-none cursor-pointer flex-shrink-0"
                       style={{ minWidth: '80px' }}
                     >
                       {codigosPais.map((c) => (
@@ -1389,12 +1389,12 @@ const Cotizador = () => {
                         value={formData.telefono}
                         onChange={(e) => handleFormChange('telefono', e.target.value)}
                         onBlur={() => handleFormBlur('telefono')}
-                        className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                        className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:ring-2 transition-all duration-300 ${
                           formErrors.telefono
                             ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20'
                             : formData.telefono
-                              ? 'border-brand-cyan/50 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
-                              : 'border-white/10 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'
+                              ? 'border-white/[0.12] focus:border-white/20 focus:ring-white/10'
+                              : 'border-white/10 focus:border-white/20 focus:ring-white/10'
                         }`}
                       />
                       {formErrors.telefono && <p className="text-[10px] text-red-400 mt-1">{formErrors.telefono}</p>}
@@ -1404,13 +1404,13 @@ const Cotizador = () => {
               </Reveal>
               <Reveal animation="fade-up" delay={160}>
                 <div>
-                  <label className="text-xs text-slate-300 block mb-1.5 font-medium tracking-wide">Detalles (Opcional)</label>
+                  <label className="text-xs text-[#A1A1AA] block mb-1.5 font-medium tracking-wide">Detalles (Opcional)</label>
                   <textarea
                     rows="2"
                     placeholder="Cuéntame sobre tu proyecto..."
                     value={formData.mensaje}
                     onChange={(e) => { setError(null); setFormData({ ...formData, mensaje: e.target.value }); }}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-brand-cyan/80 focus:ring-2 focus:ring-brand-cyan/20 focus:shadow-[0_0_12px_rgba(34,211,238,0.08)] transition-all duration-300 resize-none"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-white/20 focus:ring-white/10 focus:shadow-[0_0_12px_rgba(34,211,238,0.08)] transition-all duration-300 resize-none"
                   />
                 </div>
               </Reveal>
@@ -1429,16 +1429,16 @@ const Cotizador = () => {
                 <button
                   type="button"
                   onClick={() => setShowPreview(true)}
-                  className="w-full flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-brand-cyan/30 transition-all duration-300 group"
+                  className="w-full flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.08] transition-all duration-300 group"
                 >
-                  <span className="text-sm text-slate-300 group-hover:text-white transition-colors flex items-center gap-2">
-                    <svg className="w-4 h-4 text-brand-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <span className="text-sm text-[#A1A1AA] group-hover:text-white transition-colors flex items-center gap-2">
+                    <svg className="w-4 h-4 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                     Vista previa de tu cotización
                   </span>
-                  <svg className="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-4 h-4 text-slate-500 group-hover:text-white/60 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6" />
                   </svg>
@@ -1460,7 +1460,7 @@ const Cotizador = () => {
                   <span className="flex items-center gap-2">
                     <span className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${
                       clientSigned
-                        ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 text-slate-400'
+                        ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 text-[#A1A1AA]'
                     }`}>
                       {clientSigned ? (
                         <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -1472,12 +1472,12 @@ const Cotizador = () => {
                         </svg>
                       )}
                     </span>
-                    <span className="text-sm text-slate-300 group-hover:text-white transition-colors">
+                    <span className="text-sm text-[#A1A1AA] group-hover:text-white transition-colors">
                       {clientSigned
                         ? 'Firma completada' : 'Firmar conformidad'}
                     </span>
                   </span>
-                  <svg className="w-4 h-4 text-slate-500 group-hover:text-brand-cyan transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-4 h-4 text-slate-500 group-hover:text-white/60 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6" />
                   </svg>
@@ -1488,9 +1488,9 @@ const Cotizador = () => {
                 <button
                   type="submit"
                   disabled={total === 0 || loading}
-                  className="relative overflow-hidden group w-full text-white font-bold py-4 rounded-xl transition-all duration-500 ease-out border border-brand-cyan/30 bg-brand-cyan/5 shadow-lg shadow-brand-cyan/10 animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none disabled:hover:bg-transparent disabled:hover:border-white/10"
+                  className="relative overflow-hidden group w-full text-white font-bold py-4 rounded-xl transition-all duration-500 ease-out border border-white/[0.08] bg-white/[0.02] shadow-lg shadow-white/5 animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none disabled:hover:bg-transparent disabled:hover:border-white/10"
                 >
-                  <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-brand-cyan -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+                  <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-white -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
                   <span className="relative z-10">{loading ? 'Generando...' : 'Revisar y Enviar'}</span>
                 </button>
               </Reveal>
@@ -1514,7 +1514,7 @@ const Cotizador = () => {
           >
             <button
               onClick={() => setShowPreview(false)}
-              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
+              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-[#A1A1AA] hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
               aria-label="Cerrar"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1523,8 +1523,8 @@ const Cotizador = () => {
             </button>
 
             <div className="text-center mb-6">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-brand-cyan/20 to-blue-500/10 border border-brand-cyan/20 flex items-center justify-center">
-                <Eye className="w-6 h-6 text-brand-cyan" />
+              <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-white/20 to-white/5 border border-white/[0.06] flex items-center justify-center">
+                <Eye className="w-6 h-6 text-white/60" />
               </div>
               <h4 className="text-lg font-heading font-bold text-white">
                 Vista previa de cotización
@@ -1535,20 +1535,20 @@ const Cotizador = () => {
             <div className="space-y-0">
               <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 space-y-3 mb-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-brand-cyan" />
-                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Servicios contratados</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/[0.06]" />
+                  <span className="text-xs font-semibold text-[#A1A1AA] uppercase tracking-wider">Servicios contratados</span>
                 </div>
                 {planActual && selectedPlan !== 'custom' && (
-                  <div className="flex justify-between items-center bg-brand-cyan/5 border border-brand-cyan/10 rounded-lg px-3 py-2.5">
+                  <div className="flex justify-between items-center bg-white/[0.02] border border-white/[0.04] rounded-lg px-3 py-2.5">
                     <div>
                       <span className="text-sm font-medium text-white">{planActual.label}</span>
                       <p className="text-[10px] text-slate-500">{planActual.desc}</p>
                     </div>
-                    <span className="text-sm font-bold text-brand-cyan">{formatCurrency(planActual.total)}</span>
+                    <span className="text-sm font-bold text-white/60">{formatCurrency(planActual.total)}</span>
                   </div>
                 )}
                 <div className="flex justify-between items-center px-1">
-                  <span className="text-sm text-slate-300">{getTipoLabel()}</span>
+                  <span className="text-sm text-[#A1A1AA]">{getTipoLabel()}</span>
                   <span className="text-sm font-semibold text-white">{formatCurrency(tipoWeb)}</span>
                 </div>
                 {extras.length > 0 && (
@@ -1558,10 +1558,10 @@ const Cotizador = () => {
                       return item ? (
                         <div key={id} className="flex justify-between items-center py-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-brand-cyan text-xs">+</span>
-                            <span className="text-sm text-slate-400">{item.label}</span>
+                            <span className="text-white/60 text-xs">+</span>
+                            <span className="text-sm text-[#A1A1AA]">{item.label}</span>
                           </div>
-                          <span className="text-xs text-slate-300">{formatCurrency(item.precio)}</span>
+                          <span className="text-xs text-[#A1A1AA]">{formatCurrency(item.precio)}</span>
                         </div>
                       ) : null;
                     })}
@@ -1569,9 +1569,9 @@ const Cotizador = () => {
                 )}
               </div>
 
-              <div className="bg-gradient-to-r from-brand-cyan/10 via-brand-cyan/5 to-transparent border border-brand-cyan/20 rounded-xl px-5 py-4 flex justify-between items-center mb-4">
+              <div className="bg-gradient-to-r from-white/10 via-white/5 to-transparent border border-white/[0.06] rounded-xl px-5 py-4 flex justify-between items-center mb-4">
                 <div>
-                  <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Inversión total</span>
+                  <span className="text-xs text-[#A1A1AA] uppercase tracking-wider font-semibold">Inversión total</span>
                   <p className="text-[10px] text-emerald-400 mt-1 flex items-center gap-1">
                     <span className="w-1 h-1 rounded-full bg-emerald-400" />
                     Hosting $0 de por vida
@@ -1579,14 +1579,14 @@ const Cotizador = () => {
                 </div>
                 <span className="text-2xl font-extrabold font-heading text-white drop-shadow-[0_0_12px_rgba(34,211,238,0.3)]">
                   {formatCurrency(total)}{' '}
-                  <span className="text-xs font-normal text-slate-400">{moneda === 'CLP' ? 'CLP' : ''}</span>
+                  <span className="text-xs font-normal text-[#A1A1AA]">{moneda === 'CLP' ? 'CLP' : ''}</span>
                 </span>
               </div>
 
               <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 space-y-3 mb-4">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Incluye</span>
+                  <span className="text-xs font-semibold text-[#A1A1AA] uppercase tracking-wider">Incluye</span>
                 </div>
                 {[
                   { label: 'Hosting serverless', detail: '$0 de por vida', icon: '✓' },
@@ -1598,7 +1598,7 @@ const Cotizador = () => {
                   <div key={i} className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
                       <span className="text-emerald-400 text-[10px]">{item.icon}</span>
-                      <span className="text-slate-300">{item.label}</span>
+                      <span className="text-[#A1A1AA]">{item.label}</span>
                     </div>
                     <span className="text-slate-500">{item.detail}</span>
                   </div>
@@ -1639,7 +1639,7 @@ const Cotizador = () => {
           >
             <button
               onClick={() => setShowSignatures(false)}
-              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
+              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-[#A1A1AA] hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
               aria-label="Cerrar"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1648,20 +1648,20 @@ const Cotizador = () => {
             </button>
 
             <div className="text-center mb-6">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-brand-cyan/20 to-blue-500/10 border border-brand-cyan/20 flex items-center justify-center">
-                <PenTool className="w-7 h-7 text-brand-cyan" />
+              <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-white/20 to-white/5 border border-white/[0.06] flex items-center justify-center">
+                <PenTool className="w-7 h-7 text-white/60" />
               </div>
               <h4 className="text-xl sm:text-2xl font-heading font-bold text-white mb-1">
                 Firma Digital
               </h4>
-              <p className="text-sm text-slate-400 max-w-xs mx-auto">
+              <p className="text-sm text-[#A1A1AA] max-w-xs mx-auto">
                 Dibuja tu firma en el recuadro para aprobar la cotización
               </p>
             </div>
 
             <div className="space-y-5">
               <div>
-                <label className="text-sm text-slate-300 block mb-2 font-medium flex items-center justify-between">
+                <label className="text-sm text-[#A1A1AA] block mb-2 font-medium flex items-center justify-between">
                   <span>Tu firma</span>
                   {clientSigned && (
                     <span className="text-emerald-400 text-xs flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
@@ -1680,7 +1680,7 @@ const Cotizador = () => {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-emerald-300">Firma registrada</p>
-                    <p className="text-xs text-slate-400 mt-0.5">Tu firma digital será incluida en el PDF de la propuesta.</p>
+                    <p className="text-xs text-[#A1A1AA] mt-0.5">Tu firma digital será incluida en el PDF de la propuesta.</p>
                   </div>
                 </div>
               )}
@@ -1696,7 +1696,7 @@ const Cotizador = () => {
                       handleClientClear();
                     }
                   }}
-                  className="flex-1 px-4 py-3 rounded-xl border border-white/10 text-slate-300 hover:text-white hover:border-white/30 hover:bg-white/[0.03] transition-all text-sm font-medium flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-3 rounded-xl border border-white/10 text-[#A1A1AA] hover:text-white hover:border-white/30 hover:bg-white/[0.03] transition-all text-sm font-medium flex items-center justify-center gap-2"
                 >
                   <Eraser className="w-4 h-4" />
                   Limpiar y volver a firmar
@@ -1710,7 +1710,7 @@ const Cotizador = () => {
                     setError(null);
                     setShowSignatures(false);
                   }}
-                  className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-brand-cyan to-blue-500 text-white font-bold text-sm transition-all hover:shadow-lg hover:shadow-brand-cyan/25 hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-white to-white/80 text-white font-bold text-sm transition-all hover:shadow-lg hover:shadow-white/10 hover:-translate-y-0.5 flex items-center justify-center gap-2"
                 >
                   <Check className="w-4 h-4" />
                   Confirmar firma
@@ -1740,7 +1740,7 @@ const Cotizador = () => {
           >
             <button
               onClick={() => { setError(null); setShowPdfPreview(false); setPdfPreviewUrl(null); }}
-              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
+              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-[#A1A1AA] hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -1748,7 +1748,7 @@ const Cotizador = () => {
             </button>
 
             <h4 className="text-lg font-heading font-bold text-white mb-4 flex items-center gap-2">
-              <FileDown className="w-5 h-5 text-brand-cyan" />
+              <FileDown className="w-5 h-5 text-white/60" />
               Vista previa de tu cotización
             </h4>
 
@@ -1766,7 +1766,7 @@ const Cotizador = () => {
             <div className="flex gap-3 justify-end flex-wrap">
               <button
                 onClick={() => { setError(null); setShowPdfPreview(false); setPdfPreviewUrl(null); }}
-                className="px-5 py-2.5 rounded-xl border border-white/10 text-slate-300 hover:text-white hover:border-white/30 transition-all text-sm"
+                className="px-5 py-2.5 rounded-xl border border-white/10 text-[#A1A1AA] hover:text-white hover:border-white/30 transition-all text-sm"
               >
                 Cancelar
               </button>
@@ -1777,7 +1777,7 @@ const Cotizador = () => {
                     pdfDocRef.current.save(nombreArchivo);
                   }
                 }}
-                className="px-5 py-2.5 rounded-xl border border-brand-cyan/30 bg-brand-cyan/5 text-white hover:bg-brand-cyan/10 transition-all text-sm flex items-center gap-2"
+                className="px-5 py-2.5 rounded-xl border border-white/[0.08] bg-white/[0.02] text-white hover:bg-white/[0.03] transition-all text-sm flex items-center gap-2"
               >
                 <FileDown className="w-4 h-4" />
                 Descargar PDF
@@ -1785,7 +1785,7 @@ const Cotizador = () => {
               <button
                 onClick={enviarCotizacion}
                 disabled={loading}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-brand-cyan text-white font-bold transition-all text-sm hover:shadow-xl hover:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-white text-white font-bold transition-all text-sm hover:shadow-xl hover:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Enviando...' : 'Enviar Cotización'}
               </button>
