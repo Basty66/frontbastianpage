@@ -429,7 +429,7 @@ const Cotizador = () => {
       const pdfBase64 = doc.output('datauristring').split(',')[1];
       const slugNombre = (formData.nombre || 'pendiente').trim().replace(/\s+/g, '_') || 'pendiente';
       const slugEmpresa = formData.empresa ? `_${formData.empresa.trim().replace(/\s+/g, '_')}` : '';
-      const pdfName = `Propuesta_BastianDev${slugEmpresa}_${slugNombre}.pdf`;
+      const pdfName = `Propuesta_BSDigitalTech${slugEmpresa}_${slugNombre}.pdf`;
       const tipoId = getTipoId();
 
       try {
@@ -593,7 +593,7 @@ const Cotizador = () => {
     }
 
     function addFooter() {
-      text(`Bastian.dev  |  ${propuestaNum}  |  ${formatDate(hoy)}  |  Pagina ${pageNum}`,
+      text(`BS DigitalTech  |  ${propuestaNum}  |  ${formatDate(hoy)}  |  Pagina ${pageNum}`,
         mg, ph - 8, 7, 'normal', gray);
     }
 
@@ -603,7 +603,7 @@ const Cotizador = () => {
     venc.setDate(venc.getDate() + 15);
 
     // =============== HEADER ===============
-    text('Bastian.dev', mg, y, 22, 'bold', black);
+    text('BS DigitalTech', mg, y, 22, 'bold', black);
     text('Soluciones Web Profesionales', mg, y + 8, 9, 'normal', dark);
     text('Serverless  |  Hosting $0', mg, y + 13, 8, 'normal', gray);
 
@@ -1274,7 +1274,7 @@ const Cotizador = () => {
 
               <a
                 href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                  `¡Hola Bastian! Soy ${formData.nombre}. Tengo una consulta sobre mi cotización.`
+                  `¡Hola! Soy ${formData.nombre}. Tengo una consulta sobre mi cotización de BS DigitalTech.`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1773,7 +1773,7 @@ const Cotizador = () => {
               <button
                 onClick={() => {
                   if (pdfDocRef.current) {
-                    const nombreArchivo = `Propuesta_BastianDev_${formData.nombre?.replace(/\s+/g, '_') || 'pendiente'}_${formatDate(new Date()).replace(/\//g, '-')}.pdf`;
+      const nombreArchivo = `Propuesta_BSDigitalTech_${formData.nombre?.replace(/\s+/g, '_') || 'pendiente'}_${formatDate(new Date()).replace(/\//g, '-')}.pdf`;
                     pdfDocRef.current.save(nombreArchivo);
                   }
                 }}

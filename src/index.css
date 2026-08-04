@@ -6,6 +6,12 @@
   --accent-h: 183;
   --accent-s: 80%;
   --accent-l: 50%;
+  --bg-primary: #0F172A;
+  --bg-surface: #121212;
+  --bg-card: #1E293B;
+  --text-primary: #F3F4F6;
+  --text-secondary: #D1D5DB;
+  --color-amber: #F59E0B;
 }
 
 [data-accent="cyan"] {
@@ -133,6 +139,8 @@ html {
 
 body {
   overflow-x: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .animate-modal-overlay {

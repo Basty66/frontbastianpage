@@ -26,7 +26,7 @@ export default function ExitPopup() {
     setSent(true);
     const link = document.createElement('a');
     link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-      `¡Hola Bastian! Soy ${email.split('@')[0] || 'un cliente'}. Me interesa recibir un presupuesto personalizado. Mi correo es ${email}`
+      `¡Hola! Soy ${email.split('@')[0] || 'un cliente'}. Me interesa recibir un presupuesto personalizado de BS DigitalTech. Mi correo es ${email}`
     )}`;
     link.target = '_blank';
     link.click();

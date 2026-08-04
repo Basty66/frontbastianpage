@@ -20,21 +20,21 @@ export default function Terms() {
         <div className="space-y-6 text-slate-300 text-sm sm:text-base leading-relaxed">
           <Reveal animation="fade-up" delay={50}>
             <p>
-              Al acceder y utilizar los servicios de <strong className="text-white">Bastian.dev</strong>, aceptas los siguientes términos y condiciones. Si no estás de acuerdo, por favor no utilices nuestros servicios.
+              Al acceder y utilizar los servicios de <strong className="text-white">BS DigitalTech</strong>, aceptas los siguientes términos y condiciones. Si no estás de acuerdo, por favor no utilices nuestros servicios.
             </p>
           </Reveal>
 
           <Reveal animation="fade-up" delay={100}>
             <h2 className="text-xl sm:text-2xl font-heading font-semibold text-white mt-8 mb-3">1. Servicios</h2>
             <p>
-              Bastian.dev ofrece servicios de desarrollo web, incluyendo landing pages, sitios corporativos, e-commerce y aplicaciones web. Cada proyecto se cotiza de forma personalizada según los requerimientos del cliente.
+              BS DigitalTech ofrece servicios de desarrollo web, incluyendo landing pages, sitios corporativos, e-commerce y aplicaciones web. Cada proyecto se cotiza de forma personalizada según los requerimientos del cliente.
             </p>
           </Reveal>
 
           <Reveal animation="fade-up" delay={150}>
             <h2 className="text-xl sm:text-2xl font-heading font-semibold text-white mt-8 mb-3">2. Propiedad intelectual</h2>
             <p>
-              El código fuente desarrollado para tu proyecto te pertenece una vez pagado en su totalidad. Bastian.dev se reserva el derecho de mostrar el proyecto terminado en su portafolio profesional.
+              El código fuente desarrollado para tu proyecto te pertenece una vez pagado en su totalidad. BS DigitalTech se reserva el derecho de mostrar el proyecto terminado en su portafolio profesional.
             </p>
           </Reveal>
 
@@ -55,7 +55,7 @@ export default function Terms() {
           <Reveal animation="fade-up" delay={300}>
             <h2 className="text-xl sm:text-2xl font-heading font-semibold text-white mt-8 mb-3">5. Limitación de responsabilidad</h2>
             <p>
-              Bastian.dev no se hace responsable por daños directos o indirectos derivados del uso de los sitios web desarrollados, incluyendo pérdida de datos o interrupción del servicio, salvo negligencia comprobada.
+              BS DigitalTech no se hace responsable por daños directos o indirectos derivados del uso de los sitios web desarrollados, incluyendo pérdida de datos o interrupción del servicio, salvo negligencia comprobada.
             </p>
           </Reveal>
 

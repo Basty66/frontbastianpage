@@ -140,7 +140,7 @@ const Testimonios = () => {
             >
               <Star className="w-6 h-6 mx-auto mb-2 text-slate-500 group-hover:text-amber-400 transition-colors duration-500" />
               <p className="text-sm text-slate-400 group-hover:text-white transition-colors font-medium">
-                ¿Ya trabajaste conmigo? <span className="text-brand-cyan">Deja tu reseña</span>
+                ¿Ya trabajaste con nosotros? <span className="text-brand-cyan">Deja tu reseña</span>
               </p>
             </button>
           ) : enviado ? (

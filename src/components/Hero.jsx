@@ -216,18 +216,18 @@ const Hero = () => {
       </div>
       <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-5 sm:space-y-6 text-center lg:text-left">
         <span className="inline-block text-brand-cyan font-semibold tracking-wider text-xs sm:text-sm uppercase px-2.5 sm:px-3 py-1 bg-brand-cyan/10 rounded-full border border-brand-cyan/20 backdrop-blur-sm">
-          Analista Programador Independiente
+          Agencia Digital · Chile
         </span>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight">
           <span className="bg-gradient-to-r from-white via-white to-slate-300 bg-clip-text text-transparent">
-            Desarrollo Web para PYMEs en Chile con
+            Desarrollamos Web para PYMEs en Chile con
           </span>{' '}
           <span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(34,211,238,0.3)]">
             {typewriterText}{!typewriterDone && <span className="animate-typewriter-cursor text-brand-cyan">|</span>}
           </span>
         </h1>
         <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl">
-          Creo landing pages, e-commerce y webs corporativas para negocios chilenos. Arquitectura serverless con hosting $0 — sin costos mensuales, sin servidores, sin sorpresas.
+          Creamos landing pages, e-commerce y webs corporativas para negocios chilenos. Arquitectura serverless con hosting $0 — sin costos mensuales, sin servidores, sin sorpresas.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-3 sm:pt-4">
           <button

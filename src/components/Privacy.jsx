@@ -20,7 +20,7 @@ export default function Privacy() {
         <div className="space-y-6 text-slate-300 text-sm sm:text-base leading-relaxed">
           <Reveal animation="fade-up" delay={50}>
             <p>
-              En <strong className="text-white">Bastian.dev</strong>, valoramos tu privacidad. Esta política explica cómo recopilamos, usamos y protegemos tu información personal cuando visitas nuestro sitio web o utilizas nuestros servicios.
+              En <strong className="text-white">BS DigitalTech</strong>, valoramos tu privacidad. Esta política explica cómo recopilamos, usamos y protegemos tu información personal cuando visitas nuestro sitio web o utilizas nuestros servicios.
             </p>
           </Reveal>
 

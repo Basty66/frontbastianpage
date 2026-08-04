@@ -33,7 +33,7 @@ const projects = [
   },
   {
     id: 'bastian',
-    name: 'Bastian.dev',
+    name: 'BS DigitalTech',
     tag: 'Portfolio',
     img: '/screenshots/bastian-dev.png',
     url: 'https://frontbastianpage.vercel.app',

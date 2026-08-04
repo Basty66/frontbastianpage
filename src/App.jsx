@@ -176,7 +176,7 @@ function App() {
   }, [navigate, location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col text-white selection:bg-brand-cyan/30 selection:text-white bg-gradient-to-tr from-[#030712] via-[#0b1329] to-[#0f172a]">
+    <div className="min-h-screen flex flex-col text-white selection:bg-brand-cyan/30 selection:text-white" style={{ background: 'linear-gradient(to top right, #030712, #0F172A, #1E293B)' }}>
       {/* Scroll Progress */}
       <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
@@ -186,18 +186,11 @@ function App() {
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
           <Link to="/" onClick={() => { handleLogoClick(); setMenuOpen(false); }} className="flex items-center gap-1.5 sm:gap-2 group">
-            <svg viewBox="0 2 40 26" fill="none" className="w-7 h-7 sm:w-8 sm:h-8 drop-shadow-[0_0_6px_rgba(34,211,238,0.4)]" style={{ animation: 'fade-slide-in 0.6s ease-out' }}>
-              <path d="M20 6C12 6 7 12 7 19v4a3 3 0 003 3h20a3 3 0 003-3v-4c0-7-5-13-13-13z" stroke="#22d3ee" strokeWidth="1.8" strokeLinecap="round" className="group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-700" />
-              <path d="M11 9L7 3l7 4" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-700" />
-              <path d="M29 9l4-6-7 4" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-700" />
-              <circle cx="15" cy="18" r="3.5" stroke="#22d3ee" strokeWidth="1.6" className="group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-700" />
-              <circle cx="25" cy="18" r="3.5" stroke="#22d3ee" strokeWidth="1.6" className="group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-700" />
-              <circle cx="15" cy="18" r="1.5" fill="#ffffff" className="transition-all duration-700" />
-              <circle cx="25" cy="18" r="1.5" fill="#ffffff" className="transition-all duration-700" />
-              <path d="M18.5 23l1.5 2 1.5-2" stroke="#22d3ee" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-all duration-700" />
-            </svg>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-brand-cyan to-blue-500 flex items-center justify-center shadow-lg shadow-brand-cyan/20 group-hover:shadow-brand-cyan/40 transition-shadow duration-300">
+              <span className="text-[10px] sm:text-xs font-black text-white tracking-tight">BS</span>
+            </div>
             <span className="font-bold text-lg sm:text-xl tracking-tight text-white" style={{ animation: 'fade-slide-in 0.6s ease-out 0.1s both' }}>
-              Bastian<span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent drop-shadow-[0_0_6px_rgba(34,211,238,0.25)]">.dev</span>
+              BS<span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent">DigitalTech</span>
             </span>
           </Link>
 
@@ -282,7 +275,7 @@ function App() {
           <Link to="/blog" className="text-xs sm:text-sm text-slate-400 hover:text-brand-cyan transition-colors">Blog</Link>
         </div>
         <p className="text-slate-400 text-xs mb-2">Santiago, Región Metropolitana, Chile</p>
-        <p className="text-slate-300 text-xs sm:text-sm">© 2026 Bastian.dev — Desarrollo Web para PYMEs Chilenas · Hosting $0</p>
+        <p className="text-slate-300 text-xs sm:text-sm">© 2026 BS DigitalTech — Desarrollo Web para PYMEs Chilenas · Hosting $0</p>
       </Reveal>
 
       <a

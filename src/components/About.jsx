@@ -22,13 +22,13 @@ const About = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 tracking-tight">
-            Sobre{' '}
+            <span className="text-white">Sobre </span>
             <span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent">
-              Mí
+              Nosotros
             </span>
           </h2>
           <p className="text-slate-300">
-            Detrás del código hay una persona comprometida con transformar ideas en soluciones digitales reales.
+            Somos un equipo comprometido con transformar ideas en soluciones digitales reales para PYMEs chilenas.
           </p>
         </Reveal>
 
@@ -49,22 +49,12 @@ const About = () => {
               </div>
 
               <div className="relative text-center mt-6">
-                <svg viewBox="0 2 40 26" fill="none" className="absolute inset-0 w-full h-full text-brand-cyan/[0.04] group-hover:text-brand-cyan/[0.08] transition-opacity duration-700 pointer-events-none scale-[2] origin-center">
-                  <path d="M20 6C12 6 7 12 7 19v4a3 3 0 003 3h20a3 3 0 003-3v-4c0-7-5-13-13-13z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                  <path d="M11 9L7 3l7 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M29 9l4-6-7 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <circle cx="15" cy="18" r="3.5" stroke="currentColor" strokeWidth="1.6" />
-                  <circle cx="25" cy="18" r="3.5" stroke="currentColor" strokeWidth="1.6" />
-                  <circle cx="15" cy="18" r="1.5" fill="currentColor" />
-                  <circle cx="25" cy="18" r="1.5" fill="currentColor" />
-                  <path d="M18.5 23l1.5 2 1.5-2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-[1px] bg-gradient-to-r from-transparent via-brand-cyan/50 to-transparent group-hover:via-brand-cyan transition-all duration-500" />
                 <h3 className="relative z-10 text-xl font-heading font-semibold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 group-hover:bg-clip-text transition-all duration-500">
                   Cristian Bastian Cerda
                 </h3>
-                <p className="relative z-10 text-brand-cyan text-sm font-medium mt-1">Analista Programador</p>
-                <p className="relative z-10 text-slate-400 text-xs mt-2">Full-Stack · Arq. Serverless</p>
+                <p className="relative z-10 text-brand-cyan text-sm font-medium mt-1">Fundador & Director Técnico</p>
+                <p className="relative z-10 text-slate-400 text-xs mt-2">BS DigitalTech · Full-Stack · Arq. Serverless</p>
               </div>
             </div>
           </Reveal>
@@ -75,24 +65,24 @@ const About = () => {
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-cyan/[0.02] to-transparent pointer-events-none" />
                 <h3 className="relative text-xl sm:text-2xl font-heading font-bold text-white mb-4 flex items-center gap-3">
                   <span className="w-1 h-6 bg-brand-cyan rounded-full inline-block group-hover:shadow-[0_0_8px_rgba(34,211,238,0.6)] transition-shadow duration-500" />
-                  Mi{' '}
+                  Nuestra{' '}
                   <span className="bg-gradient-to-r from-cyan-300 via-brand-cyan to-blue-400 bg-clip-text text-transparent">
-                    Trayectoria
+                    Misión
                   </span>
                 </h3>
                 <div className="relative space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
                   <p>
-                    Soy Analista Programador independiente especializado en desarrollo web moderno.
-                    Mi enfoque combina principios full-stack con arquitecturas serverless para ofrecer
+                    Somos BS DigitalTech, una agencia digital especializada en desarrollo web moderno.
+                    Nuestro enfoque combina principios full-stack con arquitecturas serverless para ofrecer
                     plataformas rápidas, seguras y sin costos fijos de infraestructura.
                   </p>
                   <p>
-                    Cada proyecto que desarrollo está pensado para resolver problemas reales de las PYMEs chilenas:
+                    Cada proyecto que desarrollamos está pensado para resolver problemas reales de las PYMEs chilenas:
                     reducir costos operativos, automatizar procesos y multiplicar su alcance digital.
-                    Trabajo codo a codo con cada cliente para traducir sus necesidades en soluciones técnicas efectivas.
+                    Trabajamos codo a codo con cada cliente para traducir sus necesidades en soluciones técnicas efectivas.
                   </p>
                   <p>
-                    Creo firmemente en el aprendizaje continuo y en aplicar las mejores prácticas de la industria
+                    Creemos firmemente en el aprendizaje continuo y en aplicar las mejores prácticas de la industria
                     para entregar productos que no solo se vean bien, sino que realmente funcionen y generen resultados.
                   </p>
                 </div>

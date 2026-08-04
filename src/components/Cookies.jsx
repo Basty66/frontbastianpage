@@ -20,7 +20,7 @@ export default function Cookies() {
         <div className="space-y-6 text-slate-300 text-sm sm:text-base leading-relaxed">
           <Reveal animation="fade-up" delay={50}>
             <p>
-              En <strong className="text-white">Bastian.dev</strong> utilizamos cookies para mejorar tu experiencia de navegación y entender cómo interactúas con nuestro sitio.
+              En <strong className="text-white">BS DigitalTech</strong> utilizamos cookies para mejorar tu experiencia de navegación y entender cómo interactúas con nuestro sitio.
             </p>
           </Reveal>
 
