@@ -57,7 +57,7 @@ function ROICalculator() {
   return (
     <div className="space-y-2 font-normal not-italic">
       <div className="flex items-center justify-between text-xs">
-        <span className="text-slate-500">Hosting actual:</span>
+        <span className="text-[#A1A1AA]">Hosting actual:</span>
         <span className="text-white font-semibold">${hostingCost.toLocaleString('es-CL')}/mes</span>
       </div>
       <input
@@ -70,13 +70,13 @@ function ROICalculator() {
         className="w-full"
       />
       <div className="flex items-center justify-between">
-        <span className="text-[10px] text-slate-500">$5.000</span>
-        <span className="text-[10px] text-slate-500">$50.000</span>
+        <span className="text-[10px] text-[#A1A1AA]">$5.000</span>
+        <span className="text-[10px] text-[#A1A1AA]">$50.000</span>
       </div>
       <div className="pt-1 border-t border-white/5 mt-1">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-slate-500">Ahorras al año:</span>
-          <span className="text-emerald-400 font-bold text-sm">${yearly.toLocaleString('es-CL')}</span>
+          <span className="text-[#A1A1AA]">Ahorras al año:</span>
+          <span className="text-white font-bold text-sm">${yearly.toLocaleString('es-CL')}</span>
         </div>
       </div>
     </div>
@@ -215,7 +215,7 @@ const Hero = () => {
         ))}
       </div>
       <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-5 sm:space-y-6 text-center lg:text-left">
-        <span className="inline-block text-brand-cyan font-semibold tracking-wider text-xs sm:text-sm uppercase px-2.5 sm:px-3 py-1 bg-brand-cyan/10 rounded-full border border-brand-cyan/20 backdrop-blur-sm">
+        <span className="inline-block text-white/60 font-semibold tracking-wider text-xs sm:text-sm uppercase px-2.5 sm:px-3 py-1 bg-white/[0.03] rounded-full border border-white/[0.06] backdrop-blur-sm">
           Agencia Digital · Chile
         </span>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight">
@@ -232,15 +232,13 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-3 sm:pt-4">
           <button
             onClick={(e) => { createRipple(e); scrollToCotizador(); }}
-            className="ripple-container relative overflow-hidden group text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out border border-[#F97316]/30 bg-[#F97316]/5 shadow-lg shadow-[#F97316]/10 md:animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-[#F97316]/25 hover:-translate-y-0.5 text-sm sm:text-base"
+            className="ripple-container relative overflow-hidden group bg-white text-black font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out hover:bg-slate-100 hover:shadow-xl hover:-translate-y-0.5 text-sm sm:text-base"
           >
-            <span className="absolute inset-0 bg-gradient-to-r from-[#F97316] to-[#FB923C] -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
             <span className="relative z-10">Cotizar mi proyecto</span>
           </button>
           <button
             onClick={(e) => { createRipple(e); navigate('/portafolio'); }}
-            className="ripple-container relative overflow-hidden group border border-brand-cyan/30 text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out bg-brand-cyan/5 shadow-lg shadow-brand-cyan/10 md:animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 text-sm sm:text-base">
-            <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-brand-cyan -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+            className="ripple-container relative overflow-hidden group border border-white/10 text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out bg-white/[0.03] backdrop-blur-sm hover:bg-white/[0.06] hover:border-white/20 hover:-translate-y-0.5 text-sm sm:text-base">
             <span className="relative z-10">Ver Portafolio</span>
           </button>
         </div>
@@ -252,10 +250,10 @@ const Hero = () => {
           <CounterBlock refKey="disp" target={100} suffix="%" label="Disponibilidad" />
         </div>
         <Reveal animation="fade-up" delay={400} className="pt-4 sm:pt-6">
-          <div className="flex items-center gap-3 bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 backdrop-blur-sm max-w-sm mx-auto lg:mx-0">
+          <div className="flex items-center gap-3 bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 backdrop-blur-sm max-w-sm mx-auto lg:mx-0">
             <div className="flex -space-x-2">
               {['M', 'C', 'P'].map((initial, i) => (
-                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-cyan/30 to-blue-500/30 border-2 border-[#09090B] flex items-center justify-center text-white text-xs font-bold">
+                <div key={i} className="w-8 h-8 rounded-full bg-white/[0.06] border-2 border-[#09090B] flex items-center justify-center text-white/60 text-xs font-bold">
                   {initial}
                 </div>
               ))}
@@ -263,59 +261,47 @@ const Hero = () => {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-0.5">
                 {[1, 2, 3, 4, 5].map((s) => (
-                  <Star key={s} className="w-3 h-3 fill-amber-400 text-amber-400" />
+                  <Star key={s} className="w-3 h-3 fill-white/60 text-white/60" />
                 ))}
               </div>
-              <p className="text-[10px] text-slate-400 truncate">+15 clientes satisfechos</p>
+              <p className="text-[10px] text-[#A1A1AA] truncate">+15 clientes satisfechos</p>
             </div>
           </div>
         </Reveal>
       </Reveal>
       <Reveal animation="fade-right" delay={200} className="relative z-10 flex-1 w-full max-w-xl">
-        <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-sm md:backdrop-blur-lg md:animate-float">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-cyan/5 rounded-full blur-3xl -z-10" />
-          <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-sm md:backdrop-blur-lg md:animate-float">
+          <div className="flex items-center justify-between border-b border-white/[0.06] pb-4 mb-6">
             <div className="flex gap-2">
-              <span className="w-3 h-3 bg-red-500/80 rounded-full md:animate-pulse" />
-              <span className="w-3 h-3 bg-yellow-500/80 rounded-full md:animate-pulse md:[animation-delay:0.3s]" />
-              <span className="w-3 h-3 bg-green-500/80 rounded-full md:animate-pulse md:[animation-delay:0.6s]" />
+              <span className="w-3 h-3 bg-white/20 rounded-full" />
+              <span className="w-3 h-3 bg-white/10 rounded-full" />
+              <span className="w-3 h-3 bg-white/5 rounded-full" />
             </div>
-            <span className="text-xs text-slate-400 font-heading">frontbastianpage.cl</span>
+            <span className="text-xs text-[#A1A1AA] font-heading">frontbastianpage.cl</span>
           </div>
 
           <div className="space-y-4">
-            <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-brand-cyan/20 hover:bg-white/[0.05]">
-              <div className="text-xs text-slate-400 mb-1">Rendimiento Core Web Vitals</div>
+            <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]">
+              <div className="text-xs text-[#A1A1AA] mb-1">Rendimiento Core Web Vitals</div>
               <div className="flex items-center gap-3">
-                <div className="text-2xl font-bold font-heading text-emerald-400">100%</div>
+                <div className="text-2xl font-bold font-heading text-white">100%</div>
                 <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
-                  <div className="bg-gradient-to-r from-emerald-400 to-emerald-300 h-full w-full rounded-full" />
+                  <div className="bg-white/60 h-full w-full rounded-full" />
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-brand-cyan/20 hover:bg-white/[0.05]">
-                <div className="text-xs text-slate-400 mb-1">Costo Fijo de Servidor</div>
-                <div className="text-xl font-bold font-heading text-white">$0 CLP <span className="text-xs text-emerald-400">Serverless</span></div>
+              <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]">
+                <div className="text-xs text-[#A1A1AA] mb-1">Costo Fijo de Servidor</div>
+                <div className="text-xl font-bold font-heading text-white">$0 CLP <span className="text-xs text-[#A1A1AA]">Serverless</span></div>
               </div>
-              <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5 backdrop-blur-sm transition-all duration-300 hover:border-brand-cyan/20 hover:bg-white/[0.05]">
-                <div className="text-xs text-slate-400 mb-1">Ahorro Anual vs Hosting</div>
-                <div className="text-xl font-bold font-heading">
+              <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]">
+                <div className="text-xs text-[#A1A1AA] mb-1">Ahorro Anual vs Hosting</div>
+                <div className="text-xl font-bold font-heading text-white">
                   <ROICalculator />
                 </div>
               </div>
-            </div>
-
-            <div className="p-4 bg-white/[0.02] rounded-xl font-mono text-xs text-brand-cyan/60 space-y-1 border border-white/5 backdrop-blur-sm">
-              <p>
-                <span className="text-purple-400">const</span> shop = <span className="text-yellow-400">createStore</span>(React);
-                <span className="inline-block ml-1 w-1.5 h-4 bg-brand-cyan/80 align-middle animate-pulse" />
-              </p>
-              <p>
-                <span className="text-purple-400">export default</span> serverlessEdgeContext;
-                <span className="inline-block ml-1 w-1.5 h-4 bg-brand-cyan/80 align-middle animate-pulse" />
-              </p>
             </div>
           </div>
         </div>
