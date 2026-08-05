@@ -17,30 +17,12 @@ import CookieConsent from './components/CookieConsent';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
 import Cookies from './components/Cookies';
+import { CotizadorSkeleton, BlogSkeleton } from './components/Skeletons';
 import { WHATSAPP_FULL } from './lib/constants';
 
 const Cotizador = lazy(() => import('./components/Cotizador'));
 const BlogList = lazy(() => import('./components/BlogList'));
 const BlogPost = lazy(() => import('./components/BlogPost'));
-
-function CotizadorSkeleton() {
-  return (
-    <section className="py-16 sm:py-20 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto animate-pulse">
-        <div className="text-center mb-10 sm:mb-12 space-y-3">
-          <div className="h-10 w-72 sm:h-12 sm:w-96 bg-white/5 rounded-xl mx-auto" />
-          <div className="h-5 w-56 bg-white/5 rounded-lg mx-auto" />
-        </div>
-        <div className="grid md:grid-cols-3 gap-6 mb-10">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-64 bg-white/[0.02] border border-white/5 rounded-2xl" />
-          ))}
-        </div>
-        <div className="h-96 bg-white/[0.02] border border-white/5 rounded-2xl" />
-      </div>
-    </section>
-  );
-}
 
 const navLinks = [
   { label: 'Inicio', id: 'inicio' },
@@ -196,8 +178,8 @@ function App() {
               <circle cx="25" cy="18" r="1.5" fill="white" fillOpacity="0.8" className="group-hover:fill-[#2563EB] transition-all duration-500" />
               <path d="M18.5 23l1.5 2 1.5-2" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 transition-all duration-500" />
             </svg>
-            <span className="font-bold text-lg sm:text-xl tracking-tight text-white" style={{ animation: 'fade-slide-in 0.6s ease-out 0.1s both' }}>
-              BS<span className="text-white/60 group-hover:text-white transition-colors duration-500">DigitalTech</span>
+            <span className="font-bold text-lg sm:text-xl tracking-tight" style={{ animation: 'fade-slide-in 0.6s ease-out 0.1s both' }}>
+              <span className="text-gradient-blue">BS</span><span className="text-gradient-chrome">DigitalTech</span>
             </span>
           </Link>
 
@@ -258,9 +240,9 @@ function App() {
               <Route path="/privacidad" element={<Privacy />} />
               <Route path="/terminos" element={<Terms />} />
               <Route path="/cookies" element={<Cookies />} />
-              <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><Admin /></Suspense>} />
-              <Route path="/blog" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><BlogList /></Suspense>} />
-              <Route path="/blog/:slug" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Cargando...</div>}><BlogPost /></Suspense>} />
+              <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400"><div className="animate-pulse text-sm">Cargando panel...</div></div>}><Admin /></Suspense>} />
+              <Route path="/blog" element={<Suspense fallback={<BlogSkeleton />}><BlogList /></Suspense>} />
+              <Route path="/blog/:slug" element={<Suspense fallback={<BlogSkeleton />}><BlogPost /></Suspense>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

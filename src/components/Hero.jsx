@@ -217,7 +217,7 @@ const Hero = () => {
         ))}
       </div>
       <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-5 sm:space-y-6 text-center lg:text-left">
-        <span className="inline-block text-white/60 font-semibold tracking-wider text-xs sm:text-sm uppercase px-2.5 sm:px-3 py-1 bg-white/[0.03] rounded-full border border-white/[0.06] backdrop-blur-sm">
+        <span className="inline-block text-blue-400/70 font-semibold tracking-wider text-xs sm:text-sm uppercase px-2.5 sm:px-3 py-1 bg-blue-500/[0.06] rounded-full border border-blue-500/15 backdrop-blur-sm">
           Agencia Digital · Chile
         </span>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight">
@@ -246,13 +246,13 @@ const Hero = () => {
         </div>
         <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-8 pt-4 sm:pt-6 flex-wrap">
           <CounterBlock refKey="proy" target={20} suffix="+" label="Proyectos" />
-          <div className="w-px h-8 sm:h-10 bg-white/10" />
+          <div className="w-px h-8 sm:h-10 bg-blue-500/20" />
           <CounterBlock refKey="cli" target={15} suffix="+" label="Clientes" />
-          <div className="w-px h-8 sm:h-10 bg-white/10" />
+          <div className="w-px h-8 sm:h-10 bg-blue-500/20" />
           <CounterBlock refKey="disp" target={100} suffix="%" label="Disponibilidad" />
         </div>
         <Reveal animation="fade-up" delay={400} className="pt-4 sm:pt-6">
-          <div className="flex items-center gap-3 bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 backdrop-blur-sm max-w-sm mx-auto lg:mx-0">
+          <div className="flex items-center gap-3 bg-white/[0.03] border border-blue-500/10 rounded-xl px-4 py-3 backdrop-blur-sm max-w-sm mx-auto lg:mx-0 hover:border-blue-500/25 transition-colors duration-500">
             <div className="flex -space-x-2">
               {['M', 'C', 'P'].map((initial, i) => (
                 <div key={i} className="w-8 h-8 rounded-full bg-white/[0.06] border-2 border-[#09090B] flex items-center justify-center text-white/60 text-xs font-bold">

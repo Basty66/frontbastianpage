@@ -6,38 +6,62 @@ const services = [
     icon: Rocket,
     title: 'Velocidad que Vende',
     desc: 'Tu página carga en segundos, no en minutos. Los clientes no esperan y Google te premia por ello.',
+    color: 'from-white/[0.02] to-white/[0.005]',
+    border: 'border-white/[0.06]',
+    glow: 'rgba(37,99,235,0.06)',
+    size: '',
   },
   {
     icon: Gem,
     title: 'Sin Costos Fijos',
     desc: 'Olvídate de pagar hosting mensual. Solo pagas tu dominio una vez al año. Sin sorpresas.',
+    color: 'from-white/[0.02] to-white/[0.005]',
+    border: 'border-white/[0.06]',
+    glow: 'rgba(37,99,235,0.06)',
+    size: '',
   },
   {
     icon: Shield,
     title: 'Seguridad Total',
     desc: 'Tus datos y los de tus clientes están protegidos. Certificados de seguridad y pasarelas de pago seguras.',
+    color: 'from-white/[0.02] to-white/[0.005]',
+    border: 'border-white/[0.06]',
+    glow: 'rgba(37,99,235,0.06)',
+    size: '',
   },
   {
     icon: BarChart,
     title: 'Aparece en Google',
     desc: 'Tu página está optimizada para que los clientes te encuentren cuando buscan lo que vendes.',
+    color: 'from-white/[0.02] to-white/[0.005]',
+    border: 'border-white/[0.06]',
+    glow: 'rgba(37,99,235,0.06)',
+    size: '',
   },
   {
     icon: Layers,
     title: 'Tú Mismo Actualizas',
     desc: 'Panel fácil para que cambies textos, precios y productos sin depender de nadie.',
+    color: 'from-white/[0.02] to-white/[0.005]',
+    border: 'border-white/[0.06]',
+    glow: 'rgba(37,99,235,0.06)',
+    size: '',
   },
   {
     icon: Zap,
     title: 'Crece Sin Límites',
     desc: 'Desde 100 hasta 100.000 visitas, tu página funciona igual. Sin cambiar de plan ni pagar más.',
+    color: 'from-white/[0.02] to-white/[0.005]',
+    border: 'border-white/[0.06]',
+    glow: 'rgba(37,99,235,0.06)',
+    size: '',
   },
 ];
 
 const Services = () => {
   return (
     <section id="servicios" className="relative py-16 sm:py-20 px-4 sm:px-6 border-y border-white/5 overflow-hidden" style={{ background: '#09090B' }}>
-      <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-white/[0.02] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-blue-500/[0.03] rounded-full blur-3xl pointer-events-none" />
       <div className="max-w-7xl mx-auto relative z-10">
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight">
@@ -55,9 +79,9 @@ const Services = () => {
             return (
               <Reveal key={i} animation="fade-up" delay={i * 60}>
                 <div
-                  className={`group relative overflow-hidden bg-gradient-to-br ${s.color} border ${s.border} p-4 sm:p-6 md:p-8 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg transition-[transform,box-shadow] duration-400 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl h-full flex flex-col ${s.size}`}
+                  className={`group relative overflow-hidden bg-gradient-to-br ${s.color} border ${s.border} p-4 sm:p-6 md:p-8 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg transition-[transform,box-shadow,border-color] duration-400 hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl hover:border-blue-500/20 h-full flex flex-col ${s.size}`}
                   style={{ boxShadow: `0 0 0px ${s.glow}` }}
-                  onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 20px 60px ${s.glow}`; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 20px 60px ${s.glow}, 0 0 30px rgba(37,99,235,0.08)`; }}
                   onMouseLeave={(e) => { e.currentTarget.style.boxShadow = `0 0 0px ${s.glow}`; }}
                 >
                   <span className="absolute -top-12 -right-12 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-white/5" />

@@ -89,7 +89,7 @@ const Testimonios = () => {
 
   return (
     <section id="testimonios" className="relative py-16 sm:py-20 px-4 sm:px-6 border-y border-white/5 overflow-hidden" style={{ background: '#09090B' }}>
-      <div className="absolute top-1/3 -right-32 w-80 h-80 bg-white/[0.01] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 -right-32 w-80 h-80 bg-blue-500/[0.02] rounded-full blur-3xl pointer-events-none" />
       <div className="max-w-7xl mx-auto relative z-10">
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 tracking-tight">
@@ -105,7 +105,7 @@ const Testimonios = () => {
           {todos.map((t, i) => (
             <Reveal key={i} animation="fade-up" delay={i * 120}>
               <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-2 hover:border-blue-500/20 hover:shadow-lg hover:shadow-blue-500/5 h-full flex flex-col">
-                <div className="absolute top-3 right-3 text-white/[0.03]">
+                <div className="absolute top-3 right-3 text-blue-500/[0.06]">
                   <Quote className="w-16 h-16" />
                 </div>
                 <div className="relative flex gap-0.5 mb-4">

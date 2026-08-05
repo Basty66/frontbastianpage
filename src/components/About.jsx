@@ -16,8 +16,8 @@ const trajectory = [
 const About = () => {
   return (
     <section id="sobre-mi" className="relative py-16 sm:py-20 px-4 sm:px-6 border-y border-white/5 overflow-hidden" style={{ background: '#09090B' }}>
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-white/[0.01] rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-32 w-80 h-80 bg-white/[0.01] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/[0.02] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-32 w-80 h-80 bg-blue-500/[0.02] rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
@@ -32,7 +32,7 @@ const About = () => {
 
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
           <Reveal animation="fade-left" className="lg:col-span-2">
-            <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl">
+            <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-blue-500/20 hover:shadow-xl hover:shadow-blue-500/5">
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
 
               <div className="relative mx-auto max-w-[220px] sm:max-w-[260px] aspect-square rounded-xl overflow-hidden">
@@ -43,7 +43,7 @@ const About = () => {
               </div>
 
               <div className="relative text-center mt-6">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-[1px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
                 <h3 className="relative z-10 text-xl font-heading font-semibold text-white">
                   Cristian Bastian Cerda
                 </h3>
@@ -55,7 +55,7 @@ const About = () => {
 
           <div className="lg:col-span-3 space-y-6 sm:space-y-8">
             <Reveal animation="fade-right">
-              <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg transition-[border-color,box-shadow] duration-500 hover:border-white/10 hover:shadow-xl">
+              <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg transition-[border-color,box-shadow] duration-500 hover:border-blue-500/20 hover:shadow-xl hover:shadow-blue-500/5">
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
                 <h3 className="relative text-xl sm:text-2xl font-heading font-bold text-white mb-4 flex items-center gap-3">
                   <span className="w-1 h-6 bg-blue-500/30 rounded-full inline-block" />
@@ -82,7 +82,7 @@ const About = () => {
 
             <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
               <Reveal animation="fade-up" delay={80}>
-                <div className="group relative bg-white/[0.02] border border-white/[0.06] p-5 sm:p-6 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg h-full transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl">
+                <div className="group relative bg-white/[0.02] border border-white/[0.06] p-5 sm:p-6 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg h-full transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-blue-500/20 hover:shadow-xl hover:shadow-blue-500/5">
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
                   <div className="relative flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:bg-blue-600/10 group-hover:border-blue-500/30 transition-[background,border-color] duration-500">
@@ -108,7 +108,7 @@ const About = () => {
               </Reveal>
 
               <Reveal animation="fade-up" delay={120}>
-                <div className="group relative bg-white/[0.02] border border-white/[0.06] p-5 sm:p-6 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg h-full transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl">
+                <div className="group relative bg-white/[0.02] border border-white/[0.06] p-5 sm:p-6 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg h-full transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-blue-500/20 hover:shadow-xl hover:shadow-blue-500/5">
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
                   <div className="relative flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:bg-blue-600/10 group-hover:border-blue-500/30 transition-[background,border-color] duration-500">

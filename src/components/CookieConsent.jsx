@@ -26,14 +26,14 @@ export default function CookieConsent() {
     <div className="fixed bottom-0 left-0 right-0 z-[9999] p-2 sm:p-4">
       <div className="max-w-3xl mx-auto bg-[#18181B]/95 backdrop-blur-xl border border-white/[0.06] rounded-xl sm:rounded-2xl shadow-2xl shadow-black/30 p-3 sm:p-5 animate-modal-content">
         <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-3">
-          <div className="hidden sm:flex w-9 h-9 rounded-xl bg-white/[0.03] border border-white/[0.06] items-center justify-center flex-shrink-0 mt-0.5">
-            <Cookie className="w-4 h-4 text-white/60" />
+          <div className="hidden sm:flex w-9 h-9 rounded-xl bg-blue-500/[0.06] border border-blue-500/15 items-center justify-center flex-shrink-0 mt-0.5">
+            <Cookie className="w-4 h-4 text-blue-400/60" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm text-white font-medium mb-0.5 sm:mb-1">Uso de cookies</p>
             <p className="text-[10px] sm:text-xs text-[#A1A1AA] leading-relaxed">
               Este sitio utiliza cookies para mejorar tu experiencia.{' '}
-              <Link to="/cookies" className="text-white/60 hover:text-white underline underline-offset-2">
+              <Link to="/cookies" className="text-blue-400/60 hover:text-blue-400 underline underline-offset-2">
                 Más info
               </Link>
             </p>
@@ -47,7 +47,7 @@ export default function CookieConsent() {
             </button>
             <button
               onClick={accept}
-              className="flex-1 sm:flex-none px-4 py-2 sm:py-1.5 text-[10px] sm:text-xs font-medium text-black bg-white rounded-lg hover:bg-slate-100 transition-colors"
+              className="flex-1 sm:flex-none px-4 py-2 sm:py-1.5 text-[10px] sm:text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors"
             >
               Aceptar
             </button>
