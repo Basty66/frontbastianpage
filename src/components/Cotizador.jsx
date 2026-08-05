@@ -374,9 +374,36 @@ const Cotizador = () => {
     return acc + (item?.precio || 0);
   }, 0);
 
+  const extrasPerType = {
+    landing: ['seo', 'soporte', 'mantenimiento'],
+    corporativa: ['admin', 'seo', 'soporte', 'mantenimiento'],
+    ecommerce: ['admin', 'pagos', 'seo', 'idioma', 'soporte', 'mantenimiento'],
+  };
+
+  const getExtrasDisponibles = () => {
+    if (selectedPlan !== 'custom') return adicionales;
+    const tipoId = proyectoActual?.id;
+    if (!tipoId) return adicionales;
+    const allowed = extrasPerType[tipoId] || [];
+    return adicionales.filter((a) => allowed.includes(a.id));
+  };
+
   const total = planActual && selectedPlan !== 'custom'
     ? planActual.total + sumExtras(extras) - sumExtras(planActual.extras)
     : tipoWeb + sumExtras(extras);
+
+  const getMejorPlanSugerido = () => {
+    if (selectedPlan !== 'custom' || !proyectoActual) return null;
+    for (const plan of planes) {
+      if (plan.id === 'custom' || plan.id === 'basico') continue;
+      if (total >= plan.total && total < plan.total + 50000) {
+        return plan;
+      }
+    }
+    return null;
+  };
+
+  const mejorPlan = getMejorPlanSugerido();
 
   const animatedTotal = useAnimatedNumber(total, 600);
 
@@ -384,6 +411,13 @@ const Cotizador = () => {
     setError(null);
     setExtras((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
+
+  useEffect(() => {
+    if (selectedPlan === 'custom' && proyectoActual) {
+      const allowed = extrasPerType[proyectoActual.id] || [];
+      setExtras((prev) => prev.filter((x) => allowed.includes(x)));
+    }
+  }, [tipoWeb]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -1081,7 +1115,7 @@ const Cotizador = () => {
 
                       <div className="grid grid-cols-2 gap-2 mb-4">
                         <p className="col-span-2 text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Extras</p>
-                        {adicionales.map((item) => {
+                        {getExtrasDisponibles().map((item) => {
                           const active = extras.includes(item.id);
                           return (
                             <div
@@ -1108,6 +1142,20 @@ const Cotizador = () => {
                           );
                         })}
                       </div>
+
+                      {mejorPlan && (
+                        <div className="mb-4 p-3 rounded-xl bg-amber-500/[0.08] border border-amber-500/20 flex items-start gap-3">
+                          <svg className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                          </svg>
+                          <div className="text-xs leading-relaxed">
+                            <p className="text-amber-300 font-semibold mb-1">Te conviene el plan {mejorPlan.label}</p>
+                            <p className="text-amber-200/70">
+                              Con ${formatCurrency(total)} estas casi en el plan <strong className="text-amber-300">{mejorPlan.label}</strong> (${formatCurrency(mejorPlan.total)}) que incluye <strong className="text-amber-300">{mejorPlan.desc.toLowerCase()}</strong> con todos esos extras incluidos.
+                            </p>
+                          </div>
+                        </div>
+                      )}
 
                       <button
                         onClick={() => setStep(4)}
