@@ -239,7 +239,7 @@ function App() {
                 className="group relative block w-full text-left px-4 py-3 text-base font-medium text-slate-400 hover:text-white transition-all duration-300 rounded-lg hover:bg-white/[0.03] hover:scale-[1.02] overflow-hidden"
                 style={{ animation: `fade-slide-in 0.4s ease-out ${0.1 + i * 0.06}s both` }}
               >
-                <span className="absolute left-0 top-2 bottom-2 w-[3px] bg-gradient-to-b from-cyan-300 via-brand-cyan to-blue-400 rounded-full translate-x-0 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out origin-top" />
+                <span className="absolute left-0 top-2 bottom-2 w-[3px] bg-gradient-to-b from-white/60 via-white/30 to-transparent rounded-full translate-x-0 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out origin-top" />
                 <span className="relative z-10 transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] group-hover:translate-x-2">
                   {link.label}
                 </span>

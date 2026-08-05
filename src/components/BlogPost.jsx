@@ -82,7 +82,7 @@ export default function BlogPost() {
           </div>
           <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4 text-white">Artículo no encontrado</h2>
           <p className="text-slate-300 mb-8">El artículo que buscas no existe o fue eliminado.</p>
-          <Link to="/blog" className="inline-flex items-center gap-2 text-white/60 hover:text-cyan-300 transition-colors font-medium">
+          <Link to="/blog" className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors font-medium">
             <ArrowLeft className="w-4 h-4" /> Volver al blog
           </Link>
         </Reveal>

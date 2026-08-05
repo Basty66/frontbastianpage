@@ -208,7 +208,7 @@ const Hero = () => {
             >
               <div className="relative transition-all duration-500 ease-out group-hover:scale-[2.5] group-hover:drop-shadow-[0_0_16px_rgba(34,211,238,0.9)]">
                 <OwlSprite size={owl.size} className="text-[#06B6D4] transition-all duration-500 group-hover:text-white" />
-                <span className="absolute inset-0 rounded-full bg-cyan-400/0 scale-0 transition-all duration-500 ease-out group-hover:scale-[2] group-hover:bg-cyan-400/10" />
+                <span className="absolute inset-0 rounded-full bg-white/0 scale-0 transition-all duration-500 ease-out group-hover:scale-[2] group-hover:bg-white/[0.06]" />
               </div>
             </div>
           </div>
