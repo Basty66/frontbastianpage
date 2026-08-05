@@ -82,7 +82,7 @@ export default function BlogPost() {
           </div>
           <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4 text-white">Artículo no encontrado</h2>
           <p className="text-slate-300 mb-8">El artículo que buscas no existe o fue eliminado.</p>
-          <Link to="/blog" className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors font-medium">
+          <Link to="/blog" className="inline-flex items-center gap-2 text-white/60 hover:text-blue-400 transition-colors font-medium">
             <ArrowLeft className="w-4 h-4" /> Volver al blog
           </Link>
         </Reveal>
@@ -94,7 +94,7 @@ export default function BlogPost() {
     <article className="py-16 sm:py-20 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <Reveal animation="fade-up">
-          <Link to="/blog" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white/60 transition-colors mb-8 group">
+          <Link to="/blog" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-blue-400 transition-colors mb-8 group">
             <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
             Volver al blog
           </Link>
@@ -130,7 +130,7 @@ export default function BlogPost() {
 
         <Reveal animation="fade-up" delay={150}>
           <div className="mt-12 pt-8 border-t border-white/5">
-            <Link to="/blog" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white/60 transition-colors group">
+            <Link to="/blog" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-blue-400 transition-colors group">
               <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
               Volver al blog
             </Link>

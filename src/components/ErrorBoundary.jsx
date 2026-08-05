@@ -25,7 +25,7 @@ export default class ErrorBoundary extends Component {
           <p className="text-[#A1A1AA] mb-6">Ocurrió un error inesperado. Recarga la página o intenta de nuevo.</p>
           <button
             onClick={() => { this.setState({ error: null }); window.location.reload(); }}
-            className="text-white/60 hover:text-white transition-colors font-medium"
+            className="text-white/60 hover:text-blue-400 transition-colors font-medium"
           >
             Recargar página
           </button>

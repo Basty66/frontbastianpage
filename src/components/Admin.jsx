@@ -42,7 +42,7 @@ function TabsSection({ tabs, active, onChange }) {
           onClick={() => onChange(tab.id)}
           className={`flex items-center gap-1.5 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-300 border-b-2 -mb-px ${
             active === tab.id
-              ? 'border-brand-cyan text-brand-cyan'
+              ? 'border-blue-500 text-blue-500'
               : 'border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-600'
           }`}
         >
@@ -117,7 +117,7 @@ function AdminTestimonios({ supabase, showToast }) {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-slate-500 gap-3">
-        <RefreshCw className="w-6 h-6 animate-spin text-brand-cyan" />
+        <RefreshCw className="w-6 h-6 animate-spin text-blue-500" />
         <p className="text-sm">Cargando testimonios...</p>
       </div>
     );
@@ -302,7 +302,7 @@ function AdminProyectos({ supabase, showToast }) {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-slate-500 gap-3">
-        <RefreshCw className="w-6 h-6 animate-spin text-brand-cyan" />
+        <RefreshCw className="w-6 h-6 animate-spin text-blue-500" />
         <p className="text-sm">Cargando proyectos...</p>
       </div>
     );
@@ -312,7 +312,7 @@ function AdminProyectos({ supabase, showToast }) {
     <div>
       <div className="flex items-center justify-between mb-6">
         <p className="text-xs text-slate-400">{items.length} proyecto(s)</p>
-        <button onClick={openNew} className="flex items-center gap-1.5 text-xs font-medium text-brand-cyan bg-brand-cyan/10 border border-brand-cyan/20 px-3 py-2 rounded-xl hover:bg-brand-cyan/20 transition-all duration-300">
+        <button onClick={openNew} className="flex items-center gap-1.5 text-xs font-medium text-blue-500 bg-blue-500/10 border border-blue-500/20 px-3 py-2 rounded-xl hover:bg-blue-500/20 transition-all duration-300">
           <Plus className="w-3.5 h-3.5" /> Nuevo proyecto
         </button>
       </div>
@@ -325,47 +325,47 @@ function AdminProyectos({ supabase, showToast }) {
             <div>
               <label className="text-xs text-slate-400 block mb-1">Título *</label>
               <input value={form.titulo} onChange={(e) => setForm({ ...form, titulo: e.target.value })}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors" />
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors" />
             </div>
             <div>
               <label className="text-xs text-slate-400 block mb-1">URL</label>
               <input value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors" />
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors" />
             </div>
             <div>
               <label className="text-xs text-slate-400 block mb-1">Repo (GitHub)</label>
               <input value={form.repo} onChange={(e) => setForm({ ...form, repo: e.target.value })}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors" />
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors" />
             </div>
             <div>
               <label className="text-xs text-slate-400 block mb-1">Screenshot (ruta o URL)</label>
               <input value={form.screenshot} onChange={(e) => setForm({ ...form, screenshot: e.target.value })}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors" />
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors" />
             </div>
             <div>
               <label className="text-xs text-slate-400 block mb-1">Tags (separados por coma)</label>
               <input value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors" />
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors" />
             </div>
             <div>
               <label className="text-xs text-slate-400 block mb-1">Orden</label>
               <input type="number" value={form.orden} onChange={(e) => setForm({ ...form, orden: e.target.value })}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors" />
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors" />
             </div>
           </div>
           <div>
             <label className="text-xs text-slate-400 block mb-1">Descripción</label>
             <textarea value={form.descripcion} onChange={(e) => setForm({ ...form, descripcion: e.target.value })} rows={3}
-              className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors resize-none" />
+              className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors resize-none" />
           </div>
           <div className="flex items-center gap-2">
             <input type="checkbox" id="visible" checked={form.visible} onChange={(e) => setForm({ ...form, visible: e.target.checked })}
-              className="rounded border-white/20 bg-black/40 text-brand-cyan focus:ring-brand-cyan/20" />
+              className="rounded border-white/20 bg-black/40 text-blue-500 focus:ring-blue-500/20" />
             <label htmlFor="visible" className="text-xs text-slate-400">Visible en el sitio</label>
           </div>
           <div className="flex gap-2 pt-2">
             <button onClick={handleSave} disabled={saving}
-              className="flex items-center gap-1.5 text-xs font-medium text-white bg-brand-cyan/20 border border-brand-cyan/30 px-4 py-2 rounded-xl hover:bg-brand-cyan/30 transition-all duration-300 disabled:opacity-40">
+              className="flex items-center gap-1.5 text-xs font-medium text-white bg-blue-500/20 border border-blue-500/30 px-4 py-2 rounded-xl hover:bg-blue-500/30 transition-all duration-300 disabled:opacity-40">
               {saving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
               {editing === 'new' ? 'Crear' : 'Guardar'}
             </button>
@@ -398,7 +398,7 @@ function AdminProyectos({ supabase, showToast }) {
                 {item.tags && item.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
                     {item.tags.map((tag) => (
-                      <span key={tag} className="text-[10px] text-brand-cyan bg-brand-cyan/10 border border-brand-cyan/20 px-1.5 py-0.5 rounded-full">{tag}</span>
+                      <span key={tag} className="text-[10px] text-blue-500 bg-blue-500/10 border border-blue-500/20 px-1.5 py-0.5 rounded-full">{tag}</span>
                     ))}
                   </div>
                 )}
@@ -410,7 +410,7 @@ function AdminProyectos({ supabase, showToast }) {
                   <EyeOff className="w-3.5 h-3.5" />
                 </button>
                 <button onClick={() => openEdit(item)}
-                  className="p-2 rounded-lg text-slate-500 hover:text-brand-cyan hover:bg-brand-cyan/10 transition-all duration-300"
+                  className="p-2 rounded-lg text-slate-500 hover:text-blue-500 hover:bg-blue-500/10 transition-all duration-300"
                   title="Editar">
                   <Edit3 className="w-3.5 h-3.5" />
                 </button>
@@ -523,7 +523,7 @@ function AdminPosts({ supabase, showToast }) {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-slate-500 gap-3">
-        <RefreshCw className="w-6 h-6 animate-spin text-brand-cyan" />
+        <RefreshCw className="w-6 h-6 animate-spin text-blue-500" />
         <p className="text-sm">Cargando posts...</p>
       </div>
     );
@@ -533,7 +533,7 @@ function AdminPosts({ supabase, showToast }) {
     <div>
       <div className="flex items-center justify-between mb-6">
         <p className="text-xs text-slate-400">{items.length} post(s)</p>
-        <button onClick={openNew} className="flex items-center gap-1.5 text-xs font-medium text-brand-cyan bg-brand-cyan/10 border border-brand-cyan/20 px-3 py-2 rounded-xl hover:bg-brand-cyan/20 transition-all duration-300">
+        <button onClick={openNew} className="flex items-center gap-1.5 text-xs font-medium text-blue-500 bg-blue-500/10 border border-blue-500/20 px-3 py-2 rounded-xl hover:bg-blue-500/20 transition-all duration-300">
           <Plus className="w-3.5 h-3.5" /> Nuevo post
         </button>
       </div>
@@ -545,37 +545,37 @@ function AdminPosts({ supabase, showToast }) {
             <div>
               <label className="text-xs text-slate-400 block mb-1">Título *</label>
               <input value={form.titulo} onChange={(e) => handleTituloChange(e.target.value)}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors" />
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors" />
             </div>
             <div>
               <label className="text-xs text-slate-400 block mb-1">Slug *</label>
               <input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value, _manualSlug: true })}
-                className="w-full bg-black/40 font-mono border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors" />
+                className="w-full bg-black/40 font-mono border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors" />
             </div>
             <div>
               <label className="text-xs text-slate-400 block mb-1">Extracto</label>
               <input value={form.extracto} onChange={(e) => setForm({ ...form, extracto: e.target.value })}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors" />
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors" />
             </div>
             <div>
               <label className="text-xs text-slate-400 block mb-1">Tags (separados por coma)</label>
               <input value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors" />
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors" />
             </div>
           </div>
           <div>
             <label className="text-xs text-slate-400 block mb-1">Contenido (HTML básico permitido)</label>
             <textarea value={form.contenido} onChange={(e) => setForm({ ...form, contenido: e.target.value })} rows={8}
-              className="w-full bg-black/40 font-mono border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-brand-cyan/60 transition-colors resize-y" />
+              className="w-full bg-black/40 font-mono border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/60 transition-colors resize-y" />
           </div>
           <div className="flex items-center gap-2">
             <input type="checkbox" id="published" checked={form.published} onChange={(e) => setForm({ ...form, published: e.target.checked })}
-              className="rounded border-white/20 bg-black/40 text-brand-cyan focus:ring-brand-cyan/20" />
+              className="rounded border-white/20 bg-black/40 text-blue-500 focus:ring-blue-500/20" />
             <label htmlFor="published" className="text-xs text-slate-400">Publicado</label>
           </div>
           <div className="flex gap-2 pt-2">
             <button onClick={handleSave} disabled={saving}
-              className="flex items-center gap-1.5 text-xs font-medium text-white bg-brand-cyan/20 border border-brand-cyan/30 px-4 py-2 rounded-xl hover:bg-brand-cyan/30 transition-all duration-300 disabled:opacity-40">
+              className="flex items-center gap-1.5 text-xs font-medium text-white bg-blue-500/20 border border-blue-500/30 px-4 py-2 rounded-xl hover:bg-blue-500/30 transition-all duration-300 disabled:opacity-40">
               {saving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
               {editing === 'new' ? 'Crear' : 'Guardar'}
             </button>
@@ -611,7 +611,7 @@ function AdminPosts({ supabase, showToast }) {
                   {item.published ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                 </button>
                 <button onClick={() => openEdit(item)}
-                  className="p-2 rounded-lg text-slate-500 hover:text-brand-cyan hover:bg-brand-cyan/10 transition-all duration-300"
+                  className="p-2 rounded-lg text-slate-500 hover:text-blue-500 hover:bg-blue-500/10 transition-all duration-300"
                   title="Editar">
                   <Edit3 className="w-3.5 h-3.5" />
                 </button>
@@ -667,13 +667,13 @@ export default function Admin() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden" style={{ background: '#09090B' }}>
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className={`absolute -top-32 -right-32 w-80 h-80 bg-brand-cyan/5 rounded-full blur-3xl transition-all duration-1000 ${loginAnim ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} />
+          <div className={`absolute -top-32 -right-32 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl transition-all duration-1000 ${loginAnim ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} />
           <div className={`absolute -bottom-32 -left-32 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl transition-all duration-1000 delay-300 ${loginAnim ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} />
         </div>
         <form onSubmit={handleLogin} className={`relative w-full max-w-sm bg-gradient-to-b from-white/[0.03] to-white/[0.01] border border-white/10 rounded-3xl p-8 backdrop-blur-xl shadow-2xl shadow-black/30 transition-all duration-700 ease-out ${loginAnim ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'}`}>
           <div className="text-center mb-8">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-brand-cyan/20 to-blue-500/20 border border-brand-cyan/20 flex items-center justify-center animate-float">
-              <Shield className="w-7 h-7 text-brand-cyan" />
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-500/20 border border-blue-500/20 flex items-center justify-center animate-float">
+              <Shield className="w-7 h-7 text-blue-500" />
             </div>
             <h2 className="text-xl font-heading font-bold text-white">Panel Administrativo</h2>
             <p className="text-slate-400 text-xs mt-1">Acceso restringido</p>
@@ -684,7 +684,7 @@ export default function Admin() {
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input type={showPw ? 'text' : 'password'} placeholder="Ingresa la contraseña"
                 value={password} onChange={(e) => { setPassword(e.target.value); setPwError(''); }}
-                className={`w-full bg-black/40 border rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 transition-all duration-300 ${pwError ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20' : 'border-white/10 focus:border-brand-cyan/80 focus:ring-brand-cyan/20'}`}
+                className={`w-full bg-black/40 border rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 transition-all duration-300 ${pwError ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20' : 'border-white/10 focus:border-blue-500/80 focus:ring-blue-500/20'}`}
                 autoFocus />
               <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
                 {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -692,12 +692,12 @@ export default function Admin() {
             </div>
             {pwError && <p className="text-red-400 text-xs flex items-center gap-1 mt-1.5 animate-modal-content"><AlertTriangle className="w-3 h-3" /> {pwError}</p>}
           </div>
-          <button type="submit" className="relative overflow-hidden group w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-brand-cyan text-white font-bold text-sm transition-all duration-500 hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 flex items-center justify-center gap-2">
-            <span className="absolute inset-0 bg-gradient-to-r from-brand-cyan to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <button type="submit" className="relative overflow-hidden group w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm transition-all duration-500 hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 flex items-center justify-center gap-2">
+            <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <LogIn className="w-4 h-4 relative z-10" />
             <span className="relative z-10">Ingresar</span>
           </button>
-          <Link to="/" className="block text-center text-xs text-slate-500 hover:text-brand-cyan transition-colors mt-5 group">
+          <Link to="/" className="block text-center text-xs text-slate-500 hover:text-blue-500 transition-colors mt-5 group">
             <span className="group-hover:mr-1 transition-all">&larr;</span> Volver al inicio
           </Link>
         </form>
@@ -710,8 +710,8 @@ export default function Admin() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6 animate-modal-content">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center">
-              <Shield className="w-5 h-5 text-brand-cyan" />
+            <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+              <Shield className="w-5 h-5 text-blue-500" />
             </div>
             <div>
               <h1 className="text-xl font-heading font-bold text-white">Admin</h1>
@@ -719,7 +719,7 @@ export default function Admin() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/" className="text-xs text-slate-500 hover:text-brand-cyan transition-colors flex items-center gap-1 bg-white/[0.02] border border-white/5 px-3 py-2 rounded-xl hover:bg-white/[0.05]">
+            <Link to="/" className="text-xs text-slate-500 hover:text-blue-500 transition-colors flex items-center gap-1 bg-white/[0.02] border border-white/5 px-3 py-2 rounded-xl hover:bg-white/[0.05]">
               <ArrowLeft className="w-3 h-3" /> Volver
             </Link>
           </div>

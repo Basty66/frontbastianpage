@@ -187,14 +187,14 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
           <Link to="/" onClick={() => { handleLogoClick(); setMenuOpen(false); }} className="flex items-center gap-1.5 sm:gap-2 group">
             <svg viewBox="0 2 40 26" fill="none" className="w-7 h-7 sm:w-8 sm:h-8" style={{ animation: 'fade-slide-in 0.6s ease-out' }}>
-              <path d="M20 6C12 6 7 12 7 19v4a3 3 0 003 3h20a3 3 0 003-3v-4c0-7-5-13-13-13z" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeOpacity="0.6" className="group-hover:stroke-opacity-100 transition-all duration-500" />
-              <path d="M11 9L7 3l7 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.6" className="group-hover:stroke-opacity-100 transition-all duration-500" />
-              <path d="M29 9l4-6-7 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.6" className="group-hover:stroke-opacity-100 transition-all duration-500" />
-              <circle cx="15" cy="18" r="3.5" stroke="white" strokeWidth="1.6" strokeOpacity="0.6" className="group-hover:stroke-opacity-100 transition-all duration-500" />
-              <circle cx="25" cy="18" r="3.5" stroke="white" strokeWidth="1.6" strokeOpacity="0.6" className="group-hover:stroke-opacity-100 transition-all duration-500" />
-              <circle cx="15" cy="18" r="1.5" fill="white" fillOpacity="0.8" className="transition-all duration-500" />
-              <circle cx="25" cy="18" r="1.5" fill="white" fillOpacity="0.8" className="transition-all duration-500" />
-              <path d="M18.5 23l1.5 2 1.5-2" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.6" className="group-hover:stroke-opacity-100 transition-all duration-500" />
+              <path d="M20 6C12 6 7 12 7 19v4a3 3 0 003 3h20a3 3 0 003-3v-4c0-7-5-13-13-13z" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 transition-all duration-500" />
+              <path d="M11 9L7 3l7 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 transition-all duration-500" />
+              <path d="M29 9l4-6-7 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 transition-all duration-500" />
+              <circle cx="15" cy="18" r="3.5" stroke="white" strokeWidth="1.6" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 transition-all duration-500" />
+              <circle cx="25" cy="18" r="3.5" stroke="white" strokeWidth="1.6" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 transition-all duration-500" />
+              <circle cx="15" cy="18" r="1.5" fill="white" fillOpacity="0.8" className="group-hover:fill-[#2563EB] transition-all duration-500" />
+              <circle cx="25" cy="18" r="1.5" fill="white" fillOpacity="0.8" className="group-hover:fill-[#2563EB] transition-all duration-500" />
+              <path d="M18.5 23l1.5 2 1.5-2" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 transition-all duration-500" />
             </svg>
             <span className="font-bold text-lg sm:text-xl tracking-tight text-white" style={{ animation: 'fade-slide-in 0.6s ease-out 0.1s both' }}>
               BS<span className="text-white/60 group-hover:text-white transition-colors duration-500">DigitalTech</span>
@@ -212,7 +212,7 @@ function App() {
                 <span className="relative z-10">
                   {link.label}
                 </span>
-                <span className="absolute inset-x-3 bottom-1.5 h-[1px] bg-white/40 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-center" />
+                <span className="absolute inset-x-3 bottom-1.5 h-[1px] bg-blue-500/60 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-center" />
               </button>
             ))}
           </div>
@@ -239,8 +239,8 @@ function App() {
                 className="group relative block w-full text-left px-4 py-3 text-base font-medium text-slate-400 hover:text-white transition-all duration-300 rounded-lg hover:bg-white/[0.03] hover:scale-[1.02] overflow-hidden"
                 style={{ animation: `fade-slide-in 0.4s ease-out ${0.1 + i * 0.06}s both` }}
               >
-                <span className="absolute left-0 top-2 bottom-2 w-[3px] bg-gradient-to-b from-white/60 via-white/30 to-transparent rounded-full translate-x-0 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out origin-top" />
-                <span className="relative z-10 transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] group-hover:translate-x-2">
+                <span className="absolute left-0 top-2 bottom-2 w-[3px] bg-gradient-to-b from-blue-500/60 via-blue-400/30 to-transparent rounded-full translate-x-0 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out origin-top" />
+                <span className="relative z-10 transition-all duration-300 group-hover:text-blue-400 group-hover:drop-shadow-[0_0_8px_rgba(37,99,235,0.5)] group-hover:translate-x-2">
                   {link.label}
                 </span>
               </button>
@@ -269,10 +269,10 @@ function App() {
 
       <Reveal animation="fade-up" as="footer" className="border-t border-white/5 backdrop-blur-md py-6 sm:py-8 px-4 sm:px-6 text-center" style={{ background: '#09090B' }}>
         <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-4">
-          <Link to="/privacidad" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-white transition-colors">Política de Privacidad</Link>
-          <Link to="/terminos" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-white transition-colors">Términos y Condiciones</Link>
-          <Link to="/cookies" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-white transition-colors">Política de Cookies</Link>
-          <Link to="/blog" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-white transition-colors">Blog</Link>
+          <Link to="/privacidad" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Política de Privacidad</Link>
+          <Link to="/terminos" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Términos y Condiciones</Link>
+          <Link to="/cookies" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Política de Cookies</Link>
+          <Link to="/blog" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Blog</Link>
         </div>
         <p className="text-[#A1A1AA] text-xs mb-2">Santiago, Región Metropolitana, Chile</p>
         <p className="text-[#A1A1AA] text-xs sm:text-sm">© 2026 BS DigitalTech — Desarrollo Web para PYMEs Chilenas · Hosting $0</p>
@@ -292,7 +292,7 @@ function App() {
       </a>
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-md flex items-center justify-center shadow-lg shadow-black/20 hover:bg-white/[0.1] hover:border-white/20 hover:scale-110 transition-[background,border-color,transform,opacity] duration-500 ${
+        className={`fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full bg-white/[0.05] border border-blue-500/20 backdrop-blur-md flex items-center justify-center shadow-lg shadow-black/20 hover:bg-blue-600/10 hover:border-blue-500/40 hover:scale-110 transition-[background,border-color,transform,opacity] duration-500 ${
           showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
         aria-label="Volver arriba"
@@ -304,7 +304,7 @@ function App() {
 
       <button
         onClick={() => scrollTo('cotizador')}
-        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-white text-black font-bold text-xs sm:text-sm shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-blue-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/40 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
           showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
         aria-label="Cotizar ahora"

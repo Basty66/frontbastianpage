@@ -52,10 +52,10 @@ const Process = () => {
                   className="group relative overflow-hidden bg-white/[0.02] border border-white/[0.06] p-6 rounded-2xl backdrop-blur-sm transition-[transform,box-shadow,border-color] duration-500 hover:-translate-y-2 hover:border-white/10 hover:shadow-xl h-full flex flex-col"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:scale-110 transition-transform duration-500 text-white/60 group-hover:text-white">
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:bg-blue-600/10 group-hover:border-blue-500/30 group-hover:scale-110 transition-[transform,background,border-color] duration-500 text-white/60 group-hover:text-blue-400">
                       <Icon className="w-5 h-5" />
                     </div>
-                    <span className="text-3xl font-heading font-black text-white/[0.06] group-hover:text-white/[0.12] transition-colors duration-500">
+                    <span className="text-3xl font-heading font-black text-white/[0.06] group-hover:text-blue-500/20 transition-colors duration-500">
                       {step.number}
                     </span>
                   </div>

@@ -58,7 +58,7 @@ const About = () => {
               <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg transition-[border-color,box-shadow] duration-500 hover:border-white/10 hover:shadow-xl">
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
                 <h3 className="relative text-xl sm:text-2xl font-heading font-bold text-white mb-4 flex items-center gap-3">
-                  <span className="w-1 h-6 bg-white/20 rounded-full inline-block" />
+                  <span className="w-1 h-6 bg-blue-500/30 rounded-full inline-block" />
                   Nuestra{' '}
                   <span className="text-white">Misión</span>
                 </h3>
@@ -85,8 +85,8 @@ const About = () => {
                 <div className="group relative bg-white/[0.02] border border-white/[0.06] p-5 sm:p-6 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg h-full transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl">
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
                   <div className="relative flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:bg-white/[0.06] transition-[background] duration-500">
-                      <Code2 className="w-5 h-5 text-white/60 group-hover:text-white transition-all duration-500" />
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:bg-blue-600/10 group-hover:border-blue-500/30 transition-[background,border-color] duration-500">
+                      <Code2 className="w-5 h-5 text-white/60 group-hover:text-blue-400 transition-all duration-500" />
                     </div>
                     <h4 className="text-sm font-heading font-semibold text-white">Conocimientos Clave</h4>
                   </div>
@@ -95,7 +95,7 @@ const About = () => {
                       const Icon = k.icon;
                       return (
                         <li key={i} className="group/item flex items-start gap-2.5 p-2 -mx-2 rounded-lg transition-all duration-300 hover:bg-white/[0.03] hover:translate-x-1">
-                          <Icon className="w-4 h-4 text-white/40 mt-0.5 flex-shrink-0 transition-all duration-300 group-hover/item:text-white/60" />
+                          <Icon className="w-4 h-4 text-blue-400/40 mt-0.5 flex-shrink-0 transition-all duration-300 group-hover/item:text-blue-400/70" />
                           <div>
                             <p className="text-white text-xs font-medium">{k.title}</p>
                             <p className="text-[#A1A1AA] text-xs">{k.desc}</p>
@@ -111,8 +111,8 @@ const About = () => {
                 <div className="group relative bg-white/[0.02] border border-white/[0.06] p-5 sm:p-6 rounded-2xl backdrop-blur-sm md:backdrop-blur-lg h-full transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-white/10 hover:shadow-xl">
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
                   <div className="relative flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:bg-white/[0.06] transition-[background] duration-500">
-                      <Briefcase className="w-5 h-5 text-white/60 group-hover:text-white transition-all duration-500" />
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:bg-blue-600/10 group-hover:border-blue-500/30 transition-[background,border-color] duration-500">
+                      <Briefcase className="w-5 h-5 text-white/60 group-hover:text-blue-400 transition-all duration-500" />
                     </div>
                     <h4 className="text-sm font-heading font-semibold text-white">Trayectoria</h4>
                   </div>
@@ -121,7 +121,7 @@ const About = () => {
                       const Icon = t.icon;
                       return (
                         <li key={i} className="group/item flex items-start gap-2.5 p-2 -mx-2 rounded-lg transition-all duration-300 hover:bg-white/[0.03] hover:translate-x-1">
-                          <Icon className="w-4 h-4 text-white/40 mt-0.5 flex-shrink-0 transition-all duration-300 group-hover/item:text-white/60" />
+                          <Icon className="w-4 h-4 text-blue-400/40 mt-0.5 flex-shrink-0 transition-all duration-300 group-hover/item:text-blue-400/70" />
                           <div>
                             <p className="text-white text-xs font-medium">{t.title}</p>
                             <p className="text-[#A1A1AA] text-xs">{t.desc}</p>

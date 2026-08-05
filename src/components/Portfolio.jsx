@@ -5,12 +5,12 @@ import { supabase } from '../lib/supabaseClient';
 import { proyectos as fallbackProyectos } from '../data/portfolio';
 
 const colores = [
-  'from-white/20 to-white/5',
-  'from-white/15 to-white/5',
-  'from-white/20 to-white/5',
-  'from-white/15 to-white/5',
-  'from-white/20 to-white/5',
-  'from-white/15 to-white/5',
+  'from-blue-600/20 to-blue-500/5',
+  'from-blue-500/15 to-blue-400/5',
+  'from-blue-600/20 to-blue-500/5',
+  'from-blue-500/15 to-blue-400/5',
+  'from-blue-600/20 to-blue-500/5',
+  'from-blue-500/15 to-blue-400/5',
 ];
 
 function Thumbnail({ proj, idx }) {

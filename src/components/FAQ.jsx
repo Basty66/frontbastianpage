@@ -63,7 +63,7 @@ export default function FAQ() {
               <Reveal key={i} animation="fade-up" delay={40}>
                 <div className={`group rounded-2xl border transition-[border-color,background] duration-400 ${
                   isOpen
-                    ? 'border-white/10 bg-white/[0.03]'
+                    ? 'border-blue-500/20 bg-blue-500/[0.03]'
                     : 'border-white/[0.04] bg-white/[0.01] hover:border-white/[0.08] hover:bg-white/[0.02]'
                 }`}>
                   <button
@@ -71,7 +71,7 @@ export default function FAQ() {
                     className="w-full flex items-center gap-3 px-5 py-4 text-left"
                   >
                     <HelpCircle className={`w-4 h-4 flex-shrink-0 transition-colors duration-300 ${
-                      isOpen ? 'text-white/60' : 'text-white/30 group-hover:text-white/50'
+                      isOpen ? 'text-blue-400/60' : 'text-white/30 group-hover:text-white/50'
                     }`} />
                     <span className={`flex-1 text-sm font-medium transition-colors duration-300 ${
                       isOpen ? 'text-white' : 'text-[#A1A1AA] group-hover:text-white'
@@ -79,7 +79,7 @@ export default function FAQ() {
                       {item.q}
                     </span>
                     <ChevronDown className={`w-4 h-4 flex-shrink-0 transition-all duration-300 ${
-                      isOpen ? 'rotate-180 text-white/60' : 'text-white/30 group-hover:text-white/50'
+                      isOpen ? 'rotate-180 text-blue-400/60' : 'text-white/30 group-hover:text-white/50'
                     }`} />
                   </button>
                   <div className={`overflow-hidden transition-all duration-500 ease-out ${

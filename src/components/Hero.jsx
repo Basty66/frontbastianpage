@@ -41,13 +41,14 @@ const floatingOwls = [
   { top: '50%', left: '30%', size: 10, delay: 2, duration: 3.7 },
 ];
 
-const particles = Array.from({ length: 30 }, (_, i) => ({
+const particles = Array.from({ length: 35 }, (_, i) => ({
   id: i,
   top: `${Math.random() * 100}%`,
   left: `${Math.random() * 100}%`,
   size: Math.random() * 3 + 1.5,
   duration: 4 + Math.random() * 6,
   delay: Math.random() * 5,
+  blue: i < 14,
 }));
 
 function ROICalculator() {
@@ -176,12 +177,13 @@ const Hero = () => {
         {particles.map((p) => (
           <div
             key={p.id}
-            className="absolute rounded-full bg-white/30"
+            className={`absolute rounded-full ${p.blue ? 'bg-blue-400/40' : 'bg-white/25'}`}
             style={{
               top: p.top,
               left: p.left,
               width: `${p.size}px`,
               height: `${p.size}px`,
+              boxShadow: p.blue ? `0 0 ${p.size * 3}px rgba(37,99,235,0.4)` : 'none',
               animation: `particle-float ${p.duration}s ease-in-out infinite`,
               animationDelay: `${p.delay}s`,
             }}
@@ -206,8 +208,8 @@ const Hero = () => {
               className="transition-transform duration-[1200ms] ease-out will-change-transform"
               style={{ transform: 'translate(0px, 0px)' }}
             >
-              <div className="relative transition-all duration-500 ease-out group-hover:scale-[2.5] group-hover:drop-shadow-[0_0_16px_rgba(34,211,238,0.9)]">
-                <OwlSprite size={owl.size} className="text-[#06B6D4] transition-all duration-500 group-hover:text-white" />
+              <div className="relative transition-all duration-500 ease-out group-hover:scale-[2.5] group-hover:drop-shadow-[0_0_16px_rgba(37,99,235,0.9)]">
+                <OwlSprite size={owl.size} className="text-blue-400/50 transition-all duration-500 group-hover:text-blue-400" />
                 <span className="absolute inset-0 rounded-full bg-white/0 scale-0 transition-all duration-500 ease-out group-hover:scale-[2] group-hover:bg-white/[0.06]" />
               </div>
             </div>
@@ -223,7 +225,7 @@ const Hero = () => {
             Tu negocio necesita una web que
           </span>{' '}
           <span className="text-white">
-            {typewriterText}{!typewriterDone && <span className="animate-typewriter-cursor text-white/60">|</span>}
+            {typewriterText}{!typewriterDone && <span className="animate-typewriter-cursor text-blue-500">|</span>}
           </span>
         </h1>
         <p className="text-base sm:text-lg md:text-xl text-[#A1A1AA] max-w-2xl">
@@ -232,7 +234,7 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-3 sm:pt-4">
           <button
             onClick={(e) => { createRipple(e); scrollToCotizador(); }}
-            className="ripple-container relative overflow-hidden group bg-white text-black font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out hover:bg-slate-100 hover:shadow-xl hover:-translate-y-0.5 text-sm sm:text-base"
+            className="ripple-container relative overflow-hidden group bg-blue-600 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm sm:text-base glow-blue-sm"
           >
             <span className="relative z-10">Cotizar mi proyecto</span>
           </button>
@@ -261,7 +263,7 @@ const Hero = () => {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-0.5">
                 {[1, 2, 3, 4, 5].map((s) => (
-                  <Star key={s} className="w-3 h-3 fill-white/60 text-white/60" />
+                  <Star key={s} className="w-3 h-3 fill-blue-400/60 text-blue-400/60" />
                 ))}
               </div>
               <p className="text-[10px] text-[#A1A1AA] truncate">+15 clientes satisfechos</p>

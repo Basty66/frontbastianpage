@@ -84,7 +84,7 @@ const Testimonios = () => {
 
   const starColor = (star, current) =>
     star <= current
-      ? 'fill-white/60 text-white/60'
+      ? 'fill-blue-400/70 text-blue-400/70'
       : 'fill-white/10 text-white/10';
 
   return (
@@ -104,7 +104,7 @@ const Testimonios = () => {
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           {todos.map((t, i) => (
             <Reveal key={i} animation="fade-up" delay={i * 120}>
-              <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm transition-[transform,border-color] duration-500 hover:-translate-y-2 hover:border-white/10 h-full flex flex-col">
+              <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-2 hover:border-blue-500/20 hover:shadow-lg hover:shadow-blue-500/5 h-full flex flex-col">
                 <div className="absolute top-3 right-3 text-white/[0.03]">
                   <Quote className="w-16 h-16" />
                 </div>
@@ -136,7 +136,7 @@ const Testimonios = () => {
               onClick={() => setShowForm(true)}
               className="group w-full p-5 rounded-2xl border-2 border-dashed border-white/[0.06] hover:border-white/10 bg-white/[0.01] hover:bg-white/[0.02] transition-all duration-500 text-center"
             >
-              <Star className="w-6 h-6 mx-auto mb-2 text-white/30 group-hover:text-white/60 transition-colors duration-500" />
+              <Star className="w-6 h-6 mx-auto mb-2 text-blue-400/30 group-hover:text-blue-400/60 transition-colors duration-500" />
               <p className="text-sm text-[#A1A1AA] group-hover:text-white transition-colors font-medium">
                 ¿Ya trabajaste con nosotros? <span className="text-white/80">Deja tu reseña</span>
               </p>
@@ -158,7 +158,7 @@ const Testimonios = () => {
           ) : (
             <form onSubmit={handleSubmit} className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 sm:p-8 space-y-4">
               <h4 className="text-white font-heading font-semibold text-base flex items-center gap-2">
-                <Star className="w-4 h-4 text-white/60" />
+                <Star className="w-4 h-4 text-blue-400/60" />
                 Deja tu reseña
               </h4>
 
@@ -220,7 +220,7 @@ const Testimonios = () => {
               <button
                 type="submit"
                 disabled={enviando}
-                className="w-full py-3 rounded-xl bg-white text-black font-bold text-sm transition-all hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm transition-all hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4" />
                 {enviando ? 'Enviando...' : 'Enviar reseña'}

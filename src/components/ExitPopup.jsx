@@ -47,8 +47,8 @@ export default function ExitPopup() {
         </button>
 
         <div className="text-center mb-6">
-          <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center">
-            <Sparkles className="w-7 h-7 text-white/60" />
+          <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-blue-500/[0.06] border border-blue-500/15 flex items-center justify-center">
+            <Sparkles className="w-7 h-7 text-blue-400/60" />
           </div>
           <h3 className="text-xl font-heading font-bold text-white mb-2">¿Ya te vas?</h3>
           <p className="text-[#A1A1AA] text-sm">
@@ -85,7 +85,7 @@ export default function ExitPopup() {
             </div>
             <button
               type="submit"
-              className="relative overflow-hidden group w-full py-3 rounded-xl bg-white text-black font-bold text-sm transition-all hover:bg-slate-100 hover:-translate-y-0.5 flex items-center justify-center gap-2"
+              className="relative overflow-hidden group w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm transition-all hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 hover:-translate-y-0.5 flex items-center justify-center gap-2"
             >
               <Send className="w-4 h-4 relative z-10" />
               <span className="relative z-10">Recibir presupuesto gratis</span>

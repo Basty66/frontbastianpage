@@ -17,9 +17,9 @@ const projects = [
     tag: 'Landing Page',
     img: '/screenshots/piscina-oasis.png',
     url: 'https://sistema-reservas-ruddy.vercel.app',
-    gradient: 'from-white/[0.04] via-white/[0.01] to-transparent',
-    border: 'border-white/[0.08]',
-    glow: 'rgba(255,255,255,0.05)',
+    gradient: 'from-blue-500/[0.06] via-blue-400/[0.02] to-transparent',
+    border: 'border-blue-500/15',
+    glow: 'rgba(37,99,235,0.08)',
   },
   {
     id: 'viakids',
@@ -27,9 +27,9 @@ const projects = [
     tag: 'Web Corporativa',
     img: '/screenshots/viakids.png',
     url: 'https://via-kids-completo.vercel.app',
-    gradient: 'from-white/[0.04] via-white/[0.01] to-transparent',
-    border: 'border-white/[0.08]',
-    glow: 'rgba(255,255,255,0.05)',
+    gradient: 'from-blue-500/[0.06] via-blue-400/[0.02] to-transparent',
+    border: 'border-blue-500/15',
+    glow: 'rgba(37,99,235,0.08)',
   },
   {
     id: 'bastian',
@@ -37,9 +37,9 @@ const projects = [
     tag: 'Portfolio',
     img: '/screenshots/bastian-dev.png',
     url: 'https://frontbastianpage.vercel.app',
-    gradient: 'from-white/[0.04] via-white/[0.01] to-transparent',
-    border: 'border-white/[0.08]',
-    glow: 'rgba(255,255,255,0.05)',
+    gradient: 'from-blue-500/[0.06] via-blue-400/[0.02] to-transparent',
+    border: 'border-blue-500/15',
+    glow: 'rgba(37,99,235,0.08)',
   },
 ];
 
