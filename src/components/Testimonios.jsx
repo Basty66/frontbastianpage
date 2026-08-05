@@ -94,7 +94,7 @@ const Testimonios = () => {
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 tracking-tight">
             Lo que dicen{' '}
-            <span className="text-white">mis clientes</span>
+            <span className="text-gradient-blue">mis clientes</span>
           </h2>
           <p className="text-[#A1A1AA]">
             Clientes reales, resultados concretos. Esto es lo que opinan quienes ya trabajaron conmigo.

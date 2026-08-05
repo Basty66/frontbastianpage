@@ -50,7 +50,7 @@ export default function ExitPopup() {
           <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-blue-500/[0.06] border border-blue-500/15 flex items-center justify-center">
             <Sparkles className="w-7 h-7 text-blue-400/60" />
           </div>
-          <h3 className="text-xl font-heading font-bold text-white mb-2">¿Ya te vas?</h3>
+          <h3 className="text-xl font-heading font-bold text-gradient-chrome mb-2">¿Ya te vas?</h3>
           <p className="text-[#A1A1AA] text-sm">
             Déjame tu correo y te envío un <span className="text-white font-medium">presupuesto personalizado</span> sin compromiso.
           </p>

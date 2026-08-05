@@ -42,7 +42,7 @@ const Services = () => {
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight">
             <span className="text-white">Todo lo que tu negocio necesita para </span>
-            <span className="text-white">vender más</span>
+            <span className="text-gradient-blue">vender más</span>
           </h2>
           <p className="text-[#A1A1AA]">
             Desarrollo soluciones pensadas para reducir tus costos fijos y multiplicar el alcance de tu empresa.
@@ -79,7 +79,7 @@ const Services = () => {
         <Reveal animation="fade-up" delay={300} className="mt-10 sm:mt-14">
           <div className="text-center mb-8">
             <h3 className="text-xl sm:text-2xl font-heading font-bold text-white mb-2">
-              <span className="text-white">$0/mes</span> vs Hosting Tradicional
+              <span className="text-gradient-blue">$0/mes</span> vs Hosting Tradicional
             </h3>
             <p className="text-[#A1A1AA] text-sm">Sin pagos mensuales, sin mantenimiento, sin preocupaciones.</p>
           </div>

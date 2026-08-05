@@ -23,7 +23,7 @@ const About = () => {
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 tracking-tight">
             <span className="text-white">Sobre </span>
-            <span className="text-white">Nosotros</span>
+            <span className="text-gradient-blue">Nosotros</span>
           </h2>
           <p className="text-[#A1A1AA]">
             Somos un equipo comprometido con transformar ideas en soluciones digitales reales para PYMEs chilenas.
@@ -60,7 +60,7 @@ const About = () => {
                 <h3 className="relative text-xl sm:text-2xl font-heading font-bold text-white mb-4 flex items-center gap-3">
                   <span className="w-1 h-6 bg-blue-500/30 rounded-full inline-block" />
                   Nuestra{' '}
-                  <span className="text-white">Misión</span>
+                  <span className="text-gradient-chrome">Misión</span>
                 </h3>
                 <div className="relative space-y-4 text-[#A1A1AA] text-sm sm:text-base leading-relaxed">
                   <p>
@@ -88,7 +88,7 @@ const About = () => {
                     <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:bg-blue-600/10 group-hover:border-blue-500/30 transition-[background,border-color] duration-500">
                       <Code2 className="w-5 h-5 text-white/60 group-hover:text-blue-400 transition-all duration-500" />
                     </div>
-                    <h4 className="text-sm font-heading font-semibold text-white">Conocimientos Clave</h4>
+                    <h4 className="text-sm font-heading font-semibold text-gradient-chrome">Conocimientos Clave</h4>
                   </div>
                   <ul className="relative space-y-2.5">
                     {knowledge.map((k, i) => {
@@ -114,7 +114,7 @@ const About = () => {
                     <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center group-hover:bg-blue-600/10 group-hover:border-blue-500/30 transition-[background,border-color] duration-500">
                       <Briefcase className="w-5 h-5 text-white/60 group-hover:text-blue-400 transition-all duration-500" />
                     </div>
-                    <h4 className="text-sm font-heading font-semibold text-white">Trayectoria</h4>
+                    <h4 className="text-sm font-heading font-semibold text-gradient-chrome">Trayectoria</h4>
                   </div>
                   <ul className="relative space-y-2.5">
                     {trajectory.map((t, i) => {

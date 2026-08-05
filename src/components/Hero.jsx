@@ -221,10 +221,10 @@ const Hero = () => {
           Agencia Digital · Chile
         </span>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight">
-          <span className="bg-gradient-to-r from-white via-white to-slate-300 bg-clip-text text-transparent">
+          <span className="text-gradient-blue-chrome">
             Tu negocio necesita una web que
           </span>{' '}
-          <span className="text-white">
+          <span className="text-gradient-blue-v">
             {typewriterText}{!typewriterDone && <span className="animate-typewriter-cursor text-blue-500">|</span>}
           </span>
         </h1>

@@ -77,7 +77,7 @@ const NotFound = () => (
       <div className="w-16 sm:w-20 h-16 sm:h-20 mx-auto mb-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center">
         <span className="text-3xl sm:text-4xl font-bold font-heading text-white/60">404</span>
       </div>
-      <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4 text-white">Página no encontrada</h2>
+      <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4 text-gradient-chrome">Página no encontrada</h2>
       <p className="text-[#A1A1AA] mb-8">La página que buscas no existe o fue movida.</p>
       <Link to="/" className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors font-medium">
         <span>&larr;</span> Volver al inicio

@@ -865,7 +865,7 @@ const Cotizador = () => {
       <Reveal animation="fade-up" className="text-center mb-10 sm:mb-12">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-white mb-3 tracking-tight">
           Simulador de{' '}
-          <span className="text-white">
+          <span className="text-gradient-blue">
             Presupuesto
           </span>
         </h2>
@@ -1253,7 +1253,7 @@ const Cotizador = () => {
         }`}>
           <h3 className="text-2xl font-heading font-bold mb-2">
             <span className="text-white">¿Trabajamos </span>
-            <span className="text-white">juntos?</span>
+            <span className="text-gradient-blue">juntos?</span>
           </h3>
           <p className="text-[#A1A1AA] text-sm mb-6">Recibe esta cotización en tu correo y agendemos una reunión sin costo.</p>
 

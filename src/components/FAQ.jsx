@@ -49,7 +49,7 @@ export default function FAQ() {
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 tracking-tight">
             <span className="text-white">Preguntas </span>
-            <span className="text-white">Frecuentes</span>
+            <span className="text-gradient-blue">Frecuentes</span>
           </h2>
           <p className="text-[#A1A1AA]">
             Resuelve tus dudas antes de dar el paso. Si no encuentras lo que buscas, escríbenos directo.

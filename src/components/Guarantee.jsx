@@ -39,7 +39,7 @@ const Guarantee = () => {
           </div>
           <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white tracking-tight">
             Tu inversión está{' '}
-            <span className="text-white">protegida</span>
+            <span className="text-gradient-blue">protegida</span>
           </h2>
         </Reveal>
 

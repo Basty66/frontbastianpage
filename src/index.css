@@ -492,3 +492,32 @@ input[type="range"]::-moz-range-thumb {
 .glow-blue-lg {
   box-shadow: 0 0 30px rgba(37, 99, 235, 0.2), 0 0 80px rgba(37, 99, 235, 0.08);
 }
+
+/* Gradient text utilities */
+.text-gradient-blue {
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 40%, #FAFAFA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-chrome {
+  background: linear-gradient(135deg, #E4E4E7 0%, #A1A1AA 30%, #FAFAFA 50%, #A1A1AA 70%, #E4E4E7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-blue-chrome {
+  background: linear-gradient(135deg, #2563EB 0%, #3B82F6 25%, #E4E4E7 50%, #FAFAFA 75%, #3B82F6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-blue-v {
+  background: linear-gradient(180deg, #3B82F6 0%, #1D4ED8 50%, #FAFAFA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
