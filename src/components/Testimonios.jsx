@@ -3,6 +3,9 @@ import { Star, Quote, Send } from 'lucide-react';
 import Reveal from './Reveal';
 import { supabase } from '../lib/supabaseClient';
 
+const SEED_KEY = 'bd-testimonios-seeded';
+const LOCAL_KEY = 'bd-testimonios';
+
 const iniciales = [
   {
     nombre: 'María González',
@@ -24,37 +27,56 @@ const iniciales = [
   },
 ];
 
+const readLocal = () => {
+  try { return JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]'); } catch { return []; }
+};
+const writeLocal = (arr) => localStorage.setItem(LOCAL_KEY, JSON.stringify(arr));
+
 const Testimonios = () => {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ nombre: '', empresa: '', texto: '', estrellas: 5 });
   const [enviando, setEnviando] = useState(false);
   const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState('');
-  const [testimoniosDb, setTestimoniosDb] = useState([]);
-  const [cargando, setCargando] = useState(true);
+  const [todos, setTodos] = useState([]);
 
-  const cargarTestimonios = async () => {
-    if (!supabase) { setCargando(false); return; }
-    try {
-      const { data, error } = await supabase.from('testimonios').select('*').order('created_at', { ascending: false }).limit(9);
-      if (!error && data) setTestimoniosDb(data);
-    } catch (_) {}
-    setCargando(false);
-  };
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      let local = readLocal();
 
-  useEffect(() => { cargarTestimonios(); }, []);
+      if (local.length === 0 && !localStorage.getItem(SEED_KEY)) {
+        writeLocal(iniciales);
+        localStorage.setItem(SEED_KEY, '1');
+        local = iniciales;
+      }
 
-  const getLocalTestimonios = () => {
-    try { return JSON.parse(localStorage.getItem('bd-testimonios') || '[]'); } catch { return []; }
-  };
+      if (mounted) setTodos(local);
 
-  const todos = (() => {
-    const aprobados = testimoniosDb.filter((t) => t.aprobado && t.texto);
-    if (aprobados.length > 0) return aprobados;
-    const local = getLocalTestimonios().filter((t) => t.texto);
-    if (local.length > 0) return local;
-    return iniciales;
-  })();
+      if (supabase) {
+        try {
+          const { data, error: dbErr } = await supabase
+            .from('testimonios')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(20);
+          if (!dbErr && data && data.length > 0) {
+            const aprobados = data.filter((t) => t.aprobado && t.texto);
+            if (aprobados.length > 0) {
+              const existentes = new Set(local.map((l) => l.texto));
+              const nuevos = aprobados.filter((a) => !existentes.has(a.texto));
+              if (nuevos.length > 0) {
+                const merged = [...nuevos, ...local];
+                writeLocal(merged);
+                if (mounted) setTodos(merged);
+              }
+            }
+          }
+        } catch (_) {}
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,36 +87,31 @@ const Testimonios = () => {
     }
     setEnviando(true);
     try {
-      if (supabase) {
-        const { error: dbError } = await supabase.from('testimonios').insert({
-          nombre: formData.nombre.trim(),
-          empresa: formData.empresa.trim() || null,
-          texto: formData.texto.trim(),
-          estrellas: formData.estrellas,
-        });
-        if (dbError) {
-          console.warn('Supabase no disponible, guardando localmente:', dbError.message);
-        }
-      }
-      const local = JSON.parse(localStorage.getItem('bd-testimonios') || '[]');
-      local.push({
-        nombre: formData.nombre.trim(),
-        empresa: formData.empresa.trim() || '',
-        texto: formData.texto.trim(),
-        estrellas: formData.estrellas,
-        fecha: new Date().toISOString(),
-      });
-      localStorage.setItem('bd-testimonios', JSON.stringify(local));
-      setEnviado(true);
-      setFormData({ nombre: '', empresa: '', texto: '', estrellas: 5 });
-      const nuevoLocal = {
+      const nuevo = {
         nombre: formData.nombre.trim(),
         empresa: formData.empresa.trim() || '',
         texto: formData.texto.trim(),
         estrellas: formData.estrellas,
         fecha: new Date().toISOString(),
       };
-      setTestimoniosDb((prev) => [nuevoLocal, ...prev]);
+
+      if (supabase) {
+        try {
+          await supabase.from('testimonios').insert({
+            nombre: nuevo.nombre,
+            empresa: nuevo.empresa || null,
+            texto: nuevo.texto,
+            estrellas: nuevo.estrellas,
+          });
+        } catch (_) {}
+      }
+
+      const actual = readLocal();
+      actual.unshift(nuevo);
+      writeLocal(actual);
+      setTodos([...actual]);
+      setEnviado(true);
+      setFormData({ nombre: '', empresa: '', texto: '', estrellas: 5 });
     } catch (err) {
       console.error('Error al guardar testimonio:', err);
     } finally {
@@ -122,13 +139,13 @@ const Testimonios = () => {
         </Reveal>
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {cargando ? (
+          {todos.length === 0 ? (
             Array.from({ length: 3 }).map((_, i) => (
               <div key={`skel-${i}`} className="bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl h-64 animate-pulse" />
             ))
           ) : (
             todos.map((t, i) => (
-              <Reveal key={t.nombre + t.texto?.slice(0, 20)} animation="fade-up" delay={i * 120}>
+              <Reveal key={`${t.nombre}-${i}`} animation="fade-up" delay={Math.min(i, 2) * 120}>
                 <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-2 hover:border-blue-500/20 hover:shadow-lg hover:shadow-blue-500/5 h-full flex flex-col">
                   <div className="absolute top-3 right-3 text-blue-500/[0.06]">
                     <Quote className="w-16 h-16" />
@@ -193,7 +210,7 @@ const Testimonios = () => {
                 <input
                   required
                   type="text"
-                  placeholder="Ej: Juan Pérez"
+                  placeholder="Ej: Juan Perez"
                   value={formData.nombre}
                   onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
                   className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-white/20 transition-all"
@@ -212,7 +229,7 @@ const Testimonios = () => {
               </div>
 
               <div>
-                <label className="text-xs text-[#A1A1AA] block mb-1 font-medium">Calificación</label>
+                <label className="text-xs text-[#A1A1AA] block mb-1 font-medium">Calificacion</label>
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -249,7 +266,7 @@ const Testimonios = () => {
                 className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm transition-all hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4" />
-                {enviando ? 'Enviando...' : 'Enviar reseña'}
+                {enviando ? 'Enviando...' : 'Enviar resena'}
               </button>
             </form>
           )}

@@ -286,7 +286,7 @@ const Hero = () => {
               <span className="text-xs text-[#A1A1AA] font-heading">frontbastianpage.cl</span>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="p-4 bg-blue-500/[0.04] rounded-xl border border-blue-500/10 backdrop-blur-sm transition-all duration-300 hover:border-blue-500/25 hover:bg-blue-500/[0.07] hover:shadow-[0_0_30px_-8px_rgba(37,99,235,0.2)]">
                 <div className="text-xs text-blue-300/70 mb-1">Rendimiento Core Web Vitals</div>
                 <div className="flex items-center gap-3">
@@ -297,17 +297,40 @@ const Hero = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04] hover:shadow-[0_0_24px_-8px_rgba(37,99,235,0.15)]">
-                  <div className="text-xs text-[#A1A1AA] mb-1">Costo Fijo de Servidor</div>
-                  <div className="text-xl font-bold font-heading text-white">$0 CLP <span className="text-xs text-[#A1A1AA]">Hosting incluido</span></div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-3 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
+                  <div className="text-[10px] text-[#A1A1AA] mb-1">Costo Servidor</div>
+                  <div className="text-lg font-bold font-heading text-white">$0 <span className="text-[10px] text-[#A1A1AA] font-normal">/mes</span></div>
                 </div>
-                <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04] hover:shadow-[0_0_24px_-8px_rgba(37,99,235,0.15)]">
-                  <div className="text-xs text-[#A1A1AA] mb-1">Ahorro Anual vs Hosting</div>
-                  <div className="text-xl font-bold font-heading text-white">
+                <div className="p-3 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
+                  <div className="text-[10px] text-[#A1A1AA] mb-1">Tiempo de carga</div>
+                  <div className="text-lg font-bold font-heading text-white">&lt;1s</div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-3 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
+                  <div className="text-[10px] text-[#A1A1AA] mb-1">SSL / Seguridad</div>
+                  <div className="text-lg font-bold font-heading text-white flex items-center gap-1">
+                    <svg className="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+                    Incluido
+                  </div>
+                </div>
+                <div className="p-3 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
+                  <div className="text-[10px] text-[#A1A1AA] mb-1">Ahorro Anual</div>
+                  <div className="text-lg font-bold font-heading text-blue-400">
                     <ROICalculator />
                   </div>
                 </div>
+              </div>
+
+              <div className="flex items-center gap-2 pt-1">
+                <div className="flex -space-x-1.5">
+                  {['React', 'Vite', 'Tailwind'].map((t, i) => (
+                    <span key={t} className="px-2 py-0.5 text-[9px] font-medium text-white/50 bg-white/[0.04] border border-white/[0.06] rounded-full">{t}</span>
+                  ))}
+                </div>
+                <span className="text-[9px] text-[#A1A1AA]">+ Vercel Edge</span>
               </div>
             </div>
           </div>
