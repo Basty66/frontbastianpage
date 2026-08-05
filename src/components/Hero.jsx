@@ -74,9 +74,9 @@ function ROICalculator() {
         <span className="text-[10px] text-[#A1A1AA]">$5.000</span>
         <span className="text-[10px] text-[#A1A1AA]">$50.000</span>
       </div>
-      <div className="pt-1 border-t border-white/5 mt-1">
+      <div className="pt-1 border-t border-blue-500/10 mt-1">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-[#A1A1AA]">Ahorras al año:</span>
+          <span className="text-blue-300/60">Ahorras al año:</span>
           <span className="text-white font-bold text-sm">${yearly.toLocaleString('es-CL')}</span>
         </div>
       </div>
@@ -272,36 +272,41 @@ const Hero = () => {
         </Reveal>
       </Reveal>
       <Reveal animation="fade-right" delay={200} className="relative z-10 flex-1 w-full max-w-xl">
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-sm md:backdrop-blur-lg md:animate-float">
-          <div className="flex items-center justify-between border-b border-white/[0.06] pb-4 mb-6">
-            <div className="flex gap-2">
-              <span className="w-3 h-3 bg-white/20 rounded-full" />
-              <span className="w-3 h-3 bg-white/10 rounded-full" />
-              <span className="w-3 h-3 bg-white/5 rounded-full" />
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 shadow-[0_0_60px_-12px_rgba(37,99,235,0.15)] relative overflow-hidden backdrop-blur-sm md:backdrop-blur-lg md:animate-float group/card">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.04] via-transparent to-transparent pointer-events-none" />
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/[0.07] rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-16 -left-16 w-32 h-32 bg-blue-400/[0.05] rounded-full blur-2xl pointer-events-none" />
+          <div className="relative z-10">
+            <div className="flex items-center justify-between border-b border-white/[0.06] pb-4 mb-6">
+              <div className="flex gap-2">
+                <span className="w-3 h-3 bg-blue-500/60 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.5)]" />
+                <span className="w-3 h-3 bg-blue-400/30 rounded-full" />
+                <span className="w-3 h-3 bg-white/10 rounded-full" />
+              </div>
+              <span className="text-xs text-[#A1A1AA] font-heading">frontbastianpage.cl</span>
             </div>
-            <span className="text-xs text-[#A1A1AA] font-heading">frontbastianpage.cl</span>
-          </div>
 
-          <div className="space-y-4">
-            <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]">
-              <div className="text-xs text-[#A1A1AA] mb-1">Rendimiento Core Web Vitals</div>
-              <div className="flex items-center gap-3">
-                <div className="text-2xl font-bold font-heading text-white">100%</div>
-                <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
-                  <div className="bg-white/60 h-full w-full rounded-full" />
+            <div className="space-y-4">
+              <div className="p-4 bg-blue-500/[0.04] rounded-xl border border-blue-500/10 backdrop-blur-sm transition-all duration-300 hover:border-blue-500/25 hover:bg-blue-500/[0.07] hover:shadow-[0_0_30px_-8px_rgba(37,99,235,0.2)]">
+                <div className="text-xs text-blue-300/70 mb-1">Rendimiento Core Web Vitals</div>
+                <div className="flex items-center gap-3">
+                  <div className="text-2xl font-bold font-heading text-white">100%</div>
+                  <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-blue-600 to-blue-400 h-full w-full rounded-full shadow-[0_0_12px_rgba(37,99,235,0.5)]" />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]">
-                <div className="text-xs text-[#A1A1AA] mb-1">Costo Fijo de Servidor</div>
-                <div className="text-xl font-bold font-heading text-white">$0 CLP <span className="text-xs text-[#A1A1AA]">Hosting incluido</span></div>
-              </div>
-              <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]">
-                <div className="text-xs text-[#A1A1AA] mb-1">Ahorro Anual vs Hosting</div>
-                <div className="text-xl font-bold font-heading text-white">
-                  <ROICalculator />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04] hover:shadow-[0_0_24px_-8px_rgba(37,99,235,0.15)]">
+                  <div className="text-xs text-[#A1A1AA] mb-1">Costo Fijo de Servidor</div>
+                  <div className="text-xl font-bold font-heading text-white">$0 CLP <span className="text-xs text-[#A1A1AA]">Hosting incluido</span></div>
+                </div>
+                <div className="p-4 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04] hover:shadow-[0_0_24px_-8px_rgba(37,99,235,0.15)]">
+                  <div className="text-xs text-[#A1A1AA] mb-1">Ahorro Anual vs Hosting</div>
+                  <div className="text-xl font-bold font-heading text-white">
+                    <ROICalculator />
+                  </div>
                 </div>
               </div>
             </div>
