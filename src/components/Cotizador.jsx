@@ -551,12 +551,15 @@ const Cotizador = () => {
     const mg = 18;
     const cw = pw - mg * 2;
 
-    // PALETA: blanco y negro, con un acento cian mínimo
-    const black = [0, 0, 0];
-    const dark = [40, 40, 40];
-    const gray = [120, 120, 120];
-    const light = [235, 235, 235];
-    const cyan = [6, 182, 212];
+    // PALETA: Dark Premium Tech - azul electrico + chrome
+    const black = [9, 9, 11];
+    const dark = [30, 30, 35];
+    const gray = [120, 120, 125];
+    const light = [235, 237, 240];
+    const blue = [37, 99, 235];
+    const blueLight = [239, 243, 255];
+    const blueSoft = [59, 130, 246];
+    const white = [255, 255, 255];
 
     let y = 18;
     let pageNum = 1;
@@ -570,22 +573,22 @@ const Cotizador = () => {
       else doc.text(txt, x, yy);
     }
 
-    function hr(yp, color = black) {
+    function hr(yp, color = light) {
       doc.setDrawColor(color[0], color[1], color[2]);
-      doc.setLineWidth(0.4);
+      doc.setLineWidth(0.3);
       doc.line(mg, yp, pw - mg, yp);
     }
 
     function section(title, needed) {
       if (y + needed > ph - 20) { doc.addPage(); pageNum++; y = 20; }
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(12);
-      doc.setTextColor(0, 0, 0);
-      doc.text(title, mg, y);
-      doc.setDrawColor(...cyan);
-      doc.setLineWidth(0.6);
-      doc.line(mg, y + 2.5, mg + 50, y + 2.5);
-      y += 10;
+      doc.setFontSize(11);
+      doc.setTextColor(blue[0], blue[1], blue[2]);
+      doc.text(title.toUpperCase(), mg, y);
+      doc.setDrawColor(...blue);
+      doc.setLineWidth(0.5);
+      doc.line(mg, y + 2, mg + 45, y + 2);
+      y += 8;
     }
 
     function ensureSpace(needed) {
@@ -593,8 +596,28 @@ const Cotizador = () => {
     }
 
     function addFooter() {
-      text(`BS DigitalTech  |  ${propuestaNum}  |  ${formatDate(hoy)}  |  Pagina ${pageNum}`,
-        mg, ph - 8, 7, 'normal', gray);
+      doc.setDrawColor(...light);
+      doc.setLineWidth(0.2);
+      doc.line(mg, ph - 14, pw - mg, ph - 14);
+      text('BS DigitalTech', mg, ph - 9, 7, 'bold', blue);
+      text(`${propuestaNum}  |  ${formatDate(hoy)}  |  Pagina ${pageNum}`, pw - mg, ph - 9, 7, 'normal', gray, 'right');
+    }
+
+    function drawOwl(x, yOwl, size) {
+      const s = size / 20;
+      doc.setFillColor(...blue);
+      doc.circle(x + 10 * s, yOwl + 12 * s, 8 * s, 'F');
+      doc.setFillColor(255, 255, 255);
+      doc.circle(x + 6.5 * s, yOwl + 10 * s, 3 * s, 'F');
+      doc.circle(x + 13.5 * s, yOwl + 10 * s, 3 * s, 'F');
+      doc.setFillColor(...blue);
+      doc.circle(x + 6.5 * s, yOwl + 10 * s, 1.5 * s, 'F');
+      doc.circle(x + 13.5 * s, yOwl + 10 * s, 1.5 * s, 'F');
+      doc.setFillColor(...blueSoft);
+      doc.triangle(x + 9 * s, yOwl + 13 * s, x + 11 * s, yOwl + 13 * s, x + 10 * s, yOwl + 15 * s, 'F');
+      doc.setFillColor(...blue);
+      doc.triangle(x + 2 * s, yOwl + 6 * s, x + 7 * s, yOwl + 8 * s, x + 4 * s, yOwl + 2 * s, 'F');
+      doc.triangle(x + 18 * s, yOwl + 6 * s, x + 13 * s, yOwl + 8 * s, x + 16 * s, yOwl + 2 * s, 'F');
     }
 
     const propuestaNum = `PRO-${String(Date.now()).slice(-6)}`;
@@ -603,18 +626,21 @@ const Cotizador = () => {
     venc.setDate(venc.getDate() + 15);
 
     // =============== HEADER ===============
-    text('BS DigitalTech', mg, y, 22, 'bold', black);
-    text('Soluciones Web Profesionales', mg, y + 8, 9, 'normal', dark);
-    text('Serverless  |  Hosting $0', mg, y + 13, 8, 'normal', gray);
+    drawOwl(mg, y - 6, 18);
+    text('BS DigitalTech', mg + 24, y + 2, 22, 'bold', blue);
+    text('Soluciones Web Profesionales', mg + 24, y + 9, 9, 'normal', dark);
+    text('Serverless  |  Hosting $0', mg + 24, y + 14, 8, 'normal', gray);
 
-    text(propuestaNum, pw - mg, y, 14, 'bold', black, 'right');
+    text(propuestaNum, pw - mg, y, 14, 'bold', blue, 'right');
     text('PROPUESTA', pw - mg, y + 6, 7, 'normal', gray, 'right');
     text(`Emitida: ${formatDate(hoy)}`, pw - mg, y + 11, 8, 'normal', dark, 'right');
     text(`Valida hasta: ${formatDate(venc)}`, pw - mg, y + 16, 8, 'normal', dark, 'right');
 
-    y += 26;
-    hr(y);
-    y += 10;
+    y += 24;
+    doc.setDrawColor(...blue);
+    doc.setLineWidth(0.8);
+    doc.line(mg, y, pw - mg, y);
+    y += 8;
 
     // =============== CLIENTE ===============
     section('Datos del Cliente', 35);
@@ -622,8 +648,10 @@ const Cotizador = () => {
     ensureSpace(cH);
     const cY = y;
     doc.setDrawColor(...light);
-    doc.setLineWidth(0.4);
+    doc.setLineWidth(0.3);
     doc.rect(mg, cY, cw, cH);
+    doc.setFillColor(...blueLight);
+    doc.rect(mg, cY, cw, 0.8, 'F');
     text('Nombre completo', mg + 4, cY + 7, 8, 'normal', gray);
     text(formData.nombre || '---', mg + 4, cY + 14, 10, 'bold', black);
     text('Email', mg + cw / 2 + 4, cY + 7, 8, 'normal', gray);
@@ -645,7 +673,9 @@ const Cotizador = () => {
     const pY = y;
     doc.setDrawColor(...light);
     doc.rect(mg, pY, cw, 16);
-    text('Cristian Bastian Cerda', mg + 4, pY + 7, 10, 'bold', black);
+    doc.setFillColor(...blueLight);
+    doc.rect(mg, pY, cw, 0.8, 'F');
+    text('Cristian Bastian Cerda', mg + 4, pY + 7, 10, 'bold', blue);
     text('Analista Programador', mg + 4, pY + 13, 8, 'normal', gray);
     text('cristianbastian.dev@gmail.com  |  +56 9 2812 2947', mg + 4 + cw / 2, pY + 7, 8, 'normal', dark);
     text('Santiago, Chile  |  RUT: 19.876.543-2', mg + 4 + cw / 2, pY + 13, 8, 'normal', gray);
@@ -657,7 +687,9 @@ const Cotizador = () => {
     const sY = y;
     doc.setDrawColor(...light);
     doc.rect(mg, sY, cw, 14);
-    text(getTipoLabel(), mg + 4, sY + 7, 11, 'bold', black);
+    doc.setFillColor(...blueLight);
+    doc.rect(mg, sY, cw, 0.8, 'F');
+    text(getTipoLabel(), mg + 4, sY + 7, 11, 'bold', blue);
     text(`${getDias()} dias habiles`, mg + 4, sY + 12, 8, 'normal', gray);
     text('Plazo de entrega', mg + cw / 2 + 4, sY + 5, 7, 'normal', gray);
     text('Pago 50% / 50%', mg + cw / 2 + 4, sY + 12, 9, 'bold', black);
@@ -672,11 +704,11 @@ const Cotizador = () => {
     const tConcep = 70;
 
     // Cabecera tabla
-    doc.setFillColor(0, 0, 0);
+    doc.setFillColor(blue[0], blue[1], blue[2]);
     doc.rect(tx, y, cw, tH, 'F');
-    text('Concepto', tx + 3, y + 6, 9, 'bold', [255, 255, 255]);
-    text('Descripcion', tx + tConcep + 3, y + 6, 9, 'bold', [255, 255, 255]);
-    text('Valor', pw - mg - 3, y + 6, 9, 'bold', [255, 255, 255], 'right');
+    text('Concepto', tx + 3, y + 6, 9, 'bold', white);
+    text('Descripcion', tx + tConcep + 3, y + 6, 9, 'bold', white);
+    text('Valor', pw - mg - 3, y + 6, 9, 'bold', white, 'right');
     y += tH;
 
     let hasRows = false;
@@ -684,11 +716,11 @@ const Cotizador = () => {
 
     function drawRow(c1, c2, c3, bold = false) {
       doc.setDrawColor(...light);
-      doc.setLineWidth(0.3);
+      doc.setLineWidth(0.2);
       doc.rect(tx, y, cw, rowH);
-      text(c1, tx + 3, y + 6, 9, bold ? 'bold' : 'normal', dark);
+      text(c1, tx + 3, y + 6, 9, bold ? 'bold' : 'normal', bold ? blue : dark);
       text(c2, tx + tConcep + 3, y + 6, 8, 'normal', gray);
-      text(c3, pw - mg - 3, y + 6, 9, bold ? 'bold' : 'normal', black, 'right');
+      text(c3, pw - mg - 3, y + 6, 9, bold ? 'bold' : 'normal', bold ? blue : black, 'right');
       y += rowH;
     }
 
@@ -709,14 +741,13 @@ const Cotizador = () => {
 
     if (hasRows) {
       ensureSpace(13);
-      // Total row highlighted
-      doc.setFillColor(240, 240, 240);
+      doc.setFillColor(blueLight[0], blueLight[1], blueLight[2]);
       doc.rect(tx, y, cw, 12, 'F');
-      doc.setDrawColor(...black);
+      doc.setDrawColor(...blue);
       doc.setLineWidth(0.4);
       doc.rect(tx, y, cw, 12);
-      text('INVERSION TOTAL', tx + 3, y + 8, 11, 'bold', black);
-      text(`${formatCurrency(total)} CLP`, pw - mg - 3, y + 8, 12, 'bold', black, 'right');
+      text('INVERSION TOTAL', tx + 3, y + 8, 11, 'bold', blue);
+      text(`${formatCurrency(total)} CLP`, pw - mg - 3, y + 8, 12, 'bold', blue, 'right');
       y += 18;
     }
 
@@ -734,8 +765,11 @@ const Cotizador = () => {
     const incH = includes.length * 9 + 6;
     doc.setDrawColor(...light);
     doc.rect(mg, incY, cw, incH);
+    doc.setFillColor(...blueLight);
+    doc.rect(mg, incY, cw, 0.8, 'F');
     includes.forEach(([t, d], i) => {
-      text('OK', mg + 4, incY + 7 + i * 9, 8, 'bold', [16, 185, 129]);
+      doc.setFillColor(...blue);
+      doc.circle(mg + 6, incY + 5.5 + i * 9, 1.5, 'F');
       text(t, mg + 14, incY + 7 + i * 9, 9, 'bold', black);
       text(d, mg + 14, incY + 11 + i * 9, 7, 'normal', gray);
     });
@@ -764,15 +798,17 @@ const Cotizador = () => {
     const anticipo = Math.round(total * 0.5);
     const saldo = total - anticipo;
     const pH = 38;
-    doc.setDrawColor(...black);
+    doc.setDrawColor(...blue);
     doc.setLineWidth(0.5);
     doc.rect(mg, y, cw, pH);
-    text('Esquema de pago 50% / 50%', mg + 4, y + 8, 10, 'bold', black);
+    doc.setFillColor(...blueLight);
+    doc.rect(mg, y, cw, 0.8, 'F');
+    text('Esquema de pago 50% / 50%', mg + 4, y + 8, 10, 'bold', blue);
     text(`1.  Anticipo: ${formatCurrency(anticipo)} CLP`, mg + 4, y + 18, 9, 'normal', dark);
     text('Para iniciar el desarrollo del proyecto.', mg + 12, y + 23, 8, 'normal', gray);
     text(`2.  Saldo: ${formatCurrency(saldo)} CLP`, mg + 4, y + 28, 9, 'normal', dark);
     text('Contra entrega y conformidad final.', mg + 12, y + 33, 8, 'normal', gray);
-    text(`Plazo total: ${getDias()} dias habiles desde el anticipo.`, pw - mg - 4, y + pH - 4, 8, 'bold', dark, 'right');
+    text(`Plazo total: ${getDias()} dias habiles desde el anticipo.`, pw - mg - 4, y + pH - 4, 8, 'bold', blue, 'right');
     y += pH + 8;
 
     // =============== PROXIMOS PASOS ===============
@@ -788,8 +824,10 @@ const Cotizador = () => {
       'Coordinamos el pago del anticipo e iniciamos el desarrollo.',
     ];
     steps.forEach((t, i) => {
-      text(`${i + 1}.`, mg + 4, y + 7 + i * 7, 9, 'bold', [6, 182, 212]);
-      text(t, mg + 12, y + 7 + i * 7, 9, 'normal', dark);
+      doc.setFillColor(...blue);
+      doc.circle(mg + 6, y + 5.5 + i * 7, 2.5, 'F');
+      text(`${i + 1}`, mg + 4.8, y + 6.7 + i * 7, 6, 'bold', white);
+      text(t, mg + 14, y + 7 + i * 7, 9, 'normal', dark);
     });
     y += nH + 8;
 
@@ -810,9 +848,11 @@ const Cotizador = () => {
 
     // Cliente
     doc.setDrawColor(...light);
-    doc.setLineWidth(0.4);
+    doc.setLineWidth(0.3);
     doc.rect(mg, sigY, sigW, sigH);
-    text('CLIENTE', mg + 4, sigY + 8, 10, 'bold', black);
+    doc.setFillColor(...blueLight);
+    doc.rect(mg, sigY, sigW, 0.8, 'F');
+    text('CLIENTE', mg + 4, sigY + 8, 10, 'bold', blue);
     text(formData.nombre || '[Nombre del cliente]', mg + 4, sigY + 14, 9, 'normal', dark);
     if (clientSigRef?.current) {
       try {
@@ -832,7 +872,9 @@ const Cotizador = () => {
     const px2 = mg + sigW + 8;
     doc.setDrawColor(...light);
     doc.rect(px2, sigY, sigW, sigH);
-    text('PROVEEDOR', px2 + 4, sigY + 8, 10, 'bold', black);
+    doc.setFillColor(...blueLight);
+    doc.rect(px2, sigY, sigW, 0.8, 'F');
+    text('PROVEEDOR', px2 + 4, sigY + 8, 10, 'bold', blue);
     text('Cristian Bastian Cerda', px2 + 4, sigY + 14, 9, 'normal', dark);
     text('Analista Programador', px2 + 4, sigY + 19, 7, 'normal', gray);
     if (bastianImgRef.current) {
@@ -853,7 +895,7 @@ const Cotizador = () => {
     setGenerating(true);
     try {
       const doc = buildPDFDoc();
-      const nombreArchivo = `Propuesta_BastianDev_${formData.nombre?.replace(/\s+/g, '_') || 'pendiente'}_${formatDate(new Date()).replace(/\//g, '-')}.pdf`;
+      const nombreArchivo = `Propuesta_BSDigitalTech_${formData.nombre?.replace(/\s+/g, '_') || 'pendiente'}_${formatDate(new Date()).replace(/\//g, '-')}.pdf`;
       doc.save(nombreArchivo);
     } finally {
       setGenerating(false);
