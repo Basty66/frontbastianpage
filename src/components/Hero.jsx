@@ -240,7 +240,7 @@ const Hero = () => {
           </button>
           <button
             onClick={(e) => { createRipple(e); navigate('/portafolio'); }}
-            className="ripple-container relative overflow-hidden group border border-white/10 text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out bg-white/[0.03] backdrop-blur-sm hover:bg-white/[0.06] hover:border-white/20 hover:-translate-y-0.5 text-sm sm:text-base">
+            className="ripple-container relative overflow-hidden group border border-blue-500/20 text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out bg-blue-600/[0.06] backdrop-blur-sm hover:bg-blue-600/10 hover:border-blue-500/30 hover:-translate-y-0.5 text-sm sm:text-base">
             <span className="relative z-10">Ver Portafolio</span>
           </button>
         </div>
