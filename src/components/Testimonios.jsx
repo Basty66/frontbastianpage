@@ -31,17 +31,30 @@ const Testimonios = () => {
   const [enviado, setEnviado] = useState(false);
   const [error, setError] = useState('');
   const [testimoniosDb, setTestimoniosDb] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
   const cargarTestimonios = async () => {
-    if (!supabase) return;
-    const { data, error } = await supabase.from('testimonios').select('*').order('created_at', { ascending: false }).limit(9);
-    if (!error && data) setTestimoniosDb(data);
+    if (!supabase) { setCargando(false); return; }
+    try {
+      const { data, error } = await supabase.from('testimonios').select('*').order('created_at', { ascending: false }).limit(9);
+      if (!error && data) setTestimoniosDb(data);
+    } catch (_) {}
+    setCargando(false);
   };
 
   useEffect(() => { cargarTestimonios(); }, []);
 
-  const aprobados = testimoniosDb.filter((t) => t.aprobado);
-  const todos = aprobados.length > 0 ? aprobados : iniciales;
+  const getLocalTestimonios = () => {
+    try { return JSON.parse(localStorage.getItem('bd-testimonios') || '[]'); } catch { return []; }
+  };
+
+  const todos = (() => {
+    const aprobados = testimoniosDb.filter((t) => t.aprobado && t.texto);
+    if (aprobados.length > 0) return aprobados;
+    const local = getLocalTestimonios().filter((t) => t.texto);
+    if (local.length > 0) return local;
+    return iniciales;
+  })();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,7 +87,14 @@ const Testimonios = () => {
       localStorage.setItem('bd-testimonios', JSON.stringify(local));
       setEnviado(true);
       setFormData({ nombre: '', empresa: '', texto: '', estrellas: 5 });
-      cargarTestimonios();
+      const nuevoLocal = {
+        nombre: formData.nombre.trim(),
+        empresa: formData.empresa.trim() || '',
+        texto: formData.texto.trim(),
+        estrellas: formData.estrellas,
+        fecha: new Date().toISOString(),
+      };
+      setTestimoniosDb((prev) => [nuevoLocal, ...prev]);
     } catch (err) {
       console.error('Error al guardar testimonio:', err);
     } finally {
@@ -102,32 +122,38 @@ const Testimonios = () => {
         </Reveal>
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {todos.map((t, i) => (
-            <Reveal key={i} animation="fade-up" delay={i * 120}>
-              <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-2 hover:border-blue-500/20 hover:shadow-lg hover:shadow-blue-500/5 h-full flex flex-col">
-                <div className="absolute top-3 right-3 text-blue-500/[0.06]">
-                  <Quote className="w-16 h-16" />
-                </div>
-                <div className="relative flex gap-0.5 mb-4">
-                  {Array.from({ length: 5 }).map((_, j) => (
-                    <Star key={j} className={`w-4 h-4 ${starColor(j + 1, t.estrellas)}`} />
-                  ))}
-                </div>
-                <p className="relative text-sm text-[#A1A1AA] leading-relaxed flex-1 italic">&ldquo;{t.texto}&rdquo;</p>
-                <div className="relative mt-5 pt-4 border-t border-white/[0.04]">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 font-bold text-sm flex-shrink-0">
-                      {t.nombre.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="text-white font-medium text-sm leading-tight">{t.nombre}</p>
-                      <p className="text-[#A1A1AA] text-xs">{t.empresa}</p>
+          {cargando ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={`skel-${i}`} className="bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl h-64 animate-pulse" />
+            ))
+          ) : (
+            todos.map((t, i) => (
+              <Reveal key={t.nombre + t.texto?.slice(0, 20)} animation="fade-up" delay={i * 120}>
+                <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-2 hover:border-blue-500/20 hover:shadow-lg hover:shadow-blue-500/5 h-full flex flex-col">
+                  <div className="absolute top-3 right-3 text-blue-500/[0.06]">
+                    <Quote className="w-16 h-16" />
+                  </div>
+                  <div className="relative flex gap-0.5 mb-4">
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <Star key={j} className={`w-4 h-4 ${starColor(j + 1, t.estrellas)}`} />
+                    ))}
+                  </div>
+                  <p className="relative text-sm text-[#A1A1AA] leading-relaxed flex-1 italic">&ldquo;{t.texto}&rdquo;</p>
+                  <div className="relative mt-5 pt-4 border-t border-white/[0.04]">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 font-bold text-sm flex-shrink-0">
+                        {t.nombre.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-white font-medium text-sm leading-tight">{t.nombre}</p>
+                        <p className="text-[#A1A1AA] text-xs">{t.empresa}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            ))
+          )}
         </div>
 
         <Reveal animation="fade-up" className="max-w-lg mx-auto">
