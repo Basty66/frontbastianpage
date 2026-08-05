@@ -246,6 +246,7 @@ const Cotizador = () => {
   const [showPdfPreview, setShowPdfPreview] = useState(false);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [carnetImage, setCarnetImage] = useState(null);
 
   const planTimeoutRef = useRef(null);
 
@@ -253,6 +254,7 @@ const Cotizador = () => {
   const pdfDocRef = useRef(null);
   const mountedRef = useRef(false);
   const bastianImgRef = useRef(null);
+  const carnetFileRef = useRef(null);
   const previewModalRef = useRef(null);
   const signatureModalRef = useRef(null);
   const pdfModalRef = useRef(null);
@@ -920,6 +922,21 @@ const Cotizador = () => {
     text(`Fecha: __ / __ / ${hoy.getFullYear()}`, px2 + 4, sigY + sigH + 2, 7, 'normal', gray);
 
     y = sigY + sigH + 8;
+
+    if (carnetImage) {
+      ensureSpace(70);
+      section('Identidad del Cliente', 65);
+      doc.setDrawColor(...light);
+      doc.setLineWidth(0.3);
+      doc.rect(mg, y, cw, 55);
+      doc.setFillColor(...blueLight);
+      doc.rect(mg, y, cw, 0.8, 'F');
+      text('Documento de identidad adjuntado por el cliente', mg + 4, y + 7, 8, 'normal', gray);
+      try {
+        doc.addImage(carnetImage, 'JPEG', mg + 4, y + 10, cw - 8, 40);
+      } catch (_) {}
+      y += 63;
+    }
 
     addFooter();
     return doc;
@@ -1770,8 +1787,66 @@ const Cotizador = () => {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-white/80">Firma registrada</p>
-                    <p className="text-xs text-[#A1A1AA] mt-0.5">Tu firma digital será incluida en el PDF de la propuesta.</p>
+                    <p className="text-xs text-[#A1A1AA] mt-0.5">Tu firma digital sera incluida en el PDF de la propuesta.</p>
                   </div>
+                </div>
+              )}
+
+              {clientSigned && (
+                <div className="border-t border-white/[0.06] pt-5 animate-modal-content">
+                  <label className="text-sm text-[#A1A1AA] block mb-2 font-medium">
+                    Foto del carnet <span className="text-white/30 text-xs font-normal">(opcional)</span>
+                  </label>
+                  <p className="text-[11px] text-white/30 mb-3">Para validar identidad en el contrato. Solo se usa en esta propuesta.</p>
+                  <input
+                    ref={carnetFileRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      if (file.size > 5 * 1024 * 1024) {
+                        setError('La imagen no puede superar 5MB.');
+                        return;
+                      }
+                      const reader = new FileReader();
+                      reader.onload = (ev) => {
+                        setCarnetImage(ev.target.result);
+                        setError(null);
+                      };
+                      reader.readAsDataURL(file);
+                    }}
+                  />
+                  {!carnetImage ? (
+                    <button
+                      type="button"
+                      onClick={() => carnetFileRef.current?.click()}
+                      className="w-full p-4 rounded-xl border-2 border-dashed border-white/[0.08] hover:border-blue-500/20 bg-white/[0.02] hover:bg-blue-500/[0.04] transition-all duration-300 text-center group"
+                    >
+                      <svg className="w-8 h-8 mx-auto mb-2 text-white/20 group-hover:text-blue-400/50 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+                      </svg>
+                      <p className="text-xs text-[#A1A1AA] group-hover:text-white/60 transition-colors">Subir foto del carnet</p>
+                      <p className="text-[10px] text-white/20 mt-1">JPG, PNG - Max 5MB</p>
+                    </button>
+                  ) : (
+                    <div className="relative rounded-xl border border-white/[0.08] overflow-hidden bg-white/[0.02]">
+                      <img src={carnetImage} alt="Carnet del cliente" className="w-full h-40 object-contain bg-black/20" />
+                      <button
+                        type="button"
+                        onClick={() => { setCarnetImage(null); if (carnetFileRef.current) carnetFileRef.current.value = ''; }}
+                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-red-500/80 text-white/60 hover:text-white flex items-center justify-center transition-all"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                      <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 text-[10px] text-white/60">
+                        Carnet cargado
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
