@@ -234,71 +234,32 @@ function CaseStudyCard({ proj, idx, compact }) {
             {proj.tipo === 'ecommerce' ? 'E-commerce' : 'Landing Page'}
           </span>
         )}
-
-        {compact && proj.problema && (
-          <div className="absolute inset-0 z-10 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0 pointer-events-none">
-            <div className="space-y-1.5 bg-black/50 backdrop-blur-md rounded-xl p-3 border border-white/[0.06]">
-              <div>
-                <span className="text-[9px] text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
-                <p className="text-[11px] text-white/80 leading-snug mt-0.5 line-clamp-2">{proj.problema}</p>
-              </div>
-              <div>
-                <span className="text-[9px] text-blue-400/80 font-semibold uppercase tracking-wider">Solución</span>
-                <p className="text-[11px] text-white/80 leading-snug mt-0.5 line-clamp-2">{proj.solucion}</p>
-              </div>
-              <div>
-                <span className="text-[9px] text-emerald-400/80 font-semibold uppercase tracking-wider">Resultado</span>
-                <p className="text-[11px] text-white/80 leading-snug mt-0.5 line-clamp-2">{proj.resultado}</p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       <div className={`flex flex-col flex-1 ${compact ? 'p-4' : 'p-5 sm:p-6 md:w-1/2'}`}>
-        <div className="mb-2">
+        <div className="mb-1">
           <span className="text-[10px] text-blue-400/60 font-medium uppercase tracking-wider">{proj.cliente || proj.titulo}</span>
         </div>
-        <h3 className="text-white font-heading font-semibold text-sm sm:text-base mb-2">{proj.titulo}</h3>
+        <h3 className="text-white font-heading font-semibold text-sm sm:text-base mb-3">{proj.titulo}</h3>
 
-        {compact && proj.problema ? (
-          <div className="flex-1">
-            <p className="text-xs text-[#A1A1AA] leading-relaxed mb-2 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">{proj.desc}</p>
-            <div className="space-y-2 max-h-0 group-hover:max-h-[500px] transition-all duration-700 ease-out overflow-hidden opacity-0 group-hover:opacity-100">
-              <div className="pt-2 border-t border-white/5">
-                <span className="text-[9px] text-red-400/70 font-semibold uppercase tracking-wider">Problema</span>
-                <p className="text-[11px] text-[#A1A1AA] leading-snug mt-0.5">{proj.problema}</p>
-              </div>
-              <div>
-                <span className="text-[9px] text-blue-400/70 font-semibold uppercase tracking-wider">Solución</span>
-                <p className="text-[11px] text-[#A1A1AA] leading-snug mt-0.5">{proj.solucion}</p>
-              </div>
-              <div>
-                <span className="text-[9px] text-emerald-400/70 font-semibold uppercase tracking-wider">Resultado</span>
-                <p className="text-[11px] text-[#A1A1AA] leading-snug mt-0.5">{proj.resultado}</p>
-              </div>
-            </div>
-          </div>
-        ) : compact ? (
-          <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3 line-clamp-2 flex-1">{proj.desc}</p>
-        ) : !compact && proj.problema ? (
-          <div className="space-y-2 mb-3 flex-1">
+        {proj.problema ? (
+          <div className="flex-1 space-y-3 mb-3">
             <div>
-              <span className="text-[10px] text-red-400/70 font-semibold uppercase tracking-wider">Problema</span>
+              <span className="text-[10px] text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
               <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.problema}</p>
             </div>
             <div>
-              <span className="text-[10px] text-blue-400/70 font-semibold uppercase tracking-wider">Solución</span>
+              <span className="text-[10px] text-blue-400/80 font-semibold uppercase tracking-wider">Solución</span>
               <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.solucion}</p>
             </div>
             <div>
-              <span className="text-[10px] text-emerald-400/70 font-semibold uppercase tracking-wider">Resultado</span>
+              <span className="text-[10px] text-emerald-400/80 font-semibold uppercase tracking-wider">Resultado</span>
               <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.resultado}</p>
             </div>
           </div>
-        ) : !compact ? (
+        ) : (
           <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3 flex-1">{proj.desc}</p>
-        ) : null}
+        )}
 
         <div className="flex flex-wrap gap-1 mb-3">
           {(proj.tags || []).slice(0, compact ? 3 : undefined).map((tag) => (
