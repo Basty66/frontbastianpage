@@ -125,16 +125,16 @@ const Testimonios = () => {
       : 'fill-white/10 text-white/10';
 
   return (
-    <section id="testimonios" className="relative py-16 sm:py-20 px-4 sm:px-6 border-y border-white/5 overflow-hidden" style={{ background: '#09090B' }}>
+    <section id="testimonios" className="relative py-12 sm:py-16 px-4 sm:px-6 border-y border-white/5 overflow-hidden" style={{ background: '#09090B' }}>
       <div className="absolute top-1/3 -right-32 w-80 h-80 bg-blue-500/[0.02] rounded-full blur-3xl pointer-events-none" />
-      <div className="max-w-7xl mx-auto relative z-10">
-        <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 tracking-tight">
+      <div className="max-w-5xl mx-auto relative z-10">
+        <Reveal animation="fade-up" className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-heading font-bold mb-2 tracking-tight">
             Lo que dicen{' '}
             <span className="text-gradient-blue">mis clientes</span>
           </h2>
-          <p className="text-[#A1A1AA]">
-            Clientes reales, resultados concretos. Esto es lo que opinan quienes ya trabajaron conmigo.
+          <p className="text-[#A1A1AA] text-sm">
+            Clientes reales, resultados concretos.
           </p>
         </Reveal>
 

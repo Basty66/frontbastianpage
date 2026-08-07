@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { ExternalLink, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ExternalLink, ArrowUpRight, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Reveal from './Reveal';
 import { supabase } from '../lib/supabaseClient';
@@ -46,6 +46,7 @@ function Thumbnail({ proj, idx }) {
 const Portfolio = ({ fullPage = false }) => {
   const [proyectos, setProyectos] = useState(fallbackProyectos);
   const [loading, setLoading] = useState(true);
+  const [expandedId, setExpandedId] = useState(null);
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -130,7 +131,7 @@ const Portfolio = ({ fullPage = false }) => {
           ) : (
             <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
               {displayProjects.map((proj, i) => (
-                <CaseStudyCard key={proj.id} proj={proj} idx={i} />
+                <CaseStudyCard key={proj.id} proj={proj} idx={i} expanded={expandedId === proj.id} onToggle={() => setExpandedId(expandedId === proj.id ? null : proj.id)} />
               ))}
             </div>
           )}
@@ -176,7 +177,7 @@ const Portfolio = ({ fullPage = false }) => {
             >
               {displayProjects.map((proj, i) => (
                 <Reveal key={proj.id} animation="fade-up" delay={i * 80} className="flex-shrink-0 w-[85vw] sm:w-[400px] snap-start" data-card>
-                  <CaseStudyCard proj={proj} idx={i} compact />
+                  <CaseStudyCard proj={proj} idx={i} compact expanded={expandedId === proj.id} onToggle={() => setExpandedId(expandedId === proj.id ? null : proj.id)} />
                 </Reveal>
               ))}
 
@@ -202,7 +203,7 @@ const Portfolio = ({ fullPage = false }) => {
   );
 };
 
-function CaseStudyCard({ proj, idx, compact }) {
+function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
   const initials = proj.titulo.split(/[\s-]+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
@@ -240,24 +241,37 @@ function CaseStudyCard({ proj, idx, compact }) {
         <div className="mb-1">
           <span className="text-[10px] text-blue-400/60 font-medium uppercase tracking-wider">{proj.cliente || proj.titulo}</span>
         </div>
-        <h3 className="text-white font-heading font-semibold text-sm sm:text-base mb-3">{proj.titulo}</h3>
+        <h3 className="text-white font-heading font-semibold text-sm sm:text-base mb-2">{proj.titulo}</h3>
 
-        <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">{proj.desc}</p>
+        <p className="text-xs text-[#A1A1AA] leading-relaxed mb-2 line-clamp-2">{proj.desc}</p>
 
-        <div className="max-h-0 group-hover:max-h-[500px] opacity-0 group-hover:opacity-100 overflow-hidden will-change-[max-height,opacity] transition-[max-height] duration-500 [cubic-bezier(0.4,0,0.2,1)] space-y-2.5 mb-3" style={{ transitionProperty: 'max-height, opacity', transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1), cubic-bezier(0.4, 0, 0.2, 1)', transitionDuration: '600ms, 400ms', transitionDelay: '0ms, 150ms' }}>
-          <div className="pt-2 border-t border-white/5">
-            <span className="text-[10px] text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
-            <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.problema || proj.desc}</p>
-          </div>
-          <div>
-            <span className="text-[10px] text-blue-400/80 font-semibold uppercase tracking-wider">Solución</span>
-            <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.solucion || 'Desarrollo web a medida con las mejores tecnologías.'}</p>
-          </div>
-          <div>
-            <span className="text-[10px] text-emerald-400/80 font-semibold uppercase tracking-wider">Resultado</span>
-            <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.resultado || 'Proyecto desplegado y funcionando en producción.'}</p>
+        <div
+          className="overflow-hidden transition-all duration-600 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          style={{ maxHeight: expanded ? '500px' : '0px', opacity: expanded ? 1 : 0, transitionProperty: 'max-height, opacity', transitionDuration: '600ms, 400ms', transitionDelay: expanded ? '0ms, 150ms' : '150ms, 0ms' }}
+        >
+          <div className="space-y-2.5 pt-2 border-t border-white/5 mb-3">
+            <div>
+              <span className="text-[10px] text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
+              <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.problema || proj.desc}</p>
+            </div>
+            <div>
+              <span className="text-[10px] text-blue-400/80 font-semibold uppercase tracking-wider">Solución</span>
+              <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.solucion || 'Desarrollo web a medida con las mejores tecnologías.'}</p>
+            </div>
+            <div>
+              <span className="text-[10px] text-emerald-400/80 font-semibold uppercase tracking-wider">Resultado</span>
+              <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.resultado || 'Proyecto desplegado y funcionando en producción.'}</p>
+            </div>
           </div>
         </div>
+
+        <button
+          onClick={onToggle}
+          className="flex items-center gap-1 text-[10px] text-blue-400/60 hover:text-blue-400 font-medium transition-colors mb-2 self-start"
+        >
+          {expanded ? 'Menos' : 'Ver más'}
+          <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
+        </button>
 
         <div className="flex flex-wrap gap-1 mb-3">
           {(proj.tags || []).slice(0, compact ? 3 : undefined).map((tag) => (

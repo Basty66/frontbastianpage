@@ -39,9 +39,7 @@ const Home = () => {
       <Suspense fallback={<CotizadorSkeleton />}>
         <Cotizador />
       </Suspense>
-      <ProcessAfterQuote />
       <Testimonios />
-      <About />
     </main>
   );
 };
