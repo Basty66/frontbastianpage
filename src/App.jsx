@@ -23,7 +23,6 @@ const BlogPost = lazy(() => import('./components/BlogPost'));
 
 const navLinks = [
   { label: 'Inicio', id: 'inicio' },
-  { label: 'Servicios', id: 'servicios' },
   { label: 'Sobre Mí', id: 'sobre-mi' },
   { label: 'Portafolio', id: 'portafolio' },
   { label: 'Blog', id: 'blog' },
