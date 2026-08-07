@@ -1814,7 +1814,7 @@ const Cotizador = () => {
               Vista previa de tu cotización
             </h4>
 
-            <div className="flex-1 bg-white rounded-xl overflow-hidden mb-3 sm:mb-4" style={{ height: 'calc(100vh - 200px)', minHeight: '50vh' }}>
+            <div className="flex-1 bg-white rounded-xl overflow-hidden mb-3 sm:mb-4 min-h-0" style={{ minHeight: '50vh' }}>
               <iframe src={pdfPreviewUrl} className="w-full h-full border-0" title="PDF Preview" />
             </div>
 
