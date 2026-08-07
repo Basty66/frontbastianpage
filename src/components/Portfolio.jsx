@@ -209,7 +209,7 @@ function CaseStudyCard({ proj, idx, compact }) {
   const gradient = colores[idx % colores.length];
 
   return (
-    <div className={`group bg-white/[0.02] border border-white/10 rounded-2xl backdrop-blur-sm transition-[border-color,box-shadow] duration-500 hover:border-blue-500/20 hover:shadow-xl hover:shadow-blue-500/5 flex flex-col ${compact ? '' : 'md:flex-row'}`}>
+    <div className={`group bg-white/[0.02] border border-white/10 rounded-2xl backdrop-blur-sm transition-all duration-500 [cubic-bezier(0.4,0,0.2,1)] hover:border-blue-500/20 hover:shadow-xl hover:shadow-blue-500/5 flex flex-col ${compact ? '' : 'md:flex-row'}`}>
       <div className={`relative overflow-hidden rounded-t-2xl ${compact ? 'aspect-video' : 'md:w-1/2 aspect-video md:aspect-auto md:rounded-l-2xl md:rounded-tr-none'}`}>
         {!proj.screenshot || imgError ? (
           <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`}>
@@ -221,7 +221,7 @@ function CaseStudyCard({ proj, idx, compact }) {
           <img
             src={proj.screenshot}
             alt={proj.titulo}
-            className={`w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-105 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`w-full h-full object-cover object-top transition-all duration-700 [cubic-bezier(0.4,0,0.2,1)] group-hover:scale-105 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
             loading="lazy"
             onLoad={() => setImgLoaded(true)}
             onError={() => setImgError(true)}
@@ -244,7 +244,7 @@ function CaseStudyCard({ proj, idx, compact }) {
 
         <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">{proj.desc}</p>
 
-        <div className="max-h-0 group-hover:max-h-[500px] opacity-0 group-hover:opacity-100 overflow-hidden transition-all duration-700 ease-out space-y-2.5 mb-3">
+        <div className="max-h-0 group-hover:max-h-[500px] opacity-0 group-hover:opacity-100 overflow-hidden will-change-[max-height,opacity] transition-[max-height] duration-500 [cubic-bezier(0.4,0,0.2,1)] space-y-2.5 mb-3" style={{ transitionProperty: 'max-height, opacity', transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1), cubic-bezier(0.4, 0, 0.2, 1)', transitionDuration: '600ms, 400ms', transitionDelay: '0ms, 150ms' }}>
           <div className="pt-2 border-t border-white/5">
             <span className="text-[10px] text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
             <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.problema || proj.desc}</p>
