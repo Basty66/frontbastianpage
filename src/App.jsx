@@ -7,8 +7,6 @@ import Testimonios from './components/Testimonios';
 import About from './components/About';
 import PortfolioSection from './components/Portfolio';
 import CtaBanner from './components/CtaBanner';
-import ProcessAfterQuote from './components/ProcessAfterQuote';
-import ServicesCompact from './components/ServicesCompact';
 import ExitPopup from './components/ExitPopup';
 import Reveal from './components/Reveal';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -25,7 +23,7 @@ const BlogPost = lazy(() => import('./components/BlogPost'));
 
 const navLinks = [
   { label: 'Inicio', id: 'inicio' },
-  { label: 'Sobre Mí', id: 'sobre-mi' },
+  { label: 'Cómo funciona', id: 'proceso' },
   { label: 'Portafolio', id: 'portafolio' },
   { label: 'Blog', id: 'blog' },
   { label: 'Cotizar', id: 'cotizador' },
@@ -40,14 +38,14 @@ const Home = () => {
       <Suspense fallback={<CotizadorSkeleton />}>
         <Cotizador />
       </Suspense>
-      <ProcessAfterQuote />
-      <ServicesCompact />
       <Testimonios />
     </main>
   );
 };
 
 const PortfolioPage = () => <PortfolioSection fullPage />;
+
+const ProcesoPage = lazy(() => import('./components/Proceso'));
 
 const AboutPage = () => (
   <main>
@@ -130,7 +128,7 @@ function App() {
 
   const scrollTo = useCallback((id) => {
     setMenuOpen(false);
-    if (id === 'portafolio' || id === 'blog' || id === 'sobre-mi') {
+    if (id === 'portafolio' || id === 'blog' || id === 'proceso') {
       navigate(`/${id}`);
       return;
     }
@@ -268,6 +266,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/portafolio" element={<PortfolioPage />} />
+              <Route path="/proceso" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400"><div className="animate-pulse text-sm">Cargando...</div></div>}><ProcesoPage /></Suspense>} />
               <Route path="/sobre-mi" element={<AboutPage />} />
               <Route path="/privacidad" element={<Privacy />} />
               <Route path="/terminos" element={<Terms />} />
