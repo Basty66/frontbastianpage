@@ -242,8 +242,10 @@ function CaseStudyCard({ proj, idx, compact }) {
         </div>
         <h3 className="text-white font-heading font-semibold text-sm sm:text-base mb-3">{proj.titulo}</h3>
 
-        <div className="flex-1 space-y-2.5 mb-3">
-          <div>
+        <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">{proj.desc}</p>
+
+        <div className="max-h-0 group-hover:max-h-[500px] opacity-0 group-hover:opacity-100 overflow-hidden transition-all duration-700 ease-out space-y-2.5 mb-3">
+          <div className="pt-2 border-t border-white/5">
             <span className="text-[10px] text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
             <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.problema || proj.desc}</p>
           </div>
