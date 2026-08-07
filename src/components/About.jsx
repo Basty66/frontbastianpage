@@ -1,4 +1,4 @@
-import { Code2, Briefcase, Cpu, Users, GraduationCap, Server, Zap, Shield, Target } from 'lucide-react';
+import { Code2, Cpu, GraduationCap, Server, Zap, Shield, Target } from 'lucide-react';
 import Reveal from './Reveal';
 
 const skills = [

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useRef, lazy, Suspense } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 const Admin = lazy(() => import('./components/Admin'));
-import { Menu, X, Palette } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Hero from './components/Hero';
 import Testimonios from './components/Testimonios';
 import About from './components/About';
