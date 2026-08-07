@@ -250,18 +250,39 @@ function CaseStudyCard({ proj, idx, compact, onImageClick }) {
             onError={() => setImgError(true)}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+        {proj.tipo && (
+          <span className="absolute top-3 left-3 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/20 backdrop-blur-md z-10">
+            {proj.tipo === 'ecommerce' ? 'E-commerce' : 'Landing Page'}
+          </span>
+        )}
+
         <button
           onClick={(e) => { e.stopPropagation(); onImageClick(); }}
-          className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:bg-black/60 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"
+          className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:bg-black/60 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 z-20"
           aria-label="Ver imagen"
         >
           <Eye className="w-4 h-4" />
         </button>
-        {proj.tipo && (
-          <span className="absolute top-3 left-3 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/20 backdrop-blur-md">
-            {proj.tipo === 'ecommerce' ? 'E-commerce' : 'Landing Page'}
-          </span>
+
+        {compact && proj.problema && (
+          <div className="absolute inset-0 z-10 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+            <div className="space-y-1.5 bg-black/50 backdrop-blur-md rounded-xl p-3 border border-white/[0.06]">
+              <div>
+                <span className="text-[9px] text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
+                <p className="text-[11px] text-white/80 leading-snug mt-0.5 line-clamp-2">{proj.problema}</p>
+              </div>
+              <div>
+                <span className="text-[9px] text-blue-400/80 font-semibold uppercase tracking-wider">Solución</span>
+                <p className="text-[11px] text-white/80 leading-snug mt-0.5 line-clamp-2">{proj.solucion}</p>
+              </div>
+              <div>
+                <span className="text-[9px] text-emerald-400/80 font-semibold uppercase tracking-wider">Resultado</span>
+                <p className="text-[11px] text-white/80 leading-snug mt-0.5 line-clamp-2">{proj.resultado}</p>
+              </div>
+            </div>
+          </div>
         )}
       </div>
 
@@ -271,7 +292,7 @@ function CaseStudyCard({ proj, idx, compact, onImageClick }) {
         </div>
         <h3 className="text-white font-heading font-semibold text-sm sm:text-base mb-2">{proj.titulo}</h3>
 
-        {proj.problema && (
+        {!compact && proj.problema ? (
           <div className="space-y-2 mb-3 flex-1">
             <div>
               <span className="text-[10px] text-red-400/70 font-semibold uppercase tracking-wider">Problema</span>
@@ -286,10 +307,12 @@ function CaseStudyCard({ proj, idx, compact, onImageClick }) {
               <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.resultado}</p>
             </div>
           </div>
-        )}
-
-        {!proj.problema && (
+        ) : !compact ? (
           <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3 flex-1">{proj.desc}</p>
+        ) : null}
+
+        {compact && (
+          <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3 line-clamp-2 flex-1">{proj.desc}</p>
         )}
 
         <div className="flex flex-wrap gap-1 mb-3">
