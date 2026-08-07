@@ -138,8 +138,8 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="inicio" className="relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between py-12 sm:py-16 px-4 sm:px-6 max-w-7xl mx-auto gap-8 sm:gap-12 overflow-x-hidden bg-grid">
-      {/* Particles - hidden on mobile for perf */}
+    <section id="inicio" className="relative min-h-screen flex items-center overflow-x-hidden bg-grid">
+      {/* Particles - full width */}
       <div className="hidden md:block absolute inset-0 z-0 pointer-events-none">
         {particles.map((p) => (
           <div
@@ -157,6 +157,7 @@ const Hero = () => {
           />
         ))}
       </div>
+      {/* Owls - full width */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {floatingOwls.map((owl, i) => (
           <div
@@ -183,6 +184,7 @@ const Hero = () => {
           </div>
         ))}
       </div>
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 py-12 sm:py-16">
       <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-5 sm:space-y-6 text-center lg:text-left">
         <span className="inline-block text-blue-400/70 font-semibold tracking-wider text-xs sm:text-sm uppercase px-2.5 sm:px-3 py-1 bg-blue-500/[0.06] rounded-full border border-blue-500/15 backdrop-blur-sm">
           Agencia Digital · Chile
@@ -301,6 +303,7 @@ const Hero = () => {
           </div>
         </div>
       </Reveal>
+      </div>
     </section>
   );
 };
