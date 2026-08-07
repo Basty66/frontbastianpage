@@ -23,6 +23,7 @@ const BlogPost = lazy(() => import('./components/BlogPost'));
 
 const navLinks = [
   { label: 'Inicio', id: 'inicio' },
+  { label: 'Sobre Mí', id: 'sobre-mi' },
   { label: 'Cómo funciona', id: 'proceso' },
   { label: 'Portafolio', id: 'portafolio' },
   { label: 'Blog', id: 'blog' },
@@ -81,6 +82,11 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const logoTimeoutRef = useRef(null);
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
   const handleLogoClick = useCallback(() => {
     setLogoClicks((prev) => prev + 1);
     clearTimeout(logoTimeoutRef.current);
@@ -128,7 +134,7 @@ function App() {
 
   const scrollTo = useCallback((id) => {
     setMenuOpen(false);
-    if (id === 'portafolio' || id === 'blog' || id === 'proceso') {
+    if (id === 'portafolio' || id === 'blog' || id === 'proceso' || id === 'sobre-mi') {
       navigate(`/${id}`);
       return;
     }
@@ -215,7 +221,7 @@ function App() {
             className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0'}`}
             onClick={() => setMenuOpen(false)}
           />
-          <div className={`absolute top-0 left-0 h-full w-72 bg-[#0C0C0F] border-r border-white/[0.06] shadow-2xl shadow-black/50 flex flex-col transition-transform duration-300 ease-out ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+          <div className={`absolute top-0 right-0 h-full w-72 bg-[#0C0C0F] border-l border-white/[0.06] shadow-2xl shadow-black/50 flex flex-col transition-transform duration-300 ease-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
               <span className="font-bold text-base tracking-tight">
                 <span className="text-gradient-blue">BS</span><span className="text-gradient-chrome">DigitalTech</span>
