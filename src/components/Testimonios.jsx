@@ -138,32 +138,32 @@ const Testimonios = () => {
           </p>
         </Reveal>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
           {todos.length === 0 ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <div key={`skel-${i}`} className="bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl h-64 animate-pulse" />
+              <div key={`skel-${i}`} className="bg-white/[0.02] border border-white/[0.06] p-5 rounded-xl h-44 animate-pulse" />
             ))
           ) : (
-            todos.map((t, i) => (
-              <Reveal key={`${t.nombre}-${i}`} animation="fade-up" delay={Math.min(i, 2) * 120}>
-                <div className="group relative bg-white/[0.02] border border-white/[0.06] p-6 sm:p-8 rounded-2xl backdrop-blur-sm transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-2 hover:border-blue-500/20 hover:shadow-lg hover:shadow-blue-500/5 h-full flex flex-col">
-                  <div className="absolute top-3 right-3 text-blue-500/[0.06]">
-                    <Quote className="w-16 h-16" />
+            todos.slice(0, 3).map((t, i) => (
+              <Reveal key={`${t.nombre}-${i}`} animation="fade-up" delay={Math.min(i, 2) * 100}>
+                <div className="group relative bg-white/[0.02] border border-white/[0.06] p-4 rounded-xl backdrop-blur-sm transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-blue-500/20 hover:shadow-lg hover:shadow-blue-500/5 h-full flex flex-col">
+                  <div className="absolute top-2 right-2 text-blue-500/[0.04]">
+                    <Quote className="w-10 h-10" />
                   </div>
-                  <div className="relative flex gap-0.5 mb-4">
+                  <div className="relative flex gap-0.5 mb-2">
                     {Array.from({ length: 5 }).map((_, j) => (
-                      <Star key={j} className={`w-4 h-4 ${starColor(j + 1, t.estrellas)}`} />
+                      <Star key={j} className={`w-3 h-3 ${starColor(j + 1, t.estrellas)}`} />
                     ))}
                   </div>
-                  <p className="relative text-sm text-[#A1A1AA] leading-relaxed flex-1 italic">&ldquo;{t.texto}&rdquo;</p>
-                  <div className="relative mt-5 pt-4 border-t border-white/[0.04]">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 font-bold text-sm flex-shrink-0">
+                  <p className="relative text-xs text-[#A1A1AA] leading-relaxed flex-1 italic line-clamp-4">&ldquo;{t.texto}&rdquo;</p>
+                  <div className="relative mt-3 pt-2.5 border-t border-white/[0.04]">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 font-bold text-[10px] flex-shrink-0">
                         {t.nombre.charAt(0)}
                       </div>
                       <div>
-                        <p className="text-white font-medium text-sm leading-tight">{t.nombre}</p>
-                        <p className="text-[#A1A1AA] text-xs">{t.empresa}</p>
+                        <p className="text-white font-medium text-xs leading-tight">{t.nombre}</p>
+                        <p className="text-[#A1A1AA] text-[10px]">{t.empresa}</p>
                       </div>
                     </div>
                   </div>

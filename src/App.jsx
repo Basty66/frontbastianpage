@@ -7,6 +7,7 @@ import Testimonios from './components/Testimonios';
 import About from './components/About';
 import PortfolioSection from './components/Portfolio';
 import CtaBanner from './components/CtaBanner';
+import ProcessAfterQuote from './components/ProcessAfterQuote';
 import ExitPopup from './components/ExitPopup';
 import Reveal from './components/Reveal';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -38,6 +39,7 @@ const Home = () => {
       <Suspense fallback={<CotizadorSkeleton />}>
         <Cotizador />
       </Suspense>
+      <ProcessAfterQuote />
       <Testimonios />
       <About />
     </main>
