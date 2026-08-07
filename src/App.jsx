@@ -189,26 +189,27 @@ function App() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-0.5">
             {navLinks.map((link, i) => (
               <button
                 key={link.id}
                 onClick={() => scrollTo(link.id)}
-                className="group relative px-3 sm:px-4 py-2 text-sm font-medium text-[#A1A1AA] hover:text-white transition-[color,background] duration-300 rounded-lg hover:bg-white/[0.03]"
-                style={{ animation: `fade-slide-in 0.5s ease-out ${0.2 + i * 0.08}s both` }}
+                className={`group relative px-3 py-1.5 text-[13px] font-medium transition-[color,background] duration-300 rounded-lg ${
+                  (link.id === 'cotizador' && location.pathname === '/')
+                    ? 'text-blue-400'
+                    : 'text-[#A1A1AA] hover:text-white hover:bg-white/[0.03]'
+                }`}
               >
-                <span className="relative z-10">
-                  {link.label}
-                </span>
-                <span className="absolute inset-x-3 bottom-1.5 h-[1px] bg-blue-500/60 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-center" />
+                <span className="relative z-10">{link.label}</span>
+                <span className="absolute inset-x-2 bottom-1 h-[1px] bg-blue-500/60 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-center" />
               </button>
             ))}
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden p-2 text-slate-400 hover:text-white transition-colors"
+              className="md:hidden w-9 h-9 flex items-center justify-center text-[#A1A1AA] hover:text-white transition-colors rounded-lg hover:bg-white/[0.04]"
               aria-label="Menú"
             >
               {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -221,28 +222,28 @@ function App() {
             className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0'}`}
             onClick={() => setMenuOpen(false)}
           />
-          <div className={`absolute top-0 right-0 h-full w-72 bg-[#0C0C0F] border-l border-white/[0.06] shadow-2xl shadow-black/50 flex flex-col transition-transform duration-300 ease-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className={`absolute top-0 right-0 h-full w-72 sm:w-80 bg-[#0C0C0F] border-l border-white/[0.06] shadow-2xl shadow-black/50 flex flex-col transition-transform duration-300 ease-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
               <span className="font-bold text-base tracking-tight">
                 <span className="text-gradient-blue">BS</span><span className="text-gradient-chrome">DigitalTech</span>
               </span>
               <button
                 onClick={() => setMenuOpen(false)}
-                className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white/[0.05]"
+                className="w-8 h-8 flex items-center justify-center text-[#A1A1AA] hover:text-white transition-colors rounded-lg hover:bg-white/[0.05]"
                 aria-label="Cerrar menú"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+            <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
               {navLinks.map((link, i) => (
                 <button
                   key={link.id}
                   onClick={() => { scrollTo(link.id); setMenuOpen(false); }}
-                  className="group relative block w-full text-left px-4 py-3 text-sm font-medium text-slate-400 hover:text-white transition-all duration-300 rounded-xl hover:bg-white/[0.04]"
-                  style={{ animation: menuOpen ? `fade-slide-in 0.3s ease-out ${0.05 + i * 0.05}s both` : 'none' }}
+                  className="group relative block w-full text-left px-4 py-2.5 text-sm font-medium text-[#A1A1AA] hover:text-white transition-all duration-300 rounded-xl hover:bg-white/[0.04]"
+                  style={{ animation: menuOpen ? `fade-slide-in 0.3s ease-out ${0.05 + i * 0.04}s both` : 'none' }}
                 >
-                  <span className="absolute left-0 top-2 bottom-2 w-[3px] bg-gradient-to-b from-blue-500/60 via-blue-400/30 to-transparent rounded-full scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out origin-top" />
+                  <span className="absolute left-0 top-2 bottom-2 w-[3px] bg-blue-500/60 rounded-full scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out origin-top" />
                   <span className="relative z-10 transition-all duration-300 group-hover:text-blue-400 group-hover:translate-x-1">
                     {link.label}
                   </span>
