@@ -134,7 +134,8 @@
 .animate-bar:nth-child(6) { animation: bar-wave 2.5s ease-in-out infinite 1.5s; }
 .animate-bar:nth-child(7) { animation: bar-wave 2.5s ease-in-out infinite 1.8s; }
 
-html {
+html, #root {
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 

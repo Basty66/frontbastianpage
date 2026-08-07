@@ -6,7 +6,7 @@ const CtaBanner = () => {
   };
 
   return (
-    <section className="py-8 sm:py-10 px-4 sm:px-6">
+    <section className="py-8 sm:py-10 px-4 sm:px-6 overflow-hidden">
       <Reveal animation="fade-up">
         <div className="max-w-2xl mx-auto text-center">
           <div className="relative bg-gradient-to-br from-blue-600/[0.08] via-blue-500/[0.04] to-transparent border border-blue-500/15 rounded-2xl p-5 sm:p-8 overflow-hidden">

@@ -161,7 +161,7 @@ function App() {
   }, [navigate, location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col text-white selection:bg-white/30 selection:text-white" style={{ background: '#09090B' }}>
+    <div className="min-h-screen flex flex-col text-white selection:bg-white/30 selection:text-white overflow-x-hidden" style={{ background: '#09090B' }}>
       {/* Scroll Progress */}
       <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
@@ -288,7 +288,6 @@ function App() {
           <Link to="/privacidad" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Política de Privacidad</Link>
           <Link to="/terminos" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Términos y Condiciones</Link>
           <Link to="/cookies" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Política de Cookies</Link>
-          <Link to="/blog" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Blog</Link>
         </div>
         <p className="text-[#A1A1AA] text-xs mb-2">Santiago, Región Metropolitana, Chile</p>
         <p className="text-[#A1A1AA] text-xs sm:text-sm">© 2026 BS DigitalTech — Desarrollo Web para PYMEs Chilenas · Hosting $0</p>

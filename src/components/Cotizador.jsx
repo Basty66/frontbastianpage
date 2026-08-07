@@ -962,7 +962,7 @@ const Cotizador = () => {
   };
 
   return (
-    <section id="cotizador" className="py-16 sm:py-20 px-4 sm:px-6 max-w-7xl mx-auto">
+    <section id="cotizador" className="py-16 sm:py-20 px-4 sm:px-6 max-w-7xl mx-auto overflow-hidden">
       <Reveal animation="fade-up" className="text-center mb-10 sm:mb-12">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-white mb-3 tracking-tight">
           Simulador de{' '}
@@ -1797,7 +1797,7 @@ const Cotizador = () => {
             aria-modal="true"
             aria-label="Vista previa del PDF"
             ref={pdfModalRef}
-            className="relative w-full h-full sm:h-auto sm:max-w-4xl bg-gradient-to-b from-[#18181B] to-[#09090B] border-0 sm:border border-white/10 sm:rounded-3xl p-3 sm:p-6 shadow-2xl shadow-black/50 sm:max-h-[95vh] flex flex-col overflow-hidden sm:overflow-visible"
+            className="relative w-full h-full sm:h-auto sm:max-w-4xl bg-gradient-to-b from-[#18181B] to-[#09090B] border-0 sm:border border-white/10 sm:rounded-3xl p-3 sm:p-6 shadow-2xl shadow-black/50 sm:max-h-[95vh] flex flex-col overflow-y-auto sm:overflow-visible"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -1814,8 +1814,8 @@ const Cotizador = () => {
               Vista previa de tu cotización
             </h4>
 
-            <div className="flex-1 bg-white rounded-xl overflow-hidden mb-3 sm:mb-4 min-h-0 min-h-[50vh] sm:min-h-0" style={{ maxHeight: 'calc(100vh - 200px)' }}>
-              <iframe src={pdfPreviewUrl} className="w-full h-full" title="PDF Preview" />
+            <div className="flex-1 bg-white rounded-xl overflow-hidden mb-3 sm:mb-4" style={{ height: 'calc(100vh - 200px)', minHeight: '50vh' }}>
+              <iframe src={pdfPreviewUrl} className="w-full h-full border-0" title="PDF Preview" />
             </div>
 
             {error && (
