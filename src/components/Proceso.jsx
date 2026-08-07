@@ -29,9 +29,9 @@ const steps = [
       'Textos descriptivos (o te ayudo a escribirlos)',
       'Colores y estilo que te guste',
     ],
-    color: 'text-amber-400',
-    bg: 'bg-amber-500/[0.08]',
-    border: 'border-amber-500/15',
+    color: 'text-blue-300',
+    bg: 'bg-blue-400/[0.08]',
+    border: 'border-blue-400/15',
   },
   {
     icon: Layers,
@@ -44,9 +44,9 @@ const steps = [
       'Optimización de velocidad incluida',
       'Responsive para celular, tablet y desktop',
     ],
-    color: 'text-violet-400',
-    bg: 'bg-violet-500/[0.08]',
-    border: 'border-violet-500/15',
+    color: 'text-blue-400',
+    bg: 'bg-blue-500/[0.08]',
+    border: 'border-blue-500/15',
   },
   {
     icon: Rocket,
@@ -59,9 +59,9 @@ const steps = [
       'Te enseño a hacer cambios básicos',
       'Soporte gratuito por 30 días',
     ],
-    color: 'text-emerald-400',
-    bg: 'bg-emerald-500/[0.08]',
-    border: 'border-emerald-500/15',
+    color: 'text-blue-300',
+    bg: 'bg-blue-400/[0.08]',
+    border: 'border-blue-400/15',
   },
 ];
 
