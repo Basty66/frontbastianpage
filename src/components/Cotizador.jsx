@@ -436,8 +436,10 @@ const Cotizador = () => {
     try {
       const doc = buildPDFDoc();
       pdfDocRef.current = doc;
-      const dataUri = doc.output('datauristring');
-      setPdfPreviewUrl(dataUri);
+      const blob = doc.output('blob');
+      const blobUrl = URL.createObjectURL(blob);
+      if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
+      setPdfPreviewUrl(blobUrl);
       setShowPdfPreview(true);
     } catch (err) {
       console.error('Error al generar PDF:', err);
@@ -542,6 +544,12 @@ const Cotizador = () => {
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
   }, [showPreview, showSignatures, showPdfPreview]);
+
+  const pdfPreviewUrlRef = useRef(pdfPreviewUrl);
+  pdfPreviewUrlRef.current = pdfPreviewUrl;
+  useEffect(() => {
+    return () => { if (pdfPreviewUrlRef.current) URL.revokeObjectURL(pdfPreviewUrlRef.current); };
+  }, []);
 
   const formatCurrency = (val) => {
     const m = monedas.find(x => x.id === moneda) || monedas[0];
@@ -1797,7 +1805,7 @@ const Cotizador = () => {
             aria-modal="true"
             aria-label="Vista previa del PDF"
             ref={pdfModalRef}
-            className="relative w-full h-full sm:h-auto sm:max-w-4xl bg-gradient-to-b from-[#18181B] to-[#09090B] border-0 sm:border border-white/10 sm:rounded-3xl p-3 sm:p-6 shadow-2xl shadow-black/50 sm:max-h-[95vh] flex flex-col overflow-y-auto sm:overflow-visible"
+            className="relative w-full h-full sm:h-[90vh] sm:max-w-4xl bg-gradient-to-b from-[#18181B] to-[#09090B] border-0 sm:border border-white/10 sm:rounded-3xl p-3 sm:p-6 shadow-2xl shadow-black/50 sm:max-h-[95vh] flex flex-col overflow-y-auto sm:overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <button
