@@ -4,6 +4,7 @@ const Admin = lazy(() => import('./components/Admin'));
 import { Menu, X, Palette } from 'lucide-react';
 import Hero from './components/Hero';
 import Testimonios from './components/Testimonios';
+import About from './components/About';
 import PortfolioSection from './components/Portfolio';
 import CtaBanner from './components/CtaBanner';
 import ExitPopup from './components/ExitPopup';
@@ -39,6 +40,7 @@ const Home = () => {
         <Cotizador />
       </Suspense>
       <Testimonios />
+      <About />
     </main>
   );
 };
