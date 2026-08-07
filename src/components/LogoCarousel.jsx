@@ -36,7 +36,7 @@ const projects = [
     name: 'BS DigitalTech',
     tag: 'Portfolio',
     img: '/screenshots/bastian-dev.png',
-    url: 'https://frontbastianpage.vercel.app',
+    url: 'https://bsdigitaltech.vercel.app',
     gradient: 'from-blue-500/[0.06] via-blue-400/[0.02] to-transparent',
     border: 'border-blue-500/15',
     glow: 'rgba(37,99,235,0.08)',

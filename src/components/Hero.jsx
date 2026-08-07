@@ -51,39 +51,6 @@ const particles = Array.from({ length: 35 }, (_, i) => ({
   blue: i < 14,
 }));
 
-function ROICalculator() {
-  const [hostingCost, setHostingCost] = useState(15000);
-  const yearly = hostingCost * 12;
-
-  return (
-    <div className="space-y-2 font-normal not-italic">
-      <div className="flex items-center justify-between text-xs">
-        <span className="text-[#A1A1AA]">Hosting actual:</span>
-        <span className="text-white font-semibold">${hostingCost.toLocaleString('es-CL')}/mes</span>
-      </div>
-      <input
-        type="range"
-        min="5000"
-        max="50000"
-        step="1000"
-        value={hostingCost}
-        onChange={(e) => setHostingCost(Number(e.target.value))}
-        className="w-full"
-      />
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] text-[#A1A1AA]">$5.000</span>
-        <span className="text-[10px] text-[#A1A1AA]">$50.000</span>
-      </div>
-      <div className="pt-1 border-t border-blue-500/10 mt-1">
-        <div className="flex items-center justify-between text-xs">
-          <span className="text-blue-300/60">Ahorras al año:</span>
-          <span className="text-white font-bold text-sm">${yearly.toLocaleString('es-CL')}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function CounterBlock({ target, suffix, label }) {
   const [ref, count, started] = useCountUp(target);
   const display = suffix === '%' ? `${count}%` : `${count}+`;
@@ -283,7 +250,7 @@ const Hero = () => {
                 <span className="w-3 h-3 bg-blue-400/30 rounded-full" />
                 <span className="w-3 h-3 bg-white/10 rounded-full" />
               </div>
-              <span className="text-xs text-[#A1A1AA] font-heading">frontbastianpage.cl</span>
+              <span className="text-xs text-[#A1A1AA] font-heading">bsdigitaltech.cl</span>
             </div>
 
             <div className="space-y-3">
@@ -318,9 +285,7 @@ const Hero = () => {
                 </div>
                 <div className="p-3 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
                   <div className="text-[10px] text-[#A1A1AA] mb-1">Ahorro Anual</div>
-                  <div className="text-lg font-bold font-heading text-blue-400">
-                    <ROICalculator />
-                  </div>
+                  <div className="text-lg font-bold font-heading text-blue-400">$180.000</div>
                 </div>
               </div>
 

@@ -43,7 +43,7 @@ serve(async (req) => {
 
     const totalFormatted = `$${(total_estimado || 0).toLocaleString('es-CL')} CLP`
 
-    const siteUrl = 'https://frontbastianpage.vercel.app'
+    const siteUrl = 'https://bsdigitaltech.vercel.app'
 
     // ===== EMAIL 1: Notificacion al dueño =====
     const ownerHtml = `

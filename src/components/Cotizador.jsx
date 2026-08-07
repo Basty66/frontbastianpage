@@ -9,9 +9,7 @@ import { WHATSAPP_NUMBER } from '../lib/constants';
 import bastianSigImg from '/firma-bastian.png';
 
 const steps = [
-  { label: 'Plan', desc: 'Elige tu plan' },
-  { label: 'Tipo de Web', desc: 'Elige el proyecto' },
-  { label: 'Extras', desc: 'Complementos' },
+  { label: 'Configuración', desc: 'Elige tu plan' },
   { label: 'Contacto', desc: 'Recibe tu cotización' },
 ];
 
@@ -118,7 +116,7 @@ const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
     ctx.lineWidth = 3;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.strokeStyle = '#22d3ee';
+    ctx.strokeStyle = '#000000';
     ctx.lineTo(pos.x, pos.y);
     ctx.stroke();
     ctx.beginPath();
@@ -248,8 +246,6 @@ const Cotizador = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [carnetImage, setCarnetImage] = useState(null);
 
-  const planTimeoutRef = useRef(null);
-
   const clientSigRef = useRef(null);
   const pdfDocRef = useRef(null);
   const mountedRef = useRef(false);
@@ -313,7 +309,6 @@ const Cotizador = () => {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
-      if (planTimeoutRef.current) clearTimeout(planTimeoutRef.current);
     };
   }, []);
 
@@ -391,7 +386,7 @@ const Cotizador = () => {
   };
 
   const total = planActual && selectedPlan !== 'custom'
-    ? planActual.total + sumExtras(extras) - sumExtras(planActual.extras)
+    ? planActual.total
     : tipoWeb + sumExtras(extras);
 
   const getMejorPlanSugerido = () => {
@@ -486,9 +481,15 @@ const Cotizador = () => {
       }
 
       try {
-        const emailRes = await fetch('https://tjurqmgkapyfofyvllqj.supabase.co/functions/v1/send-email', {
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+        const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+        const emailRes = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+          },
           body: JSON.stringify({
             type: 'INSERT',
             table: 'cotizaciones',
@@ -902,7 +903,7 @@ const Cotizador = () => {
     doc.setLineWidth(0.3);
     doc.line(mg + 4, sigY + sigH - 6, mg + sigW - 4, sigY + sigH - 6);
     text('Firma', mg + 4, sigY + sigH - 2, 7, 'normal', gray);
-    text(`Fecha: __ / __ / ${hoy.getFullYear()}`, mg + 4, sigY + sigH + 2, 7, 'normal', gray);
+    text(`Fecha: ${formatDate(hoy)}`, mg + 4, sigY + sigH + 2, 7, 'normal', gray);
 
     // Proveedor
     const px2 = mg + sigW + 8;
@@ -919,7 +920,7 @@ const Cotizador = () => {
     doc.setDrawColor(...gray);
     doc.line(px2 + 4, sigY + sigH - 6, px2 + sigW - 4, sigY + sigH - 6);
     text('Firma', px2 + 4, sigY + sigH - 2, 7, 'normal', gray);
-    text(`Fecha: __ / __ / ${hoy.getFullYear()}`, px2 + 4, sigY + sigH + 2, 7, 'normal', gray);
+    text(`Fecha: ${formatDate(hoy)}`, px2 + 4, sigY + sigH + 2, 7, 'normal', gray);
 
     y = sigY + sigH + 8;
 
@@ -933,7 +934,14 @@ const Cotizador = () => {
       doc.rect(mg, y, cw, 0.8, 'F');
       text('Documento de identidad adjuntado por el cliente', mg + 4, y + 7, 8, 'normal', gray);
       try {
-        doc.addImage(carnetImage, 'JPEG', mg + 4, y + 10, cw - 8, 40);
+        const imgProps = doc.getImageProperties(carnetImage);
+        const maxW = cw - 8;
+        const maxH = 40;
+        const ratio = Math.min(maxW / imgProps.width, maxH / imgProps.height);
+        const w = imgProps.width * ratio;
+        const h = imgProps.height * ratio;
+        const x = mg + 4 + (maxW - w) / 2;
+        doc.addImage(carnetImage, 'JPEG', x, y + 10, w, h);
       } catch (_) {}
       y += 63;
     }
@@ -985,7 +993,7 @@ const Cotizador = () => {
       <div className="flex items-center justify-center gap-1 sm:gap-4 mb-10 sm:mb-12 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-none">
         {steps.map((s, i) => {
           const stepNum = i + 1;
-          const canClick = stepNum < 4 || (total > 0 || selectedPlan);
+          const canClick = stepNum < 2 || (total > 0 || selectedPlan);
           const isActive = step === stepNum;
           const isCompleted = step > stepNum;
           return (
@@ -1022,7 +1030,7 @@ const Cotizador = () => {
 
       <div className="grid lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-12 items-start">
         <div className={`lg:col-span-3 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg space-y-5 sm:space-y-8 transition-all duration-700 ease-out ${
-          step <= 3 ? 'opacity-100 translate-y-0 scale-100 blur-0' : 'opacity-20 -translate-y-2 scale-[0.98] pointer-events-none'
+          step <= 1 ? 'opacity-100 translate-y-0 scale-100 blur-0' : 'opacity-20 -translate-y-2 scale-[0.98] pointer-events-none'
         }`}>
           {step === 1 && (
             <Reveal animation="fade-up">
@@ -1054,8 +1062,7 @@ const Cotizador = () => {
                             setSelectedPlan(plan.id);
                             setTipoWeb(tiposProyecto.find(t => t.id === plan.tipoId)?.precio || 0);
                             setExtras(plan.extras);
-                            if (planTimeoutRef.current) clearTimeout(planTimeoutRef.current);
-                            planTimeoutRef.current = setTimeout(() => setStep(3), 400);
+                            setStep(2);
                           }
                         }}
                       >
@@ -1175,7 +1182,7 @@ const Cotizador = () => {
                       )}
 
                       <button
-                        onClick={() => setStep(4)}
+                        onClick={() => setStep(2)}
                         disabled={tipoWeb === 0}
                         className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm transition-all hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 disabled:opacity-40 disabled:cursor-not-allowed"
                       >
@@ -1189,129 +1196,6 @@ const Cotizador = () => {
           )}
 
           {step === 2 && (
-            <Reveal animation="fade-up">
-              <div className="space-y-3">
-                <label className="text-white font-heading font-semibold text-lg flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-xs font-bold">2</span>
-                  Tipo de plataforma
-                </label>
-                <div className="grid sm:grid-cols-1 gap-3">
-                  {tiposProyecto.map((item) => {
-                    const c = colorMap[item.color];
-                    const selected = tipoWeb === item.precio;
-                    return (
-                      <label
-                        key={item.id}
-                        className={`group relative overflow-hidden p-5 rounded-xl border flex justify-between items-center cursor-pointer transition-all duration-500 ease-out ${
-                          selected
-                            ? `${c.border} text-white`
-                            : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/30 hover:bg-white/[0.04]'
-                        }`}
-                        style={{ boxShadow: selected ? `0 0 24px ${c.glow}` : undefined }}
-                        onClick={() => { setTipoWeb(item.precio); setTimeout(() => setStep(3), 400); }}
-                      >
-                        <span className={`absolute inset-0 rounded-xl ${c.from} ${c.to} -translate-x-full transition-transform duration-500 ease-out ${selected ? 'translate-x-0' : 'group-hover:translate-x-0'}`} />
-                        <span className="relative z-10 flex items-center gap-3 w-full">
-                          <div
-                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${
-                              selected ? 'border-blue-400/60' : 'border-white/20 group-hover:border-white/40'
-                            }`}
-                            style={{ boxShadow: selected ? `0 0 10px ${c.glow}` : undefined }}
-                          >
-                            {selected && <div className={`w-2.5 h-2.5 rounded-full ${c.dot}`} />}
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-medium text-sm sm:text-base">{item.label}</p>
-                            <p className="text-xs text-[#A1A1AA]">{item.desc}</p>
-                          </div>
-                          <span className={`font-bold font-heading text-lg ${selected ? 'text-white' : 'text-white/60'}`}>
-                            {formatCurrency(item.precio)}
-                          </span>
-                        </span>
-                      </label>
-                    );
-                  })}
-                </div>
-                <div className="flex justify-between pt-2">
-                  <button onClick={() => setStep(1)} className="text-sm text-[#A1A1AA] hover:text-white transition-colors font-medium flex items-center gap-1">
-                    <span className="text-lg">&larr;</span> Anterior
-                  </button>
-                  <button onClick={() => setStep(3)} className="text-sm text-white/60 hover:text-white transition-colors font-medium flex items-center gap-1">
-                    Siguiente paso <span className="text-lg">&rarr;</span>
-                  </button>
-                </div>
-              </div>
-            </Reveal>
-          )}
-
-          {step === 3 && (
-            <Reveal animation="fade-up">
-              <div className="space-y-3">
-                <label className="text-white font-heading font-semibold text-lg flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-xs font-bold">3</span>
-                  Complementos
-                </label>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {adicionales.map((item) => {
-                    const Icon = item.icon;
-                    const c = colorMap[item.color];
-                    const active = extras.includes(item.id);
-                    return (
-                      <div
-                        key={item.id}
-                        onClick={() => handleExtraChange(item.id)}
-                        className={`group relative overflow-hidden p-4 rounded-xl border flex flex-col cursor-pointer transition-all duration-500 ease-out ${
-                          active
-                            ? `${c.border} text-white`
-                            : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/30 hover:bg-white/[0.04]'
-                        }`}
-                        style={{ boxShadow: active ? `0 0 24px ${c.glow}` : undefined }}
-                      >
-                        <span className={`absolute inset-0 rounded-xl ${c.from} ${c.to} -translate-x-full transition-transform duration-500 ease-out ${active ? 'translate-x-0' : 'group-hover:translate-x-0'}`} />
-                        <span className="relative z-10">
-                          <div className="flex items-start justify-between mb-2">
-                            <div className="flex items-center gap-2.5">
-                              <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-500 ${
-                                active ? 'border-blue-400 bg-blue-600' : 'border-white/20 group-hover:border-white/40'
-                              }`}>
-                                {active && (
-                                  <svg className="w-3 h-3 text-[#030712]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                  </svg>
-                                )}
-                              </div>
-                              <Icon className="w-4 h-4 flex-shrink-0 transition-all duration-300 group-hover:drop-shadow-[0_0_6px_rgba(255,255,255,0.4)] text-white" />
-                              <div>
-                                <p className="text-sm font-medium">{item.label}</p>
-                                <p className="text-xs text-white/60">{item.desc}</p>
-                              </div>
-                            </div>
-                            <span className="font-bold font-heading text-sm whitespace-nowrap">+{formatCurrency(item.precio)}</span>
-                          </div>
-                          <div className="flex items-center gap-2 mt-1 pointer-events-none">
-                            <div className={`h-5 w-9 rounded-full transition-all duration-500 ${active ? c.toggle : 'bg-white/10'}`}>
-                              <div className={`h-4 w-4 rounded-full bg-white transition-all duration-500 mt-0.5 ${active ? 'ml-4' : 'ml-0.5'}`} />
-                            </div>
-                            <span className="text-xs text-white/60">{active ? 'Agregado' : 'Agregar'}</span>
-                          </div>
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="flex justify-between pt-2">
-                  <button onClick={() => setStep(1)} className="text-sm text-[#A1A1AA] hover:text-white transition-colors font-medium flex items-center gap-1">
-                    <span className="text-lg">&larr;</span> Anterior
-                  </button>
-                  <button onClick={() => setStep(4)} className="text-sm text-white/60 hover:text-white transition-colors font-medium flex items-center gap-1">
-                    Siguiente paso <span className="text-lg">&rarr;</span>
-                  </button>
-                </div>
-              </div>
-            </Reveal>
-          )}
-
-          {step === 4 && (
             <div className="text-center py-8 space-y-4">
               <Reveal animation="scale-in">
                 <div className="inline-flex items-center gap-2 text-white/60 bg-white/[0.03] border border-white/[0.06] px-4 py-2 rounded-full">
@@ -1325,8 +1209,8 @@ const Cotizador = () => {
                 <p className="text-[#A1A1AA] text-lg">Revisa tu inversión estimada y completa tus datos.</p>
               </Reveal>
               <Reveal animation="fade-up" delay={200}>
-                <button onClick={() => setStep(selectedPlan === 'custom' ? 1 : 3)} className="text-sm text-[#A1A1AA] hover:text-white transition-colors font-medium flex items-center gap-1 justify-center">
-                  <span className="text-lg">&larr;</span> {selectedPlan === 'custom' ? 'Volver a servicios' : 'Volver a complementos'}
+                <button onClick={() => setStep(1)} className="text-sm text-[#A1A1AA] hover:text-white transition-colors font-medium flex items-center gap-1 justify-center">
+                  <span className="text-lg">&larr;</span> Volver a configuración
                 </button>
               </Reveal>
             </div>
@@ -1355,8 +1239,8 @@ const Cotizador = () => {
           </div>
         </div>
 
-        <Reveal animation="fade-right" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg lg:sticky lg:top-28 transition-all duration-500 ease-out ${
-          step === 4 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-30 translate-y-3 scale-[0.97] pointer-events-none'
+        <Reveal animation="fade-up" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg lg:sticky lg:top-28 transition-all duration-500 ease-out ${
+          step === 2 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-30 translate-y-3 scale-[0.97] pointer-events-none'
         }`}>
           <h3 className="text-2xl font-heading font-bold mb-2">
             <span className="text-white">¿Trabajamos </span>
@@ -1645,34 +1529,47 @@ const Cotizador = () => {
                   <div className="w-1.5 h-1.5 rounded-full bg-white/[0.06]" />
                   <span className="text-xs font-semibold text-[#A1A1AA] uppercase tracking-wider">Servicios contratados</span>
                 </div>
-                {planActual && selectedPlan !== 'custom' && (
-                  <div className="flex justify-between items-center bg-white/[0.02] border border-white/[0.04] rounded-lg px-3 py-2.5">
-                    <div>
-                      <span className="text-sm font-medium text-white">{planActual.label}</span>
-                      <p className="text-[10px] text-slate-500">{planActual.desc}</p>
+                {planActual && selectedPlan !== 'custom' ? (
+                  <>
+                    <div className="flex justify-between items-center bg-white/[0.02] border border-white/[0.04] rounded-lg px-3 py-2.5">
+                      <div>
+                        <span className="text-sm font-medium text-white">{planActual.label}</span>
+                        <p className="text-[10px] text-slate-500">{planActual.desc}</p>
+                      </div>
+                      <span className="text-sm font-bold text-white/60">{formatCurrency(planActual.total)}</span>
                     </div>
-                    <span className="text-sm font-bold text-white/60">{formatCurrency(planActual.total)}</span>
-                  </div>
-                )}
-                <div className="flex justify-between items-center px-1">
-                  <span className="text-sm text-[#A1A1AA]">{getTipoLabel()}</span>
-                  <span className="text-sm font-semibold text-white">{formatCurrency(tipoWeb)}</span>
-                </div>
-                {extras.length > 0 && (
-                  <div className="border-t border-white/5 pt-2">
-                    {extras.map((id) => {
-                      const item = adicionales.find((a) => a.id === id);
-                      return item ? (
-                        <div key={id} className="flex justify-between items-center py-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-white/60 text-xs">+</span>
-                            <span className="text-sm text-[#A1A1AA]">{item.label}</span>
-                          </div>
-                          <span className="text-xs text-[#A1A1AA]">{formatCurrency(item.precio)}</span>
+                    <div className="border-t border-white/5 pt-2 mt-2">
+                      {planActual.incluye.map((inc, i) => (
+                        <div key={i} className="flex items-center gap-2 py-0.5">
+                          <span className="text-blue-400/60 text-xs">✓</span>
+                          <span className="text-xs text-[#A1A1AA]">{inc}</span>
                         </div>
-                      ) : null;
-                    })}
-                  </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex justify-between items-center px-1">
+                      <span className="text-sm text-[#A1A1AA]">{getTipoLabel()}</span>
+                      <span className="text-sm font-semibold text-white">{formatCurrency(tipoWeb)}</span>
+                    </div>
+                    {extras.length > 0 && (
+                      <div className="border-t border-white/5 pt-2">
+                        {extras.map((id) => {
+                          const item = adicionales.find((a) => a.id === id);
+                          return item ? (
+                            <div key={id} className="flex justify-between items-center py-1">
+                              <div className="flex items-center gap-2">
+                                <span className="text-white/60 text-xs">+</span>
+                                <span className="text-sm text-[#A1A1AA]">{item.label}</span>
+                              </div>
+                              <span className="text-xs text-[#A1A1AA]">{formatCurrency(item.precio)}</span>
+                            </div>
+                          ) : null;
+                        })}
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
@@ -1889,7 +1786,7 @@ const Cotizador = () => {
       {/* Modal PDF Preview */}
       {createPortal(
       <div
-        className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ease-out ${
+        className={`fixed inset-0 z-50 flex items-center justify-center sm:p-4 transition-all duration-300 ease-out ${
           showPdfPreview && pdfPreviewUrl ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
         onClick={() => { setError(null); setShowPdfPreview(false); setPdfPreviewUrl(null); }}
@@ -1900,38 +1797,38 @@ const Cotizador = () => {
             aria-modal="true"
             aria-label="Vista previa del PDF"
             ref={pdfModalRef}
-            className="relative w-full max-w-4xl bg-gradient-to-b from-[#18181B] to-[#09090B] border border-white/10 rounded-3xl p-4 sm:p-6 shadow-2xl shadow-black/50 max-h-[95vh] flex flex-col"
+            className="relative w-full h-full sm:h-auto sm:max-w-4xl bg-gradient-to-b from-[#18181B] to-[#09090B] border-0 sm:border border-white/10 sm:rounded-3xl p-3 sm:p-6 shadow-2xl shadow-black/50 sm:max-h-[95vh] flex flex-col overflow-hidden sm:overflow-visible"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => { setError(null); setShowPdfPreview(false); setPdfPreviewUrl(null); }}
-              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-[#A1A1AA] hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-[#A1A1AA] hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
-            <h4 className="text-lg font-heading font-bold text-white mb-4 flex items-center gap-2">
+            <h4 className="text-base sm:text-lg font-heading font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
               <FileDown className="w-5 h-5 text-white/60" />
               Vista previa de tu cotización
             </h4>
 
-            <div className="flex-1 bg-white rounded-xl overflow-hidden mb-4 min-h-0" style={{ height: '65vh' }}>
+            <div className="flex-1 bg-white rounded-xl overflow-hidden mb-3 sm:mb-4 min-h-0 min-h-[50vh] sm:min-h-0" style={{ maxHeight: 'calc(100vh - 200px)' }}>
               <iframe src={pdfPreviewUrl} className="w-full h-full" title="PDF Preview" />
             </div>
 
             {error && (
-              <div className="flex items-start gap-2 text-white/60 text-xs bg-white/[0.03] border border-white/[0.06] p-3 rounded-xl mb-4">
+              <div className="flex items-start gap-2 text-white/60 text-xs bg-white/[0.03] border border-white/[0.06] p-3 rounded-xl mb-3 sm:mb-4">
                 <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <span>{error}</span>
               </div>
             )}
 
-            <div className="flex gap-3 justify-end flex-wrap">
+            <div className="flex gap-2 sm:gap-3 justify-end flex-wrap">
               <button
                 onClick={() => { setError(null); setShowPdfPreview(false); setPdfPreviewUrl(null); }}
-                className="px-5 py-2.5 rounded-xl border border-white/10 text-[#A1A1AA] hover:text-white hover:border-white/30 transition-all text-sm"
+                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl border border-white/10 text-[#A1A1AA] hover:text-white hover:border-white/30 transition-all text-xs sm:text-sm"
               >
                 Cancelar
               </button>
@@ -1942,17 +1839,17 @@ const Cotizador = () => {
                     pdfDocRef.current.save(nombreArchivo);
                   }
                 }}
-                className="px-5 py-2.5 rounded-xl border border-white/[0.08] bg-white/[0.02] text-white hover:bg-white/[0.03] transition-all text-sm flex items-center gap-2"
+                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl border border-white/[0.08] bg-white/[0.02] text-white hover:bg-white/[0.03] transition-all text-xs sm:text-sm flex items-center gap-2"
               >
                 <FileDown className="w-4 h-4" />
-                Descargar PDF
+                Descargar
               </button>
               <button
                 onClick={enviarCotizacion}
                 disabled={loading}
-                className="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold transition-all text-sm hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-blue-600 text-white font-bold transition-all text-xs sm:text-sm hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Enviando...' : 'Enviar Cotización'}
+                {loading ? 'Enviando...' : 'Enviar'}
               </button>
           </div>
         </div>

@@ -8,6 +8,6 @@ export const WHATSAPP_FULL = `${WHATSAPP_LINK}?text=${WHATSAPP_DEFAULT_MSG}`;
 
 export const INSTAGRAM_URL = 'https://www.instagram.com/bs.digitaltech';
 
-export const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://frontbastianpage.vercel.app';
+export const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://bsdigitaltech.vercel.app';
 
 export const SITE_NAME = 'BS DigitalTech';
