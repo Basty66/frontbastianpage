@@ -62,7 +62,19 @@ const Portfolio = ({ fullPage = false }) => {
           .eq('visible', true)
           .order('orden', { ascending: true });
         if (error) throw error;
-        if (mounted && data && data.length > 0) setProyectos(data);
+        if (mounted && data && data.length > 0) {
+          const merged = data.map((dbItem) => {
+            const fallback = fallbackProyectos.find((f) => f.id === dbItem.id);
+            return {
+              ...(fallback || {}),
+              ...dbItem,
+              problema: dbItem.problema || fallback?.problema || '',
+              solucion: dbItem.solucion || fallback?.solucion || '',
+              resultado: dbItem.resultado || fallback?.resultado || '',
+            };
+          });
+          setProyectos(merged);
+        }
       } catch (err) {
         console.error('Error al cargar proyectos:', err);
       } finally {
@@ -252,7 +264,7 @@ function CaseStudyCard({ proj, idx, compact }) {
         {compact && proj.problema ? (
           <div className="flex-1">
             <p className="text-xs text-[#A1A1AA] leading-relaxed mb-2 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">{proj.desc}</p>
-            <div className="space-y-2 h-0 group-hover:h-auto transition-all duration-700 ease-out overflow-hidden opacity-0 group-hover:opacity-100">
+            <div className="space-y-2 max-h-0 group-hover:max-h-[500px] transition-all duration-700 ease-out overflow-hidden opacity-0 group-hover:opacity-100">
               <div className="pt-2 border-t border-white/5">
                 <span className="text-[9px] text-red-400/70 font-semibold uppercase tracking-wider">Problema</span>
                 <p className="text-[11px] text-[#A1A1AA] leading-snug mt-0.5">{proj.problema}</p>
