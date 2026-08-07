@@ -242,24 +242,20 @@ function CaseStudyCard({ proj, idx, compact }) {
         </div>
         <h3 className="text-white font-heading font-semibold text-sm sm:text-base mb-3">{proj.titulo}</h3>
 
-        {proj.problema ? (
-          <div className="flex-1 space-y-3 mb-3">
-            <div>
-              <span className="text-[10px] text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
-              <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.problema}</p>
-            </div>
-            <div>
-              <span className="text-[10px] text-blue-400/80 font-semibold uppercase tracking-wider">Solución</span>
-              <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.solucion}</p>
-            </div>
-            <div>
-              <span className="text-[10px] text-emerald-400/80 font-semibold uppercase tracking-wider">Resultado</span>
-              <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.resultado}</p>
-            </div>
+        <div className="flex-1 space-y-2.5 mb-3">
+          <div>
+            <span className="text-[10px] text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
+            <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.problema || proj.desc}</p>
           </div>
-        ) : (
-          <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3 flex-1">{proj.desc}</p>
-        )}
+          <div>
+            <span className="text-[10px] text-blue-400/80 font-semibold uppercase tracking-wider">Solución</span>
+            <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.solucion || 'Desarrollo web a medida con las mejores tecnologías.'}</p>
+          </div>
+          <div>
+            <span className="text-[10px] text-emerald-400/80 font-semibold uppercase tracking-wider">Resultado</span>
+            <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.resultado || 'Proyecto desplegado y funcionando en producción.'}</p>
+          </div>
+        </div>
 
         <div className="flex flex-wrap gap-1 mb-3">
           {(proj.tags || []).slice(0, compact ? 3 : undefined).map((tag) => (
