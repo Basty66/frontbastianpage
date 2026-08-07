@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { jsPDF } from 'jspdf';
 import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle, Check, Star, PenTool, Eye } from 'lucide-react';
 import Reveal from './Reveal';
+import PDFPreview from './PDFPreview';
 import useAnimatedNumber from '../hooks/useAnimatedNumber';
 import { supabase } from '../lib/supabaseClient';
 import { WHATSAPP_NUMBER } from '../lib/constants';
@@ -1823,7 +1824,7 @@ const Cotizador = () => {
             </h4>
 
             <div className="flex-1 bg-white rounded-xl overflow-hidden mb-3 sm:mb-4 min-h-[60vh] sm:min-h-0">
-              <embed src={pdfPreviewUrl} type="application/pdf" className="w-full h-full" title="PDF Preview" style={{ minHeight: '60vh' }} />
+              <PDFPreview file={pdfPreviewUrl} className="w-full h-full" />
             </div>
 
             {error && (
