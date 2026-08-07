@@ -46,6 +46,12 @@ const Home = () => {
 
 const PortfolioPage = () => <PortfolioSection fullPage />;
 
+const AboutPage = () => (
+  <main>
+    <About />
+  </main>
+);
+
 const NotFound = () => (
   <div className="min-h-screen flex items-center justify-center px-4 sm:px-6" style={{ background: '#09090B' }}>
     <Reveal animation="fade-up" className="text-center max-w-lg">
@@ -121,7 +127,7 @@ function App() {
 
   const scrollTo = useCallback((id) => {
     setMenuOpen(false);
-    if (id === 'portafolio' || id === 'blog') {
+    if (id === 'portafolio' || id === 'blog' || id === 'sobre-mi') {
       navigate(`/${id}`);
       return;
     }
@@ -259,6 +265,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/portafolio" element={<PortfolioPage />} />
+              <Route path="/sobre-mi" element={<AboutPage />} />
               <Route path="/privacidad" element={<Privacy />} />
               <Route path="/terminos" element={<Terms />} />
               <Route path="/cookies" element={<Cookies />} />
