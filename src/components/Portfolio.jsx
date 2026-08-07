@@ -267,7 +267,7 @@ function CaseStudyCard({ proj, idx, compact, onImageClick }) {
         </button>
 
         {compact && proj.problema && (
-          <div className="absolute inset-0 z-10 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+          <div className="absolute inset-0 z-10 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0 pointer-events-none">
             <div className="space-y-1.5 bg-black/50 backdrop-blur-md rounded-xl p-3 border border-white/[0.06]">
               <div>
                 <span className="text-[9px] text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
@@ -292,7 +292,27 @@ function CaseStudyCard({ proj, idx, compact, onImageClick }) {
         </div>
         <h3 className="text-white font-heading font-semibold text-sm sm:text-base mb-2">{proj.titulo}</h3>
 
-        {!compact && proj.problema ? (
+        {compact && proj.problema ? (
+          <div className="flex-1">
+            <p className="text-xs text-[#A1A1AA] leading-relaxed mb-2 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">{proj.desc}</p>
+            <div className="space-y-1.5 max-h-0 opacity-0 group-hover:max-h-40 group-hover:opacity-100 transition-all duration-500 ease-out overflow-hidden">
+              <div>
+                <span className="text-[9px] text-red-400/70 font-semibold uppercase tracking-wider">Problema</span>
+                <p className="text-[11px] text-[#A1A1AA] leading-snug mt-0.5">{proj.problema}</p>
+              </div>
+              <div>
+                <span className="text-[9px] text-blue-400/70 font-semibold uppercase tracking-wider">Solución</span>
+                <p className="text-[11px] text-[#A1A1AA] leading-snug mt-0.5">{proj.solucion}</p>
+              </div>
+              <div>
+                <span className="text-[9px] text-emerald-400/70 font-semibold uppercase tracking-wider">Resultado</span>
+                <p className="text-[11px] text-[#A1A1AA] leading-snug mt-0.5">{proj.resultado}</p>
+              </div>
+            </div>
+          </div>
+        ) : compact ? (
+          <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3 line-clamp-2 flex-1">{proj.desc}</p>
+        ) : !compact && proj.problema ? (
           <div className="space-y-2 mb-3 flex-1">
             <div>
               <span className="text-[10px] text-red-400/70 font-semibold uppercase tracking-wider">Problema</span>
@@ -310,10 +330,6 @@ function CaseStudyCard({ proj, idx, compact, onImageClick }) {
         ) : !compact ? (
           <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3 flex-1">{proj.desc}</p>
         ) : null}
-
-        {compact && (
-          <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3 line-clamp-2 flex-1">{proj.desc}</p>
-        )}
 
         <div className="flex flex-wrap gap-1 mb-3">
           {(proj.tags || []).slice(0, compact ? 3 : undefined).map((tag) => (
