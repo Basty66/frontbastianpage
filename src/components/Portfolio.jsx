@@ -232,8 +232,8 @@ function CaseStudyCard({ proj, idx, compact, onImageClick }) {
   const gradient = colores[idx % colores.length];
 
   return (
-    <div className={`group bg-white/[0.02] border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm transition-[border-color,box-shadow] duration-500 hover:border-blue-500/20 hover:shadow-xl hover:shadow-blue-500/5 flex flex-col h-full ${compact ? '' : 'md:flex-row'}`}>
-      <div className={`relative overflow-hidden ${compact ? 'aspect-video' : 'md:w-1/2 aspect-video md:aspect-auto'}`}>
+    <div className={`group bg-white/[0.02] border border-white/10 rounded-2xl backdrop-blur-sm transition-[border-color,box-shadow] duration-500 hover:border-blue-500/20 hover:shadow-xl hover:shadow-blue-500/5 flex flex-col ${compact ? '' : 'md:flex-row'}`}>
+      <div className={`relative overflow-hidden rounded-t-2xl ${compact ? 'aspect-video' : 'md:w-1/2 aspect-video md:aspect-auto md:rounded-l-2xl md:rounded-tr-none'}`}>
         {!proj.screenshot || imgError ? (
           <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`}>
             <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
@@ -295,8 +295,8 @@ function CaseStudyCard({ proj, idx, compact, onImageClick }) {
         {compact && proj.problema ? (
           <div className="flex-1">
             <p className="text-xs text-[#A1A1AA] leading-relaxed mb-2 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">{proj.desc}</p>
-            <div className="space-y-1.5 max-h-0 opacity-0 group-hover:max-h-40 group-hover:opacity-100 transition-all duration-500 ease-out overflow-hidden">
-              <div>
+            <div className="space-y-2 h-0 group-hover:h-auto transition-all duration-700 ease-out overflow-hidden opacity-0 group-hover:opacity-100">
+              <div className="pt-2 border-t border-white/5">
                 <span className="text-[9px] text-red-400/70 font-semibold uppercase tracking-wider">Problema</span>
                 <p className="text-[11px] text-[#A1A1AA] leading-snug mt-0.5">{proj.problema}</p>
               </div>
