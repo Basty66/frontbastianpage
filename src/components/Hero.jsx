@@ -184,8 +184,8 @@ const Hero = () => {
           </div>
         ))}
       </div>
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-12 py-8 sm:py-14">
-      <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-2 sm:space-y-4 text-center lg:text-left">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 lg:gap-12 py-6 sm:py-10">
+      <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-2 sm:space-y-3 text-center lg:text-left">
         <span className="inline-block text-blue-400/70 font-semibold tracking-wider text-[10px] sm:text-xs uppercase px-2.5 sm:px-3 py-1 bg-blue-500/[0.06] rounded-full border border-blue-500/15 backdrop-blur-sm">
           Agencia Digital · Chile
         </span>
@@ -200,7 +200,7 @@ const Hero = () => {
         <p className="text-sm sm:text-base md:text-lg text-[#A1A1AA] max-w-xl">
           Creamos páginas web profesionales para negocios chilenos. Sin costos mensuales, sin complicaciones técnicas.
         </p>
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center lg:justify-start pt-1 sm:pt-2">
+        <div className="flex flex-col sm:flex-row gap-1.5 sm:gap-3 justify-center lg:justify-start pt-0.5 sm:pt-2">
           <button
             onClick={(e) => { createRipple(e); scrollToCotizador(); }}
             className="ripple-container relative overflow-hidden group bg-blue-600 text-white font-bold px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl transition-all duration-500 ease-out hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm glow-blue-sm"
@@ -213,14 +213,14 @@ const Hero = () => {
             <span className="relative z-10">Ver Portafolio</span>
           </button>
         </div>
-        <div className="flex items-center justify-center lg:justify-start gap-3 sm:gap-6 pt-1 sm:pt-3 flex-wrap">
+        <div className="flex items-center justify-center lg:justify-start gap-3 sm:gap-6 pt-0.5 sm:pt-2 flex-wrap">
           <CounterBlock refKey="proy" target={20} suffix="+" label="Proyectos" />
           <div className="w-px h-6 sm:h-8 bg-blue-500/20" />
           <CounterBlock refKey="cli" target={15} suffix="+" label="Clientes" />
           <div className="w-px h-6 sm:h-8 bg-blue-500/20" />
           <CounterBlock refKey="disp" target={100} suffix="%" label="Disponibilidad" />
         </div>
-        <Reveal animation="fade-up" delay={400} className="pt-1 sm:pt-3">
+        <Reveal animation="fade-up" delay={400} className="pt-0 sm:pt-2">
           <div className="flex items-center gap-2 bg-white/[0.03] border border-blue-500/10 rounded-xl px-3 py-2 backdrop-blur-sm max-w-xs mx-auto lg:mx-0 hover:border-blue-500/25 transition-colors duration-500">
             <div className="flex -space-x-1.5">
               {['M', 'C', 'P'].map((initial, i) => (
@@ -305,7 +305,7 @@ const Hero = () => {
       </Reveal>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#09090B] to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#09090B] to-transparent z-10 pointer-events-none" />
 
       {/* Scroll indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3">
