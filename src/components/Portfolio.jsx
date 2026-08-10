@@ -139,9 +139,14 @@ const Portfolio = ({ fullPage = false }) => {
               </button>
             )}
 
+            {/* El padding inferior deja sitio al translateY(40px) con que
+                entran las tarjetas: sin el, ese desplazamiento genera scroll
+                vertical dentro del carrusel y la rueda del raton se queda
+                atrapada aqui antes de mover la pagina. El margen negativo
+                devuelve el espaciado visual original. */}
             <div
               ref={scrollRef}
-              className="flex gap-4 overflow-x-auto scrollbar-none pb-4 -mx-4 px-4 sm:mx-0 sm:px-0"
+              className="flex gap-4 overflow-x-auto [overflow-y:hidden] overscroll-x-contain scrollbar-none pb-14 -mb-10 -mx-4 px-4 sm:mx-0 sm:px-0"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {displayProjects.map((proj, i) => (
