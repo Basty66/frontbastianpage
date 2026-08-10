@@ -285,17 +285,17 @@ function App() {
             </Routes>
           </div>
         </ErrorBoundary>
-      </div>
 
-      <Reveal animation="fade-up" as="footer" className="border-t border-white/5 backdrop-blur-md py-6 sm:py-8 px-4 sm:px-6 text-center" style={{ background: '#09090B' }}>
-        <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-4">
-          <Link to="/privacidad" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Política de Privacidad</Link>
-          <Link to="/terminos" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Términos y Condiciones</Link>
-          <Link to="/cookies" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Política de Cookies</Link>
-        </div>
-        <p className="text-[#A1A1AA] text-xs mb-2">Santiago, Región Metropolitana, Chile</p>
-        <p className="text-[#A1A1AA] text-xs sm:text-sm">© 2026 BS DigitalTech — Desarrollo Web para PYMEs Chilenas · Hosting $0</p>
-      </Reveal>
+        <Reveal animation="fade-up" as="footer" className="border-t border-white/5 backdrop-blur-md py-6 sm:py-8 px-4 sm:px-6 text-center" style={{ background: '#09090B' }}>
+          <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-4">
+            <Link to="/privacidad" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Política de Privacidad</Link>
+            <Link to="/terminos" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Términos y Condiciones</Link>
+            <Link to="/cookies" className="text-xs sm:text-sm text-[#A1A1AA] hover:text-blue-400 transition-colors">Política de Cookies</Link>
+          </div>
+          <p className="text-[#A1A1AA] text-xs mb-2">Santiago, Región Metropolitana, Chile</p>
+          <p className="text-[#A1A1AA] text-xs sm:text-sm">© 2026 BS DigitalTech — Desarrollo Web para PYMEs Chilenas · Hosting $0</p>
+        </Reveal>
+      </div>
 
       {/* Instagram */}
       <a
