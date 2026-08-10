@@ -184,12 +184,12 @@ const Hero = () => {
           </div>
         ))}
       </div>
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 py-12 sm:py-16">
-      <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-5 sm:space-y-6 text-center lg:text-left">
-        <span className="inline-block text-blue-400/70 font-semibold tracking-wider text-xs sm:text-sm uppercase px-2.5 sm:px-3 py-1 bg-blue-500/[0.06] rounded-full border border-blue-500/15 backdrop-blur-sm">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12 py-10 sm:py-14">
+      <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-3 sm:space-y-4 text-center lg:text-left">
+        <span className="inline-block text-blue-400/70 font-semibold tracking-wider text-[10px] sm:text-xs uppercase px-2.5 sm:px-3 py-1 bg-blue-500/[0.06] rounded-full border border-blue-500/15 backdrop-blur-sm">
           Agencia Digital · Chile
         </span>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold leading-tight">
           <span className="text-gradient-blue-chrome">
             Tu negocio necesita una web que
           </span>{' '}
@@ -197,34 +197,34 @@ const Hero = () => {
             {typewriterText}{!typewriterDone && <span className="animate-typewriter-cursor text-blue-500">|</span>}
           </span>
         </h1>
-        <p className="text-base sm:text-lg md:text-xl text-[#A1A1AA] max-w-2xl">
-          Creamos páginas web profesionales para negocios chilenos. Sin costos mensuales, sin complicaciones técnicas, sin sorpresas.
+        <p className="text-sm sm:text-base md:text-lg text-[#A1A1AA] max-w-xl">
+          Creamos páginas web profesionales para negocios chilenos. Sin costos mensuales, sin complicaciones técnicas.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-3 sm:pt-4">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center lg:justify-start pt-1 sm:pt-2">
           <button
             onClick={(e) => { createRipple(e); scrollToCotizador(); }}
-            className="ripple-container relative overflow-hidden group bg-blue-600 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm sm:text-base glow-blue-sm"
+            className="ripple-container relative overflow-hidden group bg-blue-600 text-white font-bold px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl transition-all duration-500 ease-out hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm glow-blue-sm"
           >
             <span className="relative z-10">Cotizar mi proyecto</span>
           </button>
           <button
             onClick={(e) => { createRipple(e); navigate('/portafolio'); }}
-            className="ripple-container relative overflow-hidden group border border-blue-500/20 text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-500 ease-out bg-blue-600/[0.06] backdrop-blur-sm hover:bg-blue-600/10 hover:border-blue-500/30 hover:-translate-y-0.5 text-sm sm:text-base">
+            className="ripple-container relative overflow-hidden group border border-blue-500/20 text-white font-medium px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl transition-all duration-500 ease-out bg-blue-600/[0.06] backdrop-blur-sm hover:bg-blue-600/10 hover:border-blue-500/30 hover:-translate-y-0.5 text-sm">
             <span className="relative z-10">Ver Portafolio</span>
           </button>
         </div>
-        <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-8 pt-4 sm:pt-6 flex-wrap">
+        <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-6 pt-2 sm:pt-3 flex-wrap">
           <CounterBlock refKey="proy" target={20} suffix="+" label="Proyectos" />
-          <div className="w-px h-8 sm:h-10 bg-blue-500/20" />
+          <div className="w-px h-6 sm:h-8 bg-blue-500/20" />
           <CounterBlock refKey="cli" target={15} suffix="+" label="Clientes" />
-          <div className="w-px h-8 sm:h-10 bg-blue-500/20" />
+          <div className="w-px h-6 sm:h-8 bg-blue-500/20" />
           <CounterBlock refKey="disp" target={100} suffix="%" label="Disponibilidad" />
         </div>
-        <Reveal animation="fade-up" delay={400} className="pt-4 sm:pt-6">
-          <div className="flex items-center gap-3 bg-white/[0.03] border border-blue-500/10 rounded-xl px-4 py-3 backdrop-blur-sm max-w-sm mx-auto lg:mx-0 hover:border-blue-500/25 transition-colors duration-500">
-            <div className="flex -space-x-2">
+        <Reveal animation="fade-up" delay={400} className="pt-2 sm:pt-3">
+          <div className="flex items-center gap-2 bg-white/[0.03] border border-blue-500/10 rounded-xl px-3 py-2 backdrop-blur-sm max-w-xs mx-auto lg:mx-0 hover:border-blue-500/25 transition-colors duration-500">
+            <div className="flex -space-x-1.5">
               {['M', 'C', 'P'].map((initial, i) => (
-                <div key={i} className="w-8 h-8 rounded-full bg-white/[0.06] border-2 border-[#09090B] flex items-center justify-center text-white/60 text-xs font-bold">
+                <div key={i} className="w-6 h-6 rounded-full bg-white/[0.06] border-2 border-[#09090B] flex items-center justify-center text-white/60 text-[9px] font-bold">
                   {initial}
                 </div>
               ))}
@@ -232,21 +232,21 @@ const Hero = () => {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-0.5">
                 {[1, 2, 3, 4, 5].map((s) => (
-                  <Star key={s} className="w-3 h-3 fill-blue-400/60 text-blue-400/60" />
+                  <Star key={s} className="w-2.5 h-2.5 fill-blue-400/60 text-blue-400/60" />
                 ))}
               </div>
-              <p className="text-[10px] text-[#A1A1AA] truncate">+15 clientes satisfechos</p>
+              <p className="text-[9px] text-[#A1A1AA] truncate">+15 clientes satisfechos</p>
             </div>
           </div>
         </Reveal>
       </Reveal>
-      <Reveal animation="fade-right" delay={200} className="relative z-10 flex-1 w-full max-w-xl">
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 shadow-[0_0_60px_-12px_rgba(37,99,235,0.15)] relative overflow-hidden backdrop-blur-sm md:backdrop-blur-lg md:animate-float group/card">
+      <Reveal animation="fade-right" delay={200} className="relative z-10 flex-1 w-full max-w-md lg:max-w-xl">
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 sm:p-5 shadow-[0_0_60px_-12px_rgba(37,99,235,0.15)] relative overflow-hidden backdrop-blur-sm md:backdrop-blur-lg md:animate-float group/card">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.04] via-transparent to-transparent pointer-events-none" />
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/[0.07] rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-16 -left-16 w-32 h-32 bg-blue-400/[0.05] rounded-full blur-2xl pointer-events-none" />
           <div className="relative z-10">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-4 mb-6">
+            <div className="flex items-center justify-between border-b border-white/[0.06] pb-3 mb-4">
               <div className="flex gap-2">
                 <span className="w-3 h-3 bg-blue-500/60 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.5)]" />
                 <span className="w-3 h-3 bg-blue-400/30 rounded-full" />
@@ -255,8 +255,8 @@ const Hero = () => {
               <span className="text-xs text-[#A1A1AA] font-heading">bsdigitaltech.cl</span>
             </div>
 
-            <div className="space-y-3">
-              <div className="p-4 bg-blue-500/[0.04] rounded-xl border border-blue-500/10 backdrop-blur-sm transition-all duration-300 hover:border-blue-500/25 hover:bg-blue-500/[0.07] hover:shadow-[0_0_30px_-8px_rgba(37,99,235,0.2)]">
+            <div className="space-y-2.5">
+              <div className="p-3 bg-blue-500/[0.04] rounded-xl border border-blue-500/10 backdrop-blur-sm transition-all duration-300 hover:border-blue-500/25 hover:bg-blue-500/[0.07] hover:shadow-[0_0_30px_-8px_rgba(37,99,235,0.2)]">
                 <div className="text-xs text-blue-300/70 mb-1">Rendimiento Core Web Vitals</div>
                 <div className="flex items-center gap-3">
                   <div className="text-2xl font-bold font-heading text-white">100%</div>
@@ -266,38 +266,38 @@ const Hero = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
-                  <div className="text-[10px] text-[#A1A1AA] mb-1">Costo Servidor</div>
-                  <div className="text-lg font-bold font-heading text-white">$0 <span className="text-[10px] text-[#A1A1AA] font-normal">/mes</span></div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="p-2.5 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
+                  <div className="text-[9px] text-[#A1A1AA] mb-0.5">Hosting</div>
+                  <div className="text-sm font-bold font-heading text-white">$0 <span className="text-[9px] text-[#A1A1AA] font-normal">/mes</span></div>
                 </div>
-                <div className="p-3 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
-                  <div className="text-[10px] text-[#A1A1AA] mb-1">Tiempo de carga</div>
-                  <div className="text-lg font-bold font-heading text-white">&lt;1s</div>
+                <div className="p-2.5 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
+                  <div className="text-[9px] text-[#A1A1AA] mb-0.5">Carga</div>
+                  <div className="text-sm font-bold font-heading text-white">&lt;1s</div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
-                  <div className="text-[10px] text-[#A1A1AA] mb-1">SSL / Seguridad</div>
-                  <div className="text-lg font-bold font-heading text-white flex items-center gap-1">
-                    <svg className="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="p-2.5 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
+                  <div className="text-[9px] text-[#A1A1AA] mb-0.5">SSL</div>
+                  <div className="text-sm font-bold font-heading text-white flex items-center gap-1">
+                    <svg className="w-3 h-3 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
                     Incluido
                   </div>
                 </div>
-                <div className="p-3 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
-                  <div className="text-[10px] text-[#A1A1AA] mb-1">Ahorro Anual</div>
-                  <div className="text-lg font-bold font-heading text-blue-400">$180.000</div>
+                <div className="p-2.5 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
+                  <div className="text-[9px] text-[#A1A1AA] mb-0.5">Ahorro</div>
+                  <div className="text-sm font-bold font-heading text-blue-400">$180K</div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 pt-1">
-                <div className="flex -space-x-1.5">
+              <div className="flex items-center gap-2 pt-0.5">
+                <div className="flex -space-x-1">
                   {['React', 'Vite', 'Tailwind'].map((t, i) => (
-                    <span key={t} className="px-2 py-0.5 text-[9px] font-medium text-white/50 bg-white/[0.04] border border-white/[0.06] rounded-full">{t}</span>
+                    <span key={t} className="px-1.5 py-0.5 text-[8px] font-medium text-white/50 bg-white/[0.04] border border-white/[0.06] rounded-full">{t}</span>
                   ))}
                 </div>
-                <span className="text-[9px] text-[#A1A1AA]">+ Vercel Edge</span>
+                <span className="text-[8px] text-[#A1A1AA]">+ Vercel</span>
               </div>
             </div>
           </div>
