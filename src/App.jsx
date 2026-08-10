@@ -173,7 +173,7 @@ function App() {
       <nav className={`border-b transition-[background,border-color,box-shadow] duration-500 ease-out backdrop-blur-md sticky top-0 z-50 ${
         scrolled ? 'bg-[#09090B]/80 border-white/[0.06] shadow-lg shadow-black/20' : 'bg-[#09090B]/40 border-white/[0.04]'
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 grid grid-cols-[auto_1fr_auto] items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center">
           <Link to="/" onClick={() => { handleLogoClick(); setMenuOpen(false); }} className="flex items-center gap-1.5 sm:gap-2 group">
             <svg viewBox="0 2 40 26" fill="none" className="w-7 h-7 sm:w-8 sm:h-8" style={{ animation: 'fade-slide-in 0.6s ease-out' }}>
               <path d="M20 6C12 6 7 12 7 19v4a3 3 0 003 3h20a3 3 0 003-3v-4c0-7-5-13-13-13z" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 transition-all duration-500" />
@@ -190,7 +190,7 @@ function App() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center justify-center gap-0.5">
+          <div className="hidden md:flex flex-1 items-center justify-center gap-0.5">
             {navLinks.map((link, i) => (
               <button
                 key={link.id}
@@ -205,7 +205,7 @@ function App() {
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 ml-auto">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="md:hidden w-9 h-9 flex items-center justify-center text-[#A1A1AA] hover:text-white transition-colors rounded-lg hover:bg-white/[0.04]"
