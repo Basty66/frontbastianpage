@@ -343,6 +343,11 @@ body {
   animation: page-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes scroll-dot {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(6px); opacity: 0.3; }
+}
+
 /* ROI slider */
 input[type="range"] {
   -webkit-appearance: none;
