@@ -195,11 +195,9 @@ function App() {
               <button
                 key={link.id}
                 onClick={() => scrollTo(link.id)}
-                className={`group relative px-3 py-1.5 text-[13px] font-medium transition-[color,background] duration-300 rounded-lg ${
-                  (link.id === 'cotizador' && location.pathname === '/')
-                    ? 'text-blue-400'
-                    : 'text-[#A1A1AA] hover:text-white hover:bg-white/[0.03]'
-                }`}
+              className={`group relative px-3 py-1.5 text-[13px] font-medium transition-[color,background] duration-300 rounded-lg ${
+                'text-[#A1A1AA] hover:text-white hover:bg-white/[0.03]'
+              }`}
               >
                 <span className="relative z-10">{link.label}</span>
                 <span className="absolute inset-x-2 bottom-1 h-[1px] bg-blue-500/60 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-center" />

@@ -172,16 +172,16 @@ const Portfolio = ({ fullPage = false }) => {
 
             <div
               ref={scrollRef}
-              className="flex gap-4 overflow-x-auto scrollbar-none snap-x snap-mandatory pb-4 -mx-4 px-4 sm:mx-0 sm:px-0"
+              className="flex gap-4 overflow-x-auto scrollbar-none pb-4 -mx-4 px-4 sm:mx-0 sm:px-0"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {displayProjects.map((proj, i) => (
-                <Reveal key={proj.id} animation="fade-up" delay={i * 80} className="flex-shrink-0 w-[85vw] sm:w-[400px] snap-start" data-card>
+                <Reveal key={proj.id} animation="fade-up" delay={i * 80} className="flex-shrink-0 w-[85vw] sm:w-[400px]" data-card>
                   <CaseStudyCard proj={proj} idx={i} compact expanded={expandedId === proj.id} onToggle={() => setExpandedId(expandedId === proj.id ? null : proj.id)} />
                 </Reveal>
               ))}
 
-              <Reveal animation="fade-up" delay={displayProjects.length * 80} className="flex-shrink-0 w-[85vw] sm:w-[400px] snap-start">
+              <Reveal animation="fade-up" delay={displayProjects.length * 80} className="flex-shrink-0 w-[85vw] sm:w-[400px]">
                 <button
                   onClick={() => navigate('/portafolio')}
                   className="group w-full h-full min-h-[380px] bg-white/[0.02] border border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center gap-4 hover:border-blue-500/30 hover:bg-blue-500/[0.03] transition-all duration-500"
