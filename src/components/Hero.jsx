@@ -184,8 +184,8 @@ const Hero = () => {
           </div>
         ))}
       </div>
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12 py-10 sm:py-14">
-      <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-3 sm:space-y-4 text-center lg:text-left">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-12 py-8 sm:py-14">
+      <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-2 sm:space-y-4 text-center lg:text-left">
         <span className="inline-block text-blue-400/70 font-semibold tracking-wider text-[10px] sm:text-xs uppercase px-2.5 sm:px-3 py-1 bg-blue-500/[0.06] rounded-full border border-blue-500/15 backdrop-blur-sm">
           Agencia Digital · Chile
         </span>
@@ -213,14 +213,14 @@ const Hero = () => {
             <span className="relative z-10">Ver Portafolio</span>
           </button>
         </div>
-        <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-6 pt-2 sm:pt-3 flex-wrap">
+        <div className="flex items-center justify-center lg:justify-start gap-3 sm:gap-6 pt-1 sm:pt-3 flex-wrap">
           <CounterBlock refKey="proy" target={20} suffix="+" label="Proyectos" />
           <div className="w-px h-6 sm:h-8 bg-blue-500/20" />
           <CounterBlock refKey="cli" target={15} suffix="+" label="Clientes" />
           <div className="w-px h-6 sm:h-8 bg-blue-500/20" />
           <CounterBlock refKey="disp" target={100} suffix="%" label="Disponibilidad" />
         </div>
-        <Reveal animation="fade-up" delay={400} className="pt-2 sm:pt-3">
+        <Reveal animation="fade-up" delay={400} className="pt-1 sm:pt-3">
           <div className="flex items-center gap-2 bg-white/[0.03] border border-blue-500/10 rounded-xl px-3 py-2 backdrop-blur-sm max-w-xs mx-auto lg:mx-0 hover:border-blue-500/25 transition-colors duration-500">
             <div className="flex -space-x-1.5">
               {['M', 'C', 'P'].map((initial, i) => (
@@ -240,7 +240,7 @@ const Hero = () => {
           </div>
         </Reveal>
       </Reveal>
-      <Reveal animation="fade-right" delay={200} className="relative z-10 flex-1 w-full max-w-md lg:max-w-xl">
+      <Reveal animation="fade-right" delay={200} className="relative z-10 hidden md:block flex-1 w-full max-w-md lg:max-w-xl">
         <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 sm:p-5 shadow-[0_0_60px_-12px_rgba(37,99,235,0.15)] relative overflow-hidden backdrop-blur-sm md:backdrop-blur-lg md:animate-float group/card">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.04] via-transparent to-transparent pointer-events-none" />
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/[0.07] rounded-full blur-3xl pointer-events-none" />
