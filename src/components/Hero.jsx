@@ -59,7 +59,7 @@ function CounterBlock({ target, suffix, label }) {
       <span className={`block text-xl sm:text-2xl md:text-3xl font-bold font-heading text-white transition-all duration-700 ${started ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         {started ? display : suffix === '%' ? '0%' : '0+'}
       </span>
-      <span className="text-[10px] sm:text-xs text-slate-400 whitespace-nowrap">{label}</span>
+      <span className="text-[9px] sm:text-[10px] md:text-xs text-slate-400">{label}</span>
     </div>
   );
 }

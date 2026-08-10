@@ -1046,7 +1046,7 @@ const Cotizador = () => {
                     return (
                       <div
                         key={plan.id}
-                        className={`group relative overflow-hidden p-4 rounded-xl border cursor-pointer transition-all duration-500 ease-out ${
+                        className={`group relative overflow-hidden p-3 sm:p-4 rounded-xl border cursor-pointer transition-all duration-500 ease-out ${
                           selected
                             ? `${c.border} text-white scale-[1.02]`
                             : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/30 hover:bg-white/[0.04] hover:scale-[1.01]'
@@ -1081,7 +1081,7 @@ const Cotizador = () => {
                               {selected && <div className={`w-2.5 h-2.5 rounded-full ${c.dot}`} />}
                             </div>
                             {plan.precio ? (
-                              <span className="font-bold font-heading text-lg transition-all duration-300 group-hover:scale-110 inline-block">{formatCurrency(plan.precio)}</span>
+                              <span className="font-bold font-heading text-sm sm:text-lg transition-all duration-300 group-hover:scale-110 inline-block truncate">{formatCurrency(plan.precio)}</span>
                             ) : (
                               <span className="text-xs font-medium text-white/70">Precio variable</span>
                             )}
@@ -1216,25 +1216,25 @@ const Cotizador = () => {
             </div>
           )}
 
-          <div className={`p-6 rounded-2xl border backdrop-blur-sm flex justify-between items-center transition-all duration-700 ease-out ${
+          <div className={`p-4 sm:p-6 rounded-2xl border backdrop-blur-sm flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 transition-all duration-700 ease-out ${
             total > 0
               ? 'bg-gradient-to-r from-blue-500/10 via-blue-400/5 to-transparent border-blue-500/15 shadow-[0_0_30px_rgba(37,99,235,0.06)]'
               : 'bg-white/[0.03] border-white/10'
           }`}>
             <div>
-              <div className="text-xs text-[#A1A1AA] uppercase font-semibold tracking-wider">Inversión Estimada</div>
-              <div className="text-xs text-white/60 mt-1 flex items-center gap-1">
+              <div className="text-[10px] sm:text-xs text-[#A1A1AA] uppercase font-semibold tracking-wider">Inversión Estimada</div>
+              <div className="text-[10px] sm:text-xs text-white/60 mt-1 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-white/[0.04] text-white/60" />
                 Costo de servidor: $0 de por vida
               </div>
             </div>
-            <div className={`text-3xl sm:text-4xl font-extrabold font-heading tracking-tight transition-all duration-500 ${
+            <div className={`text-2xl sm:text-3xl md:text-4xl font-extrabold font-heading tracking-tight transition-all duration-500 ${
               total > 0 ? 'text-white drop-shadow-[0_0_12px_rgba(37,99,235,0.15)]' : 'text-[#A1A1AA]'
             }`}>
               <span key={total} className="inline-block animate-[count-up_0.4s_ease-out]">
                 {formatCurrency(animatedTotal)}
               </span>{' '}
-              <span className="text-xs font-normal text-[#A1A1AA]">{moneda === 'CLP' ? 'CLP' : ''}</span>
+              <span className="text-[10px] sm:text-xs font-normal text-[#A1A1AA]">{moneda === 'CLP' ? 'CLP' : ''}</span>
             </div>
           </div>
         </div>

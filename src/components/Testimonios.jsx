@@ -163,7 +163,7 @@ const Testimonios = () => {
                       </div>
                       <div>
                         <p className="text-white font-medium text-xs leading-tight">{t.nombre}</p>
-                        <p className="text-[#A1A1AA] text-[10px]">{t.empresa}</p>
+                        <p className="text-[#A1A1AA] text-[10px] sm:text-xs">{t.empresa}</p>
                       </div>
                     </div>
                   </div>
