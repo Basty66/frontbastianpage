@@ -223,8 +223,9 @@ function App() {
           className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0'}`}
           onClick={() => setMenuOpen(false)}
         />
-        <div className={`absolute top-0 right-0 h-full w-[85vw] max-w-80 bg-[#0C0C0F] border-l border-white/[0.06] shadow-2xl shadow-black/50 flex flex-col transition-transform duration-300 ease-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-          <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
+        <div className={`absolute top-0 right-0 h-full w-[85vw] max-w-80 bg-gradient-to-b from-[#0C0C0F] via-[#09090B] to-[#09090B] border-l border-blue-500/10 shadow-2xl shadow-black/50 flex flex-col transition-transform duration-300 ease-out backdrop-blur-xl ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.03] via-transparent to-transparent pointer-events-none" />
+          <div className="relative flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
             <span className="font-bold text-base tracking-tight">
               <span className="text-gradient-blue">BS</span><span className="text-gradient-chrome">DigitalTech</span>
             </span>
@@ -236,12 +237,12 @@ function App() {
               <X className="w-5 h-5" />
             </button>
           </div>
-          <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+          <nav className="relative flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
             {navLinks.map((link, i) => (
               <button
                 key={link.id}
                 onClick={() => { scrollTo(link.id); setMenuOpen(false); }}
-                className="group relative block w-full text-left px-4 py-3 text-sm font-medium text-[#A1A1AA] hover:text-white transition-all duration-300 rounded-xl hover:bg-white/[0.04]"
+                className="group relative block w-full text-left px-4 py-3 text-sm font-medium text-[#A1A1AA] hover:text-white transition-all duration-300 rounded-xl hover:bg-blue-500/[0.06]"
                 style={{ animation: menuOpen ? `fade-slide-in 0.3s ease-out ${0.05 + i * 0.04}s both` : 'none' }}
               >
                 <span className="absolute left-0 top-2 bottom-2 w-[3px] bg-blue-500/60 rounded-full scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out origin-top" />
@@ -251,7 +252,7 @@ function App() {
               </button>
             ))}
           </nav>
-          <div className="px-5 py-4 border-t border-white/[0.06]">
+          <div className="relative px-5 py-4 border-t border-white/[0.06]">
             <a
               href="https://wa.me/56933933434?text=%C2%A1Hola!%20Quisiera%20una%20cotizaci%C3%B3n%20para%20un%20proyecto%20web."
               target="_blank"

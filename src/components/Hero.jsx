@@ -184,12 +184,12 @@ const Hero = () => {
           </div>
         ))}
       </div>
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 lg:gap-12 py-6 sm:py-10">
-      <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-2 sm:space-y-3 text-center lg:text-left">
-        <span className="inline-block text-blue-400/70 font-semibold tracking-wider text-[10px] sm:text-xs uppercase px-2.5 sm:px-3 py-1 bg-blue-500/[0.06] rounded-full border border-blue-500/15 backdrop-blur-sm">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-3 lg:gap-12 pt-16 pb-20 sm:pt-20 sm:pb-24 md:py-6 lg:py-10">
+      <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-1.5 sm:space-y-3 text-center lg:text-left">
+        <span className="inline-block text-blue-400/70 font-semibold tracking-wider text-[9px] sm:text-[10px] md:text-xs uppercase px-2 sm:px-2.5 md:px-3 py-0.5 sm:py-1 bg-blue-500/[0.06] rounded-full border border-blue-500/15 backdrop-blur-sm">
           Agencia Digital · Chile
         </span>
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold leading-tight">
+        <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-heading font-bold leading-tight">
           <span className="text-gradient-blue-chrome">
             Tu negocio necesita una web que
           </span>{' '}
@@ -197,10 +197,10 @@ const Hero = () => {
             {typewriterText}{!typewriterDone && <span className="animate-typewriter-cursor text-blue-500">|</span>}
           </span>
         </h1>
-        <p className="text-sm sm:text-base md:text-lg text-[#A1A1AA] max-w-xl">
+        <p className="text-xs sm:text-sm md:text-lg text-[#A1A1AA] max-w-xl">
           Creamos páginas web profesionales para negocios chilenos. Sin costos mensuales, sin complicaciones técnicas.
         </p>
-        <div className="flex flex-col sm:flex-row gap-1.5 sm:gap-3 justify-center lg:justify-start pt-0.5 sm:pt-2">
+        <div className="flex flex-col sm:flex-row gap-1.5 sm:gap-3 justify-center lg:justify-start pt-0 sm:pt-2">
           <button
             onClick={(e) => { createRipple(e); scrollToCotizador(); }}
             className="ripple-container relative overflow-hidden group bg-blue-600 text-white font-bold px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl transition-all duration-500 ease-out hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm glow-blue-sm"
@@ -213,7 +213,7 @@ const Hero = () => {
             <span className="relative z-10">Ver Portafolio</span>
           </button>
         </div>
-        <div className="flex items-center justify-center lg:justify-start gap-3 sm:gap-6 pt-0.5 sm:pt-2 flex-wrap">
+        <div className="flex items-center justify-center lg:justify-start gap-2 sm:gap-6 pt-0 sm:pt-2 flex-wrap">
           <CounterBlock refKey="proy" target={20} suffix="+" label="Proyectos" />
           <div className="w-px h-6 sm:h-8 bg-blue-500/20" />
           <CounterBlock refKey="cli" target={15} suffix="+" label="Clientes" />
@@ -221,10 +221,10 @@ const Hero = () => {
           <CounterBlock refKey="disp" target={100} suffix="%" label="Disponibilidad" />
         </div>
         <Reveal animation="fade-up" delay={400} className="pt-0 sm:pt-2">
-          <div className="flex items-center gap-2 bg-white/[0.03] border border-blue-500/10 rounded-xl px-3 py-2 backdrop-blur-sm max-w-xs mx-auto lg:mx-0 hover:border-blue-500/25 transition-colors duration-500">
-            <div className="flex -space-x-1.5">
+          <div className="flex items-center gap-1.5 sm:gap-2 bg-white/[0.03] border border-blue-500/10 rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 backdrop-blur-sm max-w-[260px] sm:max-w-xs mx-auto lg:mx-0 hover:border-blue-500/25 transition-colors duration-500">
+            <div className="flex -space-x-1 sm:-space-x-1.5">
               {['M', 'C', 'P'].map((initial, i) => (
-                <div key={i} className="w-6 h-6 rounded-full bg-white/[0.06] border-2 border-[#09090B] flex items-center justify-center text-white/60 text-[9px] font-bold">
+                <div key={i} className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/[0.06] border-2 border-[#09090B] flex items-center justify-center text-white/60 text-[8px] sm:text-[9px] font-bold">
                   {initial}
                 </div>
               ))}
@@ -305,10 +305,10 @@ const Hero = () => {
       </Reveal>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#09090B] to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-12 sm:h-20 bg-gradient-to-t from-[#09090B] to-transparent z-10 pointer-events-none" />
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3">
+      {/* Scroll indicator - hidden on mobile to avoid overlap */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 hidden sm:flex flex-col items-center gap-3">
         <span className="text-[10px] text-white/25 tracking-[0.3em] uppercase font-medium">Scroll</span>
         <div className="relative w-5 h-8 rounded-full border border-white/15 flex justify-center pt-1.5">
           <div className="w-1 h-1.5 bg-blue-400/60 rounded-full animate-[scroll-dot_1.8s_ease-in-out_infinite]" />
