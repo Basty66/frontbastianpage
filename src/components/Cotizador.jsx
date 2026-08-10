@@ -1,6 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect, memo } from 'react';
 import { createPortal } from 'react-dom';
-import { jsPDF } from 'jspdf';
 import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle, Check, Star, PenTool, Eye } from 'lucide-react';
 import Reveal from './Reveal';
 import PDFPreview from './PDFPreview';
@@ -36,6 +35,13 @@ const colorMap = {
   sky: { from: 'from-white/[0.06]', to: 'to-white/[0.02]', glow: 'rgba(255,255,255,0.05)', border: 'border-white/[0.15]', text: 'text-white/60', dot: 'bg-white/60', toggle: 'bg-white/20' },
   violet: { from: 'from-white/[0.06]', to: 'to-white/[0.02]', glow: 'rgba(255,255,255,0.05)', border: 'border-white/[0.15]', text: 'text-white/60', dot: 'bg-white/60', toggle: 'bg-white/20' },
   cyan: { from: 'from-white/[0.06]', to: 'to-white/[0.02]', glow: 'rgba(255,255,255,0.05)', border: 'border-white/[0.15]', text: 'text-white/60', dot: 'bg-white/60', toggle: 'bg-white/20' },
+};
+
+// Extras permitidos por tipo de proyecto (solo aplica al plan a medida)
+const extrasPerType = {
+  landing: ['seo', 'soporte', 'mantenimiento'],
+  corporativa: ['admin', 'seo', 'soporte', 'mantenimiento'],
+  ecommerce: ['admin', 'pagos', 'seo', 'idioma', 'soporte', 'mantenimiento'],
 };
 
 const adicionales = [
@@ -222,7 +228,7 @@ const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
           <PenTool className="w-12 h-12 text-white" />
         </div>
       </div>
-      <p className="text-[11px] text-slate-500 text-center">Firma aquí arrastrando el mouse o tu dedo</p>
+      <p className="text-xs text-slate-500 text-center">Firma aquí arrastrando el mouse o tu dedo</p>
     </div>
   );
 });
@@ -363,12 +369,6 @@ const Cotizador = () => {
     return acc + (item?.precio || 0);
   }, 0);
 
-  const extrasPerType = {
-    landing: ['seo', 'soporte', 'mantenimiento'],
-    corporativa: ['admin', 'seo', 'soporte', 'mantenimiento'],
-    ecommerce: ['admin', 'pagos', 'seo', 'idioma', 'soporte', 'mantenimiento'],
-  };
-
   const getExtrasDisponibles = () => {
     if (selectedPlan !== 'custom') return adicionales;
     const tipoId = proyectoActual?.id;
@@ -401,12 +401,16 @@ const Cotizador = () => {
     setExtras((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   };
 
-  useEffect(() => {
-    if (selectedPlan === 'custom' && proyectoActual) {
-      const allowed = extrasPerType[proyectoActual.id] || [];
-      setExtras((prev) => prev.filter((x) => allowed.includes(x)));
-    }
-  }, [tipoWeb]);
+  // Al cambiar el tipo de web en el plan a medida, descartar los extras que ya
+  // no aplican. Se hace en el handler para no encadenar renders.
+  // Ojo: tipoWeb guarda el precio del tipo, no su id.
+  const handleTipoWebChange = useCallback((nuevoPrecio) => {
+    setTipoWeb(nuevoPrecio);
+    if (selectedPlan !== 'custom') return;
+    const tipo = tiposProyecto.find((t) => t.precio === nuevoPrecio);
+    const allowed = tipo ? (extrasPerType[tipo.id] || []) : [];
+    setExtras((prev) => prev.filter((x) => allowed.includes(x)));
+  }, [selectedPlan]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -426,7 +430,7 @@ const Cotizador = () => {
     setLoading(true);
 
     try {
-      const doc = buildPDFDoc();
+      const doc = await buildPDFDoc();
       pdfDocRef.current = doc;
       const blob = doc.output('blob');
       const blobUrl = URL.createObjectURL(blob);
@@ -537,8 +541,10 @@ const Cotizador = () => {
     return () => window.removeEventListener('keydown', handleEscape);
   }, [showPreview, showSignatures, showPdfPreview]);
 
+  // Se mantiene en un ref para poder liberar el último blob al desmontar,
+  // sin que el efecto de limpieza dependa del valor actual.
   const pdfPreviewUrlRef = useRef(pdfPreviewUrl);
-  pdfPreviewUrlRef.current = pdfPreviewUrl;
+  useEffect(() => { pdfPreviewUrlRef.current = pdfPreviewUrl; }, [pdfPreviewUrl]);
   useEffect(() => {
     return () => { if (pdfPreviewUrlRef.current) URL.revokeObjectURL(pdfPreviewUrlRef.current); };
   }, []);
@@ -581,379 +587,45 @@ const Cotizador = () => {
     return proyecto.dias + extras.length * 7;
   };
 
-  const buildPDFDoc = () => {
-    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-    const pw = doc.internal.pageSize.getWidth();
-    const ph = doc.internal.pageSize.getHeight();
-    const mg = 18;
-    const cw = pw - mg * 2;
+  /* El módulo del PDF (y jsPDF con él) se carga solo cuando se necesita,
+     así no pesa en el bundle inicial del cotizador. */
+  const buildPDFDoc = async () => {
+    const { buildCotizacionPDF } = await import('../lib/cotizacionPdf');
 
-    // PALETA: Dark Premium Tech - azul electrico + chrome
-    const black = [9, 9, 11];
-    const dark = [30, 30, 35];
-    const gray = [120, 120, 125];
-    const light = [235, 237, 240];
-    const blue = [37, 99, 235];
-    const blueLight = [239, 243, 255];
-    const blueSoft = [59, 130, 246];
-    const white = [255, 255, 255];
-
-    let y = 18;
-    let pageNum = 1;
-
-    // =============== HELPERS ===============
-    function text(txt, x, yy, size, weight = 'normal', color = black, align = 'left') {
-      doc.setFont('helvetica', weight);
-      doc.setFontSize(size);
-      doc.setTextColor(color[0], color[1], color[2]);
-      if (align === 'right') doc.text(txt, x, yy, { align: 'right' });
-      else doc.text(txt, x, yy);
+    let clientSignatureDataUrl = null;
+    try {
+      clientSignatureDataUrl = clientSigRef.current?.toDataURL('image/png') || null;
+    } catch (e) {
+      console.warn('No se pudo leer la firma del cliente:', e);
     }
 
-    function hr(yp, color = light) {
-      doc.setDrawColor(color[0], color[1], color[2]);
-      doc.setLineWidth(0.3);
-      doc.line(mg, yp, pw - mg, yp);
-    }
+    const extrasDetalle = extras
+      .map((id) => adicionales.find((a) => a.id === id))
+      .filter(Boolean)
+      .map(({ label, desc, precio }) => ({ label, desc, precio }));
 
-    function section(title, needed) {
-      if (y + needed > ph - 20) { doc.addPage(); pageNum++; y = 20; }
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
-      doc.setTextColor(blue[0], blue[1], blue[2]);
-      doc.text(title.toUpperCase(), mg, y);
-      doc.setDrawColor(...blue);
-      doc.setLineWidth(0.5);
-      doc.line(mg, y + 2, mg + 45, y + 2);
-      y += 8;
-    }
-
-    function ensureSpace(needed) {
-      if (y + needed > ph - 20) { doc.addPage(); pageNum++; y = 20; }
-    }
-
-    function addFooter() {
-      doc.setDrawColor(...light);
-      doc.setLineWidth(0.2);
-      doc.line(mg, ph - 14, pw - mg, ph - 14);
-      text('BS DigitalTech', mg, ph - 9, 7, 'bold', blue);
-      text(`${propuestaNum}  |  ${formatDate(hoy)}  |  Pagina ${pageNum}`, pw - mg, ph - 9, 7, 'normal', gray, 'right');
-    }
-
-    function drawOwl(x, yOwl, size) {
-      const s = size / 20;
-      doc.setFillColor(...blue);
-      doc.circle(x + 10 * s, yOwl + 12 * s, 8 * s, 'F');
-      doc.setFillColor(255, 255, 255);
-      doc.circle(x + 6.5 * s, yOwl + 10 * s, 3 * s, 'F');
-      doc.circle(x + 13.5 * s, yOwl + 10 * s, 3 * s, 'F');
-      doc.setFillColor(...blue);
-      doc.circle(x + 6.5 * s, yOwl + 10 * s, 1.5 * s, 'F');
-      doc.circle(x + 13.5 * s, yOwl + 10 * s, 1.5 * s, 'F');
-      doc.setFillColor(...blueSoft);
-      doc.triangle(x + 9 * s, yOwl + 13 * s, x + 11 * s, yOwl + 13 * s, x + 10 * s, yOwl + 15 * s, 'F');
-      doc.setFillColor(...blue);
-      doc.triangle(x + 2 * s, yOwl + 6 * s, x + 7 * s, yOwl + 8 * s, x + 4 * s, yOwl + 2 * s, 'F');
-      doc.triangle(x + 18 * s, yOwl + 6 * s, x + 13 * s, yOwl + 8 * s, x + 16 * s, yOwl + 2 * s, 'F');
-    }
-
-    const propuestaNum = `PRO-${String(Date.now()).slice(-6)}`;
-    const hoy = new Date();
-    const venc = new Date(hoy);
-    venc.setDate(venc.getDate() + 15);
-
-    // =============== HEADER ===============
-    drawOwl(mg, y - 6, 18);
-    text('BS DigitalTech', mg + 24, y + 2, 22, 'bold', blue);
-    text('Soluciones Web Profesionales', mg + 24, y + 9, 9, 'normal', dark);
-    text('Serverless  |  Hosting $0', mg + 24, y + 14, 8, 'normal', gray);
-
-    text(propuestaNum, pw - mg, y, 14, 'bold', blue, 'right');
-    text('PROPUESTA', pw - mg, y + 6, 7, 'normal', gray, 'right');
-    text(`Emitida: ${formatDate(hoy)}`, pw - mg, y + 11, 8, 'normal', dark, 'right');
-    text(`Valida hasta: ${formatDate(venc)}`, pw - mg, y + 16, 8, 'normal', dark, 'right');
-
-    y += 24;
-    doc.setDrawColor(...blue);
-    doc.setLineWidth(0.8);
-    doc.line(mg, y, pw - mg, y);
-    y += 8;
-
-    // =============== CLIENTE ===============
-    section('Datos del Cliente', 35);
-    const cH = formData.empresa ? 30 : 22;
-    ensureSpace(cH);
-    const cY = y;
-    doc.setDrawColor(...light);
-    doc.setLineWidth(0.3);
-    doc.rect(mg, cY, cw, cH);
-    doc.setFillColor(...blueLight);
-    doc.rect(mg, cY, cw, 0.8, 'F');
-    text('Nombre completo', mg + 4, cY + 7, 8, 'normal', gray);
-    text(formData.nombre || '---', mg + 4, cY + 14, 10, 'bold', black);
-    text('Email', mg + cw / 2 + 4, cY + 7, 8, 'normal', gray);
-    text(formData.email || '---', mg + cw / 2 + 4, cY + 14, 9, 'normal', black);
-    if (formData.empresa) {
-      text('Telefono', mg + 4, cY + 22, 8, 'normal', gray);
-      text(`${codigoPais} ${formData.telefono || '---'}`, mg + 4, cY + 28, 9, 'normal', black);
-      text('Empresa', mg + cw / 2 + 4, cY + 22, 8, 'normal', gray);
-      text(formData.empresa, mg + cw / 2 + 4, cY + 28, 9, 'normal', black);
-    } else {
-      text('Telefono', mg + 4, cY + 22, 8, 'normal', gray);
-      text(`${codigoPais} ${formData.telefono || '---'}`, mg + 4, cY + 22, 9, 'normal', black);
-    }
-    y = cY + cH + 8;
-
-    // =============== PROVEEDOR ===============
-    section('Proveedor', 22);
-    ensureSpace(18);
-    const pY = y;
-    doc.setDrawColor(...light);
-    doc.rect(mg, pY, cw, 16);
-    doc.setFillColor(...blueLight);
-    doc.rect(mg, pY, cw, 0.8, 'F');
-    text('Cristian Bastian Cerda', mg + 4, pY + 7, 10, 'bold', blue);
-    text('Analista Programador', mg + 4, pY + 13, 8, 'normal', gray);
-    text('cristianbastian.dev@gmail.com  |  +56 9 2812 2947', mg + 4 + cw / 2, pY + 7, 8, 'normal', dark);
-    text('Santiago, Chile  |  RUT: 19.876.543-2', mg + 4 + cw / 2, pY + 13, 8, 'normal', gray);
-    y = pY + 24;
-
-    // =============== SERVICIO ===============
-    section('Servicio Cotizado', 22);
-    ensureSpace(18);
-    const sY = y;
-    doc.setDrawColor(...light);
-    doc.rect(mg, sY, cw, 14);
-    doc.setFillColor(...blueLight);
-    doc.rect(mg, sY, cw, 0.8, 'F');
-    text(getTipoLabel(), mg + 4, sY + 7, 11, 'bold', blue);
-    text(`${getDias()} dias habiles`, mg + 4, sY + 12, 8, 'normal', gray);
-    text('Plazo de entrega', mg + cw / 2 + 4, sY + 5, 7, 'normal', gray);
-    text('Pago 50% / 50%', mg + cw / 2 + 4, sY + 12, 9, 'bold', black);
-    y = sY + 22;
-
-    // =============== PRESUPUESTO ===============
-    section('Resumen del Presupuesto', 50);
-    ensureSpace(45);
-
-    const tH = 9;
-    const tx = mg;
-    const tConcep = 70;
-
-    // Cabecera tabla
-    doc.setFillColor(blue[0], blue[1], blue[2]);
-    doc.rect(tx, y, cw, tH, 'F');
-    text('Concepto', tx + 3, y + 6, 9, 'bold', white);
-    text('Descripcion', tx + tConcep + 3, y + 6, 9, 'bold', white);
-    text('Valor', pw - mg - 3, y + 6, 9, 'bold', white, 'right');
-    y += tH;
-
-    let hasRows = false;
-    let rowH = 9;
-
-    function drawRow(c1, c2, c3, bold = false) {
-      doc.setDrawColor(...light);
-      doc.setLineWidth(0.2);
-      doc.rect(tx, y, cw, rowH);
-      text(c1, tx + 3, y + 6, 9, bold ? 'bold' : 'normal', bold ? blue : dark);
-      text(c2, tx + tConcep + 3, y + 6, 8, 'normal', gray);
-      text(c3, pw - mg - 3, y + 6, 9, bold ? 'bold' : 'normal', bold ? blue : black, 'right');
-      y += rowH;
-    }
-
-    if (planActual && selectedPlan !== 'custom') {
-      drawRow(`Plan ${planActual.label}`, planActual.desc, formatCurrency(planActual.total), true);
-      hasRows = true;
-    } else if (proyectoActual) {
-      drawRow(proyectoActual.label, proyectoActual.desc, formatCurrency(proyectoActual.precio), true);
-      hasRows = true;
-
-      extras.forEach((id) => {
-        const item = adicionales.find((a) => a.id === id);
-        if (!item) return;
-        ensureSpace(rowH);
-        drawRow(`+ ${item.label}`, item.desc, `+ ${formatCurrency(item.precio)}`, false);
-      });
-    }
-
-    if (hasRows) {
-      ensureSpace(13);
-      doc.setFillColor(blueLight[0], blueLight[1], blueLight[2]);
-      doc.rect(tx, y, cw, 12, 'F');
-      doc.setDrawColor(...blue);
-      doc.setLineWidth(0.4);
-      doc.rect(tx, y, cw, 12);
-      text('INVERSION TOTAL', tx + 3, y + 8, 11, 'bold', blue);
-      text(`${formatCurrency(total)} CLP`, pw - mg - 3, y + 8, 12, 'bold', blue, 'right');
-      y += 18;
-    }
-
-    // =============== ALCANCE ===============
-    section('Alcance del Servicio', 60);
-    ensureSpace(55);
-    const incY = y;
-    const includes = [
-      ['Desarrollo web responsivo', 'React, Vite, Tailwind. Adaptable a todo dispositivo.'],
-      ['Hosting serverless $0/mes', 'Infraestructura en Vercel Edge. Sin costo de por vida.'],
-      ['Optimizacion SEO', 'Meta tags, Open Graph, sitemap.xml, Schema.org.'],
-      ['Garantia y soporte', '30 dias de garantia + 15 dias de soporte tecnico.'],
-      ['Seguridad SSL', 'Certificado HTTPS sin costo adicional.'],
-    ];
-    const incH = includes.length * 9 + 6;
-    doc.setDrawColor(...light);
-    doc.rect(mg, incY, cw, incH);
-    doc.setFillColor(...blueLight);
-    doc.rect(mg, incY, cw, 0.8, 'F');
-    includes.forEach(([t, d], i) => {
-      doc.setFillColor(...blue);
-      doc.circle(mg + 6, incY + 5.5 + i * 9, 1.5, 'F');
-      text(t, mg + 14, incY + 7 + i * 9, 9, 'bold', black);
-      text(d, mg + 14, incY + 11 + i * 9, 7, 'normal', gray);
+    return buildCotizacionPDF({
+      formData,
+      codigoPais,
+      carnetImage,
+      planActual,
+      selectedPlan,
+      proyectoActual,
+      extrasDetalle,
+      total,
+      dias: getDias(),
+      tipoLabel: getTipoLabel(),
+      formatCurrency,
+      formatDate,
+      clientSignatureDataUrl,
+      providerSignatureImg: bastianImgRef.current,
     });
-    y = incY + incH + 8;
-
-    // =============== EXCLUSIONES ===============
-    section('Exclusiones', 30);
-    ensureSpace(28);
-    const exc = [
-      'Costo anual del dominio .cl. El cliente lo gestiona con NIC Chile.',
-      'Redaccion de contenido editorial ni traduccion profesional.',
-      'Cambios estructurales posteriores a la aprobacion del diseno.',
-    ];
-    const excH = exc.length * 7 + 4;
-    doc.setDrawColor(...light);
-    doc.rect(mg, y, cw, excH);
-    exc.forEach((t, i) => {
-      text('-', mg + 4, y + 5 + i * 7, 9, 'bold', [220, 38, 38]);
-      text(t, mg + 10, y + 5 + i * 7, 8, 'normal', dark);
-    });
-    y += excH + 8;
-
-    // =============== CONDICIONES DE PAGO ===============
-    section('Condiciones de Pago', 45);
-    ensureSpace(40);
-    const anticipo = Math.round(total * 0.5);
-    const saldo = total - anticipo;
-    const pH = 38;
-    doc.setDrawColor(...blue);
-    doc.setLineWidth(0.5);
-    doc.rect(mg, y, cw, pH);
-    doc.setFillColor(...blueLight);
-    doc.rect(mg, y, cw, 0.8, 'F');
-    text('Esquema de pago 50% / 50%', mg + 4, y + 8, 10, 'bold', blue);
-    text(`1.  Anticipo: ${formatCurrency(anticipo)} CLP`, mg + 4, y + 18, 9, 'normal', dark);
-    text('Para iniciar el desarrollo del proyecto.', mg + 12, y + 23, 8, 'normal', gray);
-    text(`2.  Saldo: ${formatCurrency(saldo)} CLP`, mg + 4, y + 28, 9, 'normal', dark);
-    text('Contra entrega y conformidad final.', mg + 12, y + 33, 8, 'normal', gray);
-    text(`Plazo total: ${getDias()} dias habiles desde el anticipo.`, pw - mg - 4, y + pH - 4, 8, 'bold', blue, 'right');
-    y += pH + 8;
-
-    // =============== PROXIMOS PASOS ===============
-    section('Proximos Pasos', 45);
-    ensureSpace(40);
-    const nH = 36;
-    doc.setDrawColor(...light);
-    doc.rect(mg, y, cw, nH);
-    const steps = [
-      'Me comunicare contigo en maximo 24 horas habiles.',
-      'Agendamos una reunion para definir requerimientos detallados.',
-      'Definimos alcance final, diseno preliminar y resolvemos dudas.',
-      'Coordinamos el pago del anticipo e iniciamos el desarrollo.',
-    ];
-    steps.forEach((t, i) => {
-      doc.setFillColor(...blue);
-      doc.circle(mg + 6, y + 5.5 + i * 7, 2.5, 'F');
-      text(`${i + 1}`, mg + 4.8, y + 6.7 + i * 7, 6, 'bold', white);
-      text(t, mg + 14, y + 7 + i * 7, 9, 'normal', dark);
-    });
-    y += nH + 8;
-
-    // =============== FIRMAS ===============
-    ensureSpace(55);
-    y += 4;
-    hr(y);
-    y += 8;
-    section('Firmas de Conformidad', 55);
-
-    text('Ambas partes aceptan los terminos, alcance y condiciones descritos en esta propuesta.',
-      mg, y, 8, 'normal', gray);
-    y += 10;
-
-    const sigW = (cw - 8) / 2;
-    const sigH = 38;
-    const sigY = y;
-
-    // Cliente
-    doc.setDrawColor(...light);
-    doc.setLineWidth(0.3);
-    doc.rect(mg, sigY, sigW, sigH);
-    doc.setFillColor(...blueLight);
-    doc.rect(mg, sigY, sigW, 0.8, 'F');
-    text('CLIENTE', mg + 4, sigY + 8, 10, 'bold', blue);
-    text(formData.nombre || '[Nombre del cliente]', mg + 4, sigY + 14, 9, 'normal', dark);
-    if (clientSigRef?.current) {
-      try {
-        const sigData = clientSigRef.current.toDataURL('image/png');
-        doc.addImage(sigData, 'PNG', mg + 4, sigY + 16, sigW - 8, 12);
-      } catch (e) {
-        console.warn('No se pudo incluir la firma del cliente:', e);
-      }
-    }
-    doc.setDrawColor(...gray);
-    doc.setLineWidth(0.3);
-    doc.line(mg + 4, sigY + sigH - 6, mg + sigW - 4, sigY + sigH - 6);
-    text('Firma', mg + 4, sigY + sigH - 2, 7, 'normal', gray);
-    text(`Fecha: ${formatDate(hoy)}`, mg + 4, sigY + sigH + 2, 7, 'normal', gray);
-
-    // Proveedor
-    const px2 = mg + sigW + 8;
-    doc.setDrawColor(...light);
-    doc.rect(px2, sigY, sigW, sigH);
-    doc.setFillColor(...blueLight);
-    doc.rect(px2, sigY, sigW, 0.8, 'F');
-    text('PROVEEDOR', px2 + 4, sigY + 8, 10, 'bold', blue);
-    text('Cristian Bastian Cerda', px2 + 4, sigY + 14, 9, 'normal', dark);
-    text('Analista Programador', px2 + 4, sigY + 19, 7, 'normal', gray);
-    if (bastianImgRef.current) {
-      doc.addImage(bastianImgRef.current, 'PNG', px2 + 4, sigY + 20, sigW - 8, 11);
-    }
-    doc.setDrawColor(...gray);
-    doc.line(px2 + 4, sigY + sigH - 6, px2 + sigW - 4, sigY + sigH - 6);
-    text('Firma', px2 + 4, sigY + sigH - 2, 7, 'normal', gray);
-    text(`Fecha: ${formatDate(hoy)}`, px2 + 4, sigY + sigH + 2, 7, 'normal', gray);
-
-    y = sigY + sigH + 8;
-
-    if (carnetImage) {
-      ensureSpace(70);
-      section('Identidad del Cliente', 65);
-      doc.setDrawColor(...light);
-      doc.setLineWidth(0.3);
-      doc.rect(mg, y, cw, 55);
-      doc.setFillColor(...blueLight);
-      doc.rect(mg, y, cw, 0.8, 'F');
-      text('Documento de identidad adjuntado por el cliente', mg + 4, y + 7, 8, 'normal', gray);
-      try {
-        const imgProps = doc.getImageProperties(carnetImage);
-        const maxW = cw - 8;
-        const maxH = 40;
-        const ratio = Math.min(maxW / imgProps.width, maxH / imgProps.height);
-        const w = imgProps.width * ratio;
-        const h = imgProps.height * ratio;
-        const x = mg + 4 + (maxW - w) / 2;
-        doc.addImage(carnetImage, 'JPEG', x, y + 10, w, h);
-      } catch (_) {}
-      y += 63;
-    }
-
-    addFooter();
-    return doc;
   };
 
   const generatePDF = async () => {
     setGenerating(true);
     try {
-      const doc = buildPDFDoc();
+      const doc = await buildPDFDoc();
       const nombreArchivo = `Propuesta_BSDigitalTech_${formData.nombre?.replace(/\s+/g, '_') || 'pendiente'}_${formatDate(new Date()).replace(/\//g, '-')}.pdf`;
       doc.save(nombreArchivo);
     } finally {
@@ -1009,7 +681,7 @@ const Cotizador = () => {
               } ${!canClick ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
               {isActive && <span className="absolute inset-0 rounded-xl bg-blue-500/[0.04] animate-pulse" />}
-              <span className={`relative w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold transition-all duration-500 flex-shrink-0 ${
+              <span className={`relative w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 flex-shrink-0 ${
                 isActive ? 'bg-blue-600 text-white' : isCompleted ? 'bg-white/[0.06] text-white/60' : 'bg-white/10 text-white/60'
               }`}>
                 {isCompleted ? (
@@ -1018,7 +690,7 @@ const Cotizador = () => {
                   </svg>
                 ) : i + 1}
               </span>
-              <span className={`hidden sm:inline text-[10px] sm:text-xs font-semibold leading-tight truncate transition-colors duration-300 ${isActive ? 'text-white' : ''}`}>{s.label}</span>
+              <span className={`hidden sm:inline text-xs font-semibold leading-tight truncate transition-colors duration-300 ${isActive ? 'text-white' : ''}`}>{s.label}</span>
             </button>
             {i < steps.length - 1 && (
               <div className={`h-px w-3 sm:w-12 transition-all duration-700 ease-out flex-shrink-0 ${isCompleted ? 'bg-blue-500/20' : isActive ? 'bg-gradient-to-r from-blue-500/40 to-blue-400/10' : 'bg-white/10'}`} />
@@ -1067,7 +739,7 @@ const Cotizador = () => {
                         }}
                       >
                         {plan.popular && (
-                          <div className="absolute top-0 left-0 z-10 flex items-center gap-1 text-[9px] font-bold text-blue-400/80 bg-blue-500/[0.08] border-b border-r border-blue-500/15 px-2.5 py-1 rounded-br-xl">
+                          <div className="absolute top-0 left-0 z-10 flex items-center gap-1 text-xs font-bold text-blue-400/80 bg-blue-500/[0.08] border-b border-r border-blue-500/15 px-2.5 py-1 rounded-br-xl">
                             <Star className="w-2.5 h-2.5 animate-spin" style={{ animationDuration: '3s' }} />
                             MÁS ELEGIDO
                           </div>
@@ -1090,7 +762,7 @@ const Cotizador = () => {
                           {plan.desc && <p className="text-xs text-white/60 mb-2">{plan.desc}</p>}
                           <div className="mt-auto space-y-0.5">
                             {plan.incluye.map((inc, j) => (
-                              <div key={j} className="flex items-center gap-1.5 text-[10px] text-white/70">
+                              <div key={j} className="flex items-center gap-1.5 text-xs text-white/70">
                                 <Check className="w-2.5 h-2.5 flex-shrink-0" />
                                 {inc}
                               </div>
@@ -1106,18 +778,18 @@ const Cotizador = () => {
                   <div className="mt-6 space-y-5 animate-modal-content">
                     <div className="border-t border-white/10 pt-6">
                       <label className="text-white font-heading font-semibold text-base flex items-center gap-2 mb-3">
-                        <span className="w-6 h-6 rounded-full bg-white/[0.04] text-white/60 flex items-center justify-center text-[10px] font-bold">+</span>
+                        <span className="w-6 h-6 rounded-full bg-white/[0.04] text-white/60 flex items-center justify-center text-xs font-bold">+</span>
                         Arma tu plan
                       </label>
 
                       <div className="grid gap-2 mb-4">
-                        <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Tipo de Web</p>
+                        <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Tipo de Web</p>
                         {tiposProyecto.map((item) => {
                           const sel = tipoWeb === item.precio;
                           return (
                             <div
                               key={item.id}
-                              onClick={() => setTipoWeb(item.precio)}
+                              onClick={() => handleTipoWebChange(item.precio)}
                               className={`flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg border cursor-pointer transition-all duration-300 ${
                                 sel
                                   ? 'border-blue-500/25 bg-blue-500/[0.06] text-white'
@@ -1129,7 +801,7 @@ const Cotizador = () => {
                                   {sel && <div className="w-2 h-2 rounded-full bg-blue-400" />}
                                 </div>
                                 <span className="text-sm truncate">{item.label}</span>
-                                <span className="text-[10px] text-slate-500 hidden sm:inline">{item.desc}</span>
+                                <span className="text-xs text-slate-500 hidden sm:inline">{item.desc}</span>
                               </div>
                               <span className="text-sm font-semibold flex-shrink-0">{formatCurrency(item.precio)}</span>
                             </div>
@@ -1138,7 +810,7 @@ const Cotizador = () => {
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
-                        <p className="col-span-full text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Extras</p>
+                        <p className="col-span-full text-xs text-slate-500 uppercase tracking-wider font-semibold">Extras</p>
                         {getExtrasDisponibles().map((item) => {
                           const active = extras.includes(item.id);
                           return (
@@ -1222,8 +894,8 @@ const Cotizador = () => {
               : 'bg-white/[0.03] border-white/10'
           }`}>
             <div>
-              <div className="text-[10px] sm:text-xs text-[#A1A1AA] uppercase font-semibold tracking-wider">Inversión Estimada</div>
-              <div className="text-[10px] sm:text-xs text-white/60 mt-1 flex items-center gap-1">
+              <div className="text-xs text-[#A1A1AA] uppercase font-semibold tracking-wider">Inversión Estimada</div>
+              <div className="text-xs text-white/60 mt-1 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-white/[0.04] text-white/60" />
                 Costo de servidor: $0 de por vida
               </div>
@@ -1234,7 +906,7 @@ const Cotizador = () => {
               <span key={total} className="inline-block animate-[count-up_0.4s_ease-out]">
                 {formatCurrency(animatedTotal)}
               </span>{' '}
-              <span className="text-[10px] sm:text-xs font-normal text-[#A1A1AA]">{moneda === 'CLP' ? 'CLP' : ''}</span>
+              <span className="text-xs font-normal text-[#A1A1AA]">{moneda === 'CLP' ? 'CLP' : ''}</span>
             </div>
           </div>
         </div>
@@ -1322,7 +994,7 @@ const Cotizador = () => {
                           : 'border-white/10 focus:border-blue-500/40 focus:ring-blue-500/10'
                     }`}
                   />
-                  {formErrors.nombre && <p className="text-[10px] text-red-400 mt-1">{formErrors.nombre}</p>}
+                  {formErrors.nombre && <p className="text-xs text-red-400 mt-1">{formErrors.nombre}</p>}
                 </div>
               </Reveal>
               <Reveal animation="fade-up" delay={40}>
@@ -1355,7 +1027,7 @@ const Cotizador = () => {
                           : 'border-white/10 focus:border-blue-500/40 focus:ring-blue-500/10'
                     }`}
                   />
-                  {formErrors.email && <p className="text-[10px] text-red-400 mt-1">{formErrors.email}</p>}
+                  {formErrors.email && <p className="text-xs text-red-400 mt-1">{formErrors.email}</p>}
                 </div>
               </Reveal>
               <Reveal animation="fade-up" delay={120}>
@@ -1388,7 +1060,7 @@ const Cotizador = () => {
                               : 'border-white/10 focus:border-blue-500/40 focus:ring-blue-500/10'
                         }`}
                       />
-                      {formErrors.telefono && <p className="text-[10px] text-red-400 mt-1">{formErrors.telefono}</p>}
+                      {formErrors.telefono && <p className="text-xs text-red-400 mt-1">{formErrors.telefono}</p>}
                     </div>
                   </div>
                 </div>
@@ -1534,7 +1206,7 @@ const Cotizador = () => {
                     <div className="flex justify-between items-center bg-white/[0.02] border border-white/[0.04] rounded-lg px-3 py-2.5">
                       <div>
                         <span className="text-sm font-medium text-white">{planActual.label}</span>
-                        <p className="text-[10px] text-slate-500">{planActual.desc}</p>
+                        <p className="text-xs text-slate-500">{planActual.desc}</p>
                       </div>
                       <span className="text-sm font-bold text-white/60">{formatCurrency(planActual.total)}</span>
                     </div>
@@ -1576,7 +1248,7 @@ const Cotizador = () => {
               <div className="bg-gradient-to-r from-white/10 via-white/5 to-transparent border border-white/[0.06] rounded-xl px-5 py-4 flex justify-between items-center mb-4">
                 <div>
                   <span className="text-xs text-[#A1A1AA] uppercase tracking-wider font-semibold">Inversión total</span>
-                  <p className="text-[10px] text-white/60 mt-1 flex items-center gap-1">
+                  <p className="text-xs text-white/60 mt-1 flex items-center gap-1">
                     <span className="w-1 h-1 rounded-full bg-blue-400/60" />
                     Hosting $0 de por vida
                   </p>
@@ -1601,7 +1273,7 @@ const Cotizador = () => {
                 ].map((item, i) => (
                   <div key={i} className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="text-white/60 text-[10px]">{item.icon}</span>
+                      <span className="text-white/60 text-xs">{item.icon}</span>
                       <span className="text-[#A1A1AA]">{item.label}</span>
                     </div>
                     <span className="text-slate-500">{item.detail}</span>
@@ -1694,7 +1366,7 @@ const Cotizador = () => {
                   <label className="text-sm text-[#A1A1AA] block mb-2 font-medium">
                     Foto del carnet <span className="text-white/30 text-xs font-normal">(opcional)</span>
                   </label>
-                  <p className="text-[11px] text-white/30 mb-3">Para validar identidad en el contrato. Solo se usa en esta propuesta.</p>
+                  <p className="text-xs text-white/30 mb-3">Para validar identidad en el contrato. Solo se usa en esta propuesta.</p>
                   <input
                     ref={carnetFileRef}
                     type="file"
@@ -1725,7 +1397,7 @@ const Cotizador = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
                       </svg>
                       <p className="text-xs text-[#A1A1AA] group-hover:text-white/60 transition-colors">Subir foto del carnet</p>
-                      <p className="text-[10px] text-white/20 mt-1">JPG, PNG - Max 5MB</p>
+                      <p className="text-xs text-white/20 mt-1">JPG, PNG - Max 5MB</p>
                     </button>
                   ) : (
                     <div className="relative rounded-xl border border-white/[0.08] overflow-hidden bg-white/[0.02]">
@@ -1739,7 +1411,7 @@ const Cotizador = () => {
                           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                       </button>
-                      <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 text-[10px] text-white/60">
+                      <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 text-xs text-white/60">
                         Carnet cargado
                       </div>
                     </div>

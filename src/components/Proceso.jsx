@@ -112,7 +112,7 @@ const Proceso = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[10px] text-white/20 font-bold font-heading">{step.num}</span>
+                          <span className="text-xs text-white/20 font-bold font-heading">{step.num}</span>
                           <h3 className="text-white font-heading font-semibold text-sm sm:text-base">{step.title}</h3>
                         </div>
                         <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3">{step.desc}</p>

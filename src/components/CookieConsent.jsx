@@ -1,14 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Cookie } from 'lucide-react';
 
 export default function CookieConsent() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const consent = localStorage.getItem('bd-cookies-consent');
-    if (!consent) setVisible(true);
-  }, []);
+  const [visible, setVisible] = useState(() => {
+    try { return !localStorage.getItem('bd-cookies-consent'); } catch { return false; }
+  });
 
   const accept = () => {
     localStorage.setItem('bd-cookies-consent', 'accepted');
@@ -31,7 +28,7 @@ export default function CookieConsent() {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm text-white font-medium mb-0.5 sm:mb-1">Uso de cookies</p>
-            <p className="text-[10px] sm:text-xs text-[#A1A1AA] leading-relaxed">
+            <p className="text-xs text-[#A1A1AA] leading-relaxed">
               Este sitio utiliza cookies para mejorar tu experiencia.{' '}
               <Link to="/cookies" className="text-blue-400/60 hover:text-blue-400 underline underline-offset-2">
                 Más info
@@ -41,13 +38,13 @@ export default function CookieConsent() {
           <div className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto">
             <button
               onClick={reject}
-              className="flex-1 sm:flex-none px-3 py-2 sm:py-1.5 text-[10px] sm:text-xs font-medium text-[#A1A1AA] hover:text-white bg-white/[0.03] hover:bg-white/[0.06] rounded-lg transition-colors"
+              className="flex-1 sm:flex-none px-3 py-2 sm:py-1.5 text-xs font-medium text-[#A1A1AA] hover:text-white bg-white/[0.03] hover:bg-white/[0.06] rounded-lg transition-colors"
             >
               Rechazar
             </button>
             <button
               onClick={accept}
-              className="flex-1 sm:flex-none px-4 py-2 sm:py-1.5 text-[10px] sm:text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors"
+              className="flex-1 sm:flex-none px-4 py-2 sm:py-1.5 text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors"
             >
               Aceptar
             </button>

@@ -72,7 +72,7 @@ const Testimonios = () => {
               }
             }
           }
-        } catch (_) {}
+        } catch { /* si Supabase falla se usa lo guardado en localStorage */ }
       }
     })();
     return () => { mounted = false; };
@@ -103,7 +103,7 @@ const Testimonios = () => {
             texto: nuevo.texto,
             estrellas: nuevo.estrellas,
           });
-        } catch (_) {}
+        } catch { /* el testimonio igual se guarda en local más abajo */ }
       }
 
       const actual = readLocal();
@@ -158,12 +158,12 @@ const Testimonios = () => {
                   <p className="relative text-xs text-[#A1A1AA] leading-relaxed flex-1 italic line-clamp-4">&ldquo;{t.texto}&rdquo;</p>
                   <div className="relative mt-3 pt-2.5 border-t border-white/[0.04]">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 font-bold text-[10px] flex-shrink-0">
+                      <div className="w-7 h-7 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 font-bold text-xs flex-shrink-0">
                         {t.nombre.charAt(0)}
                       </div>
                       <div>
                         <p className="text-white font-medium text-xs leading-tight">{t.nombre}</p>
-                        <p className="text-[#A1A1AA] text-[10px] sm:text-xs">{t.empresa}</p>
+                        <p className="text-[#A1A1AA] text-xs">{t.empresa}</p>
                       </div>
                     </div>
                   </div>

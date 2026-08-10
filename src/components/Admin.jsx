@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import {
   Shield, Check, Trash2, Lock, ArrowLeft, Star, RefreshCw,
@@ -58,16 +58,22 @@ function TabsSection({ tabs, active, onChange }) {
 function AdminTestimonios({ supabase, showToast }) {
   const [pending, setPending] = useState([]);
   const [approved, setApproved] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Sin cliente de Supabase no hay nada que esperar
+  const [loading, setLoading] = useState(!!supabase);
   const [actionLoading, setActionLoading] = useState(null);
 
-  const cargar = async () => {
-    setLoading(true);
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
+
+  const cargar = useCallback(async () => {
+    if (!supabase) return;
     try {
-      if (!supabase) return;
       const { data, error } = await supabase.from('testimonios').select('*').order('created_at', { ascending: false });
       if (error) throw error;
-      if (data) {
+      if (data && mountedRef.current) {
         setPending(data.filter((t) => !t.aprobado));
         setApproved(data.filter((t) => t.aprobado));
       }
@@ -75,11 +81,16 @@ function AdminTestimonios({ supabase, showToast }) {
       console.error('Error al cargar testimonios:', err);
       showToast('error', 'Error al cargar testimonios');
     } finally {
-      setLoading(false);
+      if (mountedRef.current) setLoading(false);
     }
-  };
+  }, [supabase, showToast]);
 
-  useEffect(() => { let m = true; cargar().then(() => { if (!m) { setPending([]); setApproved([]); } }); return () => { m = false; }; }, []);
+  /* Microtarea: difiere la carga inicial fuera del commit del efecto,
+     evitando el render en cascada por el setState de cargar(). */
+  useEffect(() => { Promise.resolve().then(cargar); }, [cargar]);
+
+  /* Recarga manual: muestra el spinner mientras refresca */
+  const recargar = useCallback(async () => { setLoading(true); await cargar(); }, [cargar]);
 
   const handleApprove = async (id) => {
     setActionLoading(id);
@@ -88,7 +99,7 @@ function AdminTestimonios({ supabase, showToast }) {
       const { error } = await supabase.from('testimonios').update({ aprobado: true }).eq('id', id);
       if (error) throw error;
       showToast('success', 'Testimonio aprobado');
-      await cargar();
+      await recargar();
     } catch (err) {
       console.error('Error al aprobar:', err);
       showToast('error', 'Error al aprobar');
@@ -105,7 +116,7 @@ function AdminTestimonios({ supabase, showToast }) {
       const { error } = await supabase.from('testimonios').delete().eq('id', id);
       if (error) throw error;
       showToast('success', 'Testimonio eliminado');
-      await cargar();
+      await recargar();
     } catch (err) {
       console.error('Error al eliminar:', err);
       showToast('error', 'Error al eliminar');
@@ -219,27 +230,38 @@ const emptyProyecto = { titulo: '', descripcion: '', url: '', repo: '', tags: ''
 
 function AdminProyectos({ supabase, showToast }) {
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Sin cliente de Supabase no hay nada que esperar
+  const [loading, setLoading] = useState(!!supabase);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(emptyProyecto);
   const [saving, setSaving] = useState(false);
 
-  const cargar = async () => {
-    setLoading(true);
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
+
+  const cargar = useCallback(async () => {
+    if (!supabase) return;
     try {
-      if (!supabase) return;
       const { data, error } = await supabase.from('proyectos').select('*').order('orden', { ascending: true });
       if (error) throw error;
-      setItems(data || []);
+      if (mountedRef.current) setItems(data || []);
     } catch (err) {
       console.error('Error al cargar proyectos:', err);
       showToast('error', 'Error al cargar proyectos');
     } finally {
-      setLoading(false);
+      if (mountedRef.current) setLoading(false);
     }
-  };
+  }, [supabase, showToast]);
 
-  useEffect(() => { let m = true; cargar().then(() => { if (!m) setItems([]); }); return () => { m = false; }; }, []);
+  /* Microtarea: difiere la carga inicial fuera del commit del efecto,
+     evitando el render en cascada por el setState de cargar(). */
+  useEffect(() => { Promise.resolve().then(cargar); }, [cargar]);
+
+  /* Recarga manual: muestra el spinner mientras refresca */
+  const recargar = useCallback(async () => { setLoading(true); await cargar(); }, [cargar]);
 
   const openNew = () => { setEditing('new'); setForm(emptyProyecto); };
   const openEdit = (item) => { setEditing(item.id); setForm({ ...item, tags: (item.tags || []).join(', ') }); };
@@ -265,7 +287,7 @@ function AdminProyectos({ supabase, showToast }) {
         showToast('success', 'Proyecto actualizado');
       }
       cancelEdit();
-      await cargar();
+      await recargar();
     } catch (err) {
       console.error('Error al guardar:', err);
       showToast('error', 'Error al guardar');
@@ -281,7 +303,7 @@ function AdminProyectos({ supabase, showToast }) {
       const { error } = await supabase.from('proyectos').delete().eq('id', id);
       if (error) throw error;
       showToast('success', 'Proyecto eliminado');
-      await cargar();
+      await recargar();
     } catch (err) {
       console.error('Error al eliminar:', err);
       showToast('error', 'Error al eliminar');
@@ -293,7 +315,7 @@ function AdminProyectos({ supabase, showToast }) {
       if (!supabase) return;
       const { error } = await supabase.from('proyectos').update({ visible: !item.visible }).eq('id', item.id);
       if (error) throw error;
-      await cargar();
+      await recargar();
     } catch (err) {
       console.error('Error al cambiar visibilidad:', err);
     }
@@ -398,7 +420,7 @@ function AdminProyectos({ supabase, showToast }) {
                 {item.tags && item.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
                     {item.tags.map((tag) => (
-                      <span key={tag} className="text-[10px] text-blue-500 bg-blue-500/10 border border-blue-500/20 px-1.5 py-0.5 rounded-full">{tag}</span>
+                      <span key={tag} className="text-xs text-blue-500 bg-blue-500/10 border border-blue-500/20 px-1.5 py-0.5 rounded-full">{tag}</span>
                     ))}
                   </div>
                 )}
@@ -433,27 +455,38 @@ const emptyPost = { titulo: '', slug: '', contenido: '', extracto: '', tags: '',
 
 function AdminPosts({ supabase, showToast }) {
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Sin cliente de Supabase no hay nada que esperar
+  const [loading, setLoading] = useState(!!supabase);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(emptyPost);
   const [saving, setSaving] = useState(false);
 
-  const cargar = async () => {
-    setLoading(true);
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
+
+  const cargar = useCallback(async () => {
+    if (!supabase) return;
     try {
-      if (!supabase) return;
       const { data, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
       if (error) throw error;
-      setItems(data || []);
+      if (mountedRef.current) setItems(data || []);
     } catch (err) {
       console.error('Error al cargar posts:', err);
       showToast('error', 'Error al cargar posts');
     } finally {
-      setLoading(false);
+      if (mountedRef.current) setLoading(false);
     }
-  };
+  }, [supabase, showToast]);
 
-  useEffect(() => { let m = true; cargar().then(() => { if (!m) setItems([]); }); return () => { m = false; }; }, []);
+  /* Microtarea: difiere la carga inicial fuera del commit del efecto,
+     evitando el render en cascada por el setState de cargar(). */
+  useEffect(() => { Promise.resolve().then(cargar); }, [cargar]);
+
+  /* Recarga manual: muestra el spinner mientras refresca */
+  const recargar = useCallback(async () => { setLoading(true); await cargar(); }, [cargar]);
 
   const openNew = () => { setEditing('new'); setForm(emptyPost); };
   const openEdit = (item) => { setEditing(item.id); setForm({ ...item, tags: (item.tags || []).join(', ') }); };
@@ -486,7 +519,7 @@ function AdminPosts({ supabase, showToast }) {
         showToast('success', 'Post actualizado');
       }
       cancelEdit();
-      await cargar();
+      await recargar();
     } catch (err) {
       console.error('Error al guardar post:', err);
       showToast('error', 'Error al guardar post');
@@ -502,7 +535,7 @@ function AdminPosts({ supabase, showToast }) {
       const { error } = await supabase.from('posts').delete().eq('id', id);
       if (error) throw error;
       showToast('success', 'Post eliminado');
-      await cargar();
+      await recargar();
     } catch (err) {
       console.error('Error al eliminar:', err);
       showToast('error', 'Error al eliminar');
@@ -514,7 +547,7 @@ function AdminPosts({ supabase, showToast }) {
       if (!supabase) return;
       const { error } = await supabase.from('posts').update({ published: !item.published }).eq('id', item.id);
       if (error) throw error;
-      await cargar();
+      await recargar();
     } catch (err) {
       console.error('Error al cambiar estado:', err);
     }
@@ -639,12 +672,21 @@ export default function Admin() {
   const [loginAnim, setLoginAnim] = useState(false);
   const [activeTab, setActiveTab] = useState('testimonios');
 
-  useEffect(() => { setTimeout(() => setLoginAnim(true), 50); }, []);
+  const toastTimeoutRef = useRef(null);
 
-  const showToast = (type, msg) => {
+  useEffect(() => {
+    const t = setTimeout(() => setLoginAnim(true), 50);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => () => clearTimeout(toastTimeoutRef.current), []);
+
+  // Estable: los paneles hijos la reciben como dependencia de sus efectos
+  const showToast = useCallback((type, msg) => {
     setToast(toastStyle(type, msg));
-    setTimeout(() => setToast(null), 3000);
-  };
+    clearTimeout(toastTimeoutRef.current);
+    toastTimeoutRef.current = setTimeout(() => setToast(null), 3000);
+  }, []);
 
   const handleLogin = (e) => {
     e.preventDefault();

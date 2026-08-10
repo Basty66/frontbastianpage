@@ -12,37 +12,6 @@ const colores = [
   'from-blue-500/15 to-blue-400/5',
 ];
 
-function Thumbnail({ proj, idx }) {
-  const [loaded, setLoaded] = useState(false);
-  const [imgError, setImgError] = useState(false);
-  const initials = proj.titulo.split(/[\s-]+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
-  const gradient = colores[idx % colores.length];
-  const showGradient = !proj.screenshot || imgError;
-
-  return (
-    <div className="relative w-full h-full bg-slate-800 overflow-hidden">
-      {showGradient && (
-        <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`}>
-          <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-            <span className="text-white/15 font-heading font-black select-none text-4xl sm:text-5xl">{initials}</span>
-          </div>
-        </div>
-      )}
-      {proj.screenshot && (
-        <img
-          src={proj.screenshot}
-          alt={proj.titulo}
-          className={`w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-105 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-          loading="lazy"
-          onLoad={() => setLoaded(true)}
-          onError={() => setImgError(true)}
-        />
-      )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-    </div>
-  );
-}
-
 const Portfolio = ({ fullPage = false }) => {
   const [proyectos, setProyectos] = useState(fallbackProyectos);
   const [loading, setLoading] = useState(true);
@@ -231,7 +200,7 @@ function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
         {proj.tipo && (
-          <span className="absolute top-3 left-3 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/20 backdrop-blur-md z-10">
+          <span className="absolute top-3 left-3 text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/20 backdrop-blur-md z-10">
             {proj.tipo === 'ecommerce' ? 'E-commerce' : 'Landing Page'}
           </span>
         )}
@@ -239,7 +208,7 @@ function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
 
       <div className={`flex flex-col flex-1 ${compact ? 'p-4' : 'p-5 sm:p-6 md:w-1/2'}`}>
         <div className="mb-1">
-          <span className="text-[10px] text-blue-400/60 font-medium uppercase tracking-wider">{proj.cliente || proj.titulo}</span>
+          <span className="text-xs text-blue-400/60 font-medium uppercase tracking-wider">{proj.cliente || proj.titulo}</span>
         </div>
         <h3 className="text-white font-heading font-semibold text-sm sm:text-base mb-2">{proj.titulo}</h3>
 
@@ -251,15 +220,15 @@ function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
         >
           <div className="space-y-2.5 pt-2 border-t border-white/5 mb-3">
             <div>
-              <span className="text-[10px] text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
+              <span className="text-xs text-red-400/80 font-semibold uppercase tracking-wider">Problema</span>
               <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.problema || proj.desc}</p>
             </div>
             <div>
-              <span className="text-[10px] text-blue-400/80 font-semibold uppercase tracking-wider">Solución</span>
+              <span className="text-xs text-blue-400/80 font-semibold uppercase tracking-wider">Solución</span>
               <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.solucion || 'Desarrollo web a medida con las mejores tecnologías.'}</p>
             </div>
             <div>
-              <span className="text-[10px] text-emerald-400/80 font-semibold uppercase tracking-wider">Resultado</span>
+              <span className="text-xs text-emerald-400/80 font-semibold uppercase tracking-wider">Resultado</span>
               <p className="text-xs text-[#A1A1AA] leading-relaxed mt-0.5">{proj.resultado || 'Proyecto desplegado y funcionando en producción.'}</p>
             </div>
           </div>
@@ -267,7 +236,7 @@ function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
 
         <button
           onClick={onToggle}
-          className="flex items-center gap-1 text-[10px] text-blue-400/60 hover:text-blue-400 font-medium transition-colors mb-2 self-start"
+          className="flex items-center gap-1 text-xs text-blue-400/60 hover:text-blue-400 font-medium transition-colors mb-2 self-start"
         >
           {expanded ? 'Menos' : 'Ver más'}
           <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
@@ -275,12 +244,12 @@ function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
 
         <div className="flex flex-wrap gap-1 mb-3">
           {(proj.tags || []).slice(0, compact ? 3 : undefined).map((tag) => (
-            <span key={tag} className="text-[9px] font-medium text-white/50 bg-blue-500/[0.06] border border-blue-500/10 rounded-full px-1.5 py-0.5">
+            <span key={tag} className="text-xs font-medium text-white/50 bg-blue-500/[0.06] border border-blue-500/10 rounded-full px-1.5 py-0.5">
               {tag}
             </span>
           ))}
           {!compact && (proj.tags || []).length > 3 && (
-            <span className="text-[9px] text-white/30 px-1.5 py-0.5">+{(proj.tags || []).length - 3}</span>
+            <span className="text-xs text-white/30 px-1.5 py-0.5">+{(proj.tags || []).length - 3}</span>
           )}
         </div>
 

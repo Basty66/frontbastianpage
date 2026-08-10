@@ -18,38 +18,17 @@ const OwlSprite = ({ size = 24, className = '' }) => (
   </svg>
 );
 
+// Pocos y bien repartidos: la decoración acompaña, no compite con el mensaje
 const floatingOwls = [
   { top: '5%', left: '3%', size: 18, delay: 0, duration: 4.5 },
   { top: '8%', right: '8%', size: 26, delay: 1.3, duration: 5.2 },
-  { top: '12%', left: '30%', size: 14, delay: 2.1, duration: 3.8 },
-  { top: '18%', left: '60%', size: 22, delay: 0.5, duration: 4.7 },
-  { top: '25%', right: '2%', size: 16, delay: 1.8, duration: 5.5 },
   { top: '30%', left: '8%', size: 28, delay: 0.9, duration: 4.2 },
-  { top: '38%', left: '50%', size: 12, delay: 2.4, duration: 3.5 },
   { top: '42%', right: '5%', size: 20, delay: 0.3, duration: 5.8 },
-  { top: '48%', left: '15%', size: 15, delay: 1.6, duration: 4 },
   { top: '55%', left: '70%', size: 24, delay: 0.7, duration: 5.1 },
-  { top: '60%', right: '10%', size: 17, delay: 2.2, duration: 3.9 },
-  { top: '65%', left: '4%', size: 11, delay: 1.1, duration: 4.8 },
-  { top: '70%', left: '40%', size: 21, delay: 0.6, duration: 5.3 },
-  { top: '75%', right: '3%', size: 13, delay: 1.9, duration: 4.1 },
+  { top: '65%', left: '4%', size: 14, delay: 1.1, duration: 4.8 },
   { top: '80%', left: '55%', size: 19, delay: 0.2, duration: 5.7 },
-  { top: '83%', left: '15%', size: 25, delay: 1.4, duration: 4.4 },
   { top: '88%', right: '20%', size: 16, delay: 2.5, duration: 3.6 },
-  { top: '92%', left: '75%', size: 22, delay: 0.8, duration: 5 },
-  { top: '35%', left: '85%', size: 14, delay: 1.2, duration: 4.9 },
-  { top: '50%', left: '30%', size: 10, delay: 2, duration: 3.7 },
 ];
-
-const particles = Array.from({ length: 35 }, (_, i) => ({
-  id: i,
-  top: `${Math.random() * 100}%`,
-  left: `${Math.random() * 100}%`,
-  size: Math.random() * 3 + 1.5,
-  duration: 4 + Math.random() * 6,
-  delay: Math.random() * 5,
-  blue: i < 14,
-}));
 
 function CounterBlock({ target, suffix, label }) {
   const [ref, count, started] = useCountUp(target);
@@ -59,7 +38,7 @@ function CounterBlock({ target, suffix, label }) {
       <span className={`block text-xl sm:text-2xl md:text-3xl font-bold font-heading text-white transition-all duration-700 ${started ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         {started ? display : suffix === '%' ? '0%' : '0+'}
       </span>
-      <span className="text-[9px] sm:text-[10px] md:text-xs text-slate-400">{label}</span>
+      <span className="text-xs text-slate-400">{label}</span>
     </div>
   );
 }
@@ -109,6 +88,10 @@ const Hero = () => {
   }, []);
 
   useEffect(() => {
+    // Sin parallax si el usuario pidió menos movimiento o no hay puntero fino
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+
     const innerEls = innerRefs.current;
     let rafId;
 
@@ -139,26 +122,8 @@ const Hero = () => {
 
   return (
     <section id="inicio" className="relative h-dvh flex items-center overflow-hidden bg-grid">
-      {/* Particles - full width */}
-      <div className="hidden md:block absolute inset-0 z-0 pointer-events-none">
-        {particles.map((p) => (
-          <div
-            key={p.id}
-            className={`absolute rounded-full ${p.blue ? 'bg-blue-400/40' : 'bg-white/25'}`}
-            style={{
-              top: p.top,
-              left: p.left,
-              width: `${p.size}px`,
-              height: `${p.size}px`,
-              boxShadow: p.blue ? `0 0 ${p.size * 3}px rgba(37,99,235,0.4)` : 'none',
-              animation: `particle-float ${p.duration}s ease-in-out infinite`,
-              animationDelay: `${p.delay}s`,
-            }}
-          />
-        ))}
-      </div>
       {/* Owls - full width */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="decor-layer absolute inset-0 z-0 pointer-events-none">
         {floatingOwls.map((owl, i) => (
           <div
             key={i}
@@ -186,7 +151,7 @@ const Hero = () => {
       </div>
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-3 lg:gap-12 pt-16 pb-20 sm:pt-20 sm:pb-24 md:py-6 lg:py-10">
       <Reveal animation="fade-left" className="relative z-10 flex-1 space-y-1.5 sm:space-y-3 text-center lg:text-left">
-        <span className="inline-block text-blue-400/70 font-semibold tracking-wider text-[9px] sm:text-[10px] md:text-xs uppercase px-2 sm:px-2.5 md:px-3 py-0.5 sm:py-1 bg-blue-500/[0.06] rounded-full border border-blue-500/15 backdrop-blur-sm">
+        <span className="inline-block text-blue-400/70 font-semibold tracking-wider text-xs uppercase px-2 sm:px-2.5 md:px-3 py-0.5 sm:py-1 bg-blue-500/[0.06] rounded-full border border-blue-500/15 backdrop-blur-sm">
           Agencia Digital · Chile
         </span>
         <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-heading font-bold leading-tight">
@@ -214,17 +179,17 @@ const Hero = () => {
           </button>
         </div>
         <div className="flex items-center justify-center lg:justify-start gap-2 sm:gap-6 pt-0 sm:pt-2 flex-wrap">
-          <CounterBlock refKey="proy" target={20} suffix="+" label="Proyectos" />
+          <CounterBlock target={20} suffix="+" label="Proyectos" />
           <div className="w-px h-6 sm:h-8 bg-blue-500/20" />
-          <CounterBlock refKey="cli" target={15} suffix="+" label="Clientes" />
+          <CounterBlock target={15} suffix="+" label="Clientes" />
           <div className="w-px h-6 sm:h-8 bg-blue-500/20" />
-          <CounterBlock refKey="disp" target={100} suffix="%" label="Disponibilidad" />
+          <CounterBlock target={100} suffix="%" label="Disponibilidad" />
         </div>
         <Reveal animation="fade-up" delay={400} className="pt-0 sm:pt-2">
           <div className="flex items-center gap-1.5 sm:gap-2 bg-white/[0.03] border border-blue-500/10 rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 backdrop-blur-sm max-w-[260px] sm:max-w-xs mx-auto lg:mx-0 hover:border-blue-500/25 transition-colors duration-500">
             <div className="flex -space-x-1 sm:-space-x-1.5">
               {['M', 'C', 'P'].map((initial, i) => (
-                <div key={i} className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/[0.06] border-2 border-[#09090B] flex items-center justify-center text-white/60 text-[8px] sm:text-[9px] font-bold">
+                <div key={i} className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/[0.06] border-2 border-[#09090B] flex items-center justify-center text-white/60 text-xs font-bold">
                   {initial}
                 </div>
               ))}
@@ -235,7 +200,7 @@ const Hero = () => {
                   <Star key={s} className="w-2.5 h-2.5 fill-blue-400/60 text-blue-400/60" />
                 ))}
               </div>
-              <p className="text-[9px] text-[#A1A1AA] truncate">+15 clientes satisfechos</p>
+              <p className="text-xs text-[#A1A1AA] truncate">+15 clientes satisfechos</p>
             </div>
           </div>
         </Reveal>
@@ -268,36 +233,36 @@ const Hero = () => {
 
               <div className="grid grid-cols-2 gap-2">
                 <div className="p-2.5 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
-                  <div className="text-[9px] text-[#A1A1AA] mb-0.5">Hosting</div>
-                  <div className="text-sm font-bold font-heading text-white">$0 <span className="text-[9px] text-[#A1A1AA] font-normal">/mes</span></div>
+                  <div className="text-xs text-[#A1A1AA] mb-0.5">Hosting</div>
+                  <div className="text-sm font-bold font-heading text-white">$0 <span className="text-xs text-[#A1A1AA] font-normal">/mes</span></div>
                 </div>
                 <div className="p-2.5 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
-                  <div className="text-[9px] text-[#A1A1AA] mb-0.5">Carga</div>
+                  <div className="text-xs text-[#A1A1AA] mb-0.5">Carga</div>
                   <div className="text-sm font-bold font-heading text-white">&lt;1s</div>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div className="p-2.5 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
-                  <div className="text-[9px] text-[#A1A1AA] mb-0.5">SSL</div>
+                  <div className="text-xs text-[#A1A1AA] mb-0.5">SSL</div>
                   <div className="text-sm font-bold font-heading text-white flex items-center gap-1">
                     <svg className="w-3 h-3 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
                     Incluido
                   </div>
                 </div>
                 <div className="p-2.5 bg-white/[0.02] rounded-xl border border-white/[0.04] backdrop-blur-sm transition-all duration-300 hover:border-blue-500/15 hover:bg-blue-500/[0.04]">
-                  <div className="text-[9px] text-[#A1A1AA] mb-0.5">Ahorro</div>
+                  <div className="text-xs text-[#A1A1AA] mb-0.5">Ahorro</div>
                   <div className="text-sm font-bold font-heading text-blue-400">$180K</div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 pt-0.5">
                 <div className="flex -space-x-1">
-                  {['React', 'Vite', 'Tailwind'].map((t, i) => (
-                    <span key={t} className="px-1.5 py-0.5 text-[8px] font-medium text-white/50 bg-white/[0.04] border border-white/[0.06] rounded-full">{t}</span>
+                  {['React', 'Vite', 'Tailwind'].map((t) => (
+                    <span key={t} className="px-1.5 py-0.5 text-xs font-medium text-white/50 bg-white/[0.04] border border-white/[0.06] rounded-full">{t}</span>
                   ))}
                 </div>
-                <span className="text-[8px] text-[#A1A1AA]">+ Vercel</span>
+                <span className="text-xs text-[#A1A1AA]">+ Vercel</span>
               </div>
             </div>
           </div>
@@ -309,7 +274,7 @@ const Hero = () => {
 
       {/* Scroll indicator - hidden on mobile to avoid overlap */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 hidden sm:flex flex-col items-center gap-3">
-        <span className="text-[10px] text-white/25 tracking-[0.3em] uppercase font-medium">Scroll</span>
+        <span className="text-xs text-white/25 tracking-[0.3em] uppercase font-medium">Scroll</span>
         <div className="relative w-5 h-8 rounded-full border border-white/15 flex justify-center pt-1.5">
           <div className="w-1 h-1.5 bg-blue-400/60 rounded-full animate-[scroll-dot_1.8s_ease-in-out_infinite]" />
         </div>

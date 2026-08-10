@@ -52,7 +52,7 @@ const About = () => {
                   {stats.map((s, i) => (
                     <div key={i} className="text-center">
                       <span className="block text-lg font-bold text-white">{s.value}</span>
-                      <span className="text-[10px] text-[#A1A1AA]">{s.label}</span>
+                      <span className="text-xs text-[#A1A1AA]">{s.label}</span>
                     </div>
                   ))}
                 </div>
@@ -127,7 +127,7 @@ const About = () => {
                       <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center group-hover/skill:bg-blue-600/10 group-hover/skill:border-blue-500/20 transition-all duration-300">
                         <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#A1A1AA] group-hover/skill:text-blue-400 transition-colors duration-300" />
                       </div>
-                      <span className="text-[10px] sm:text-xs font-medium text-[#A1A1AA] group-hover/skill:text-white transition-colors duration-300 truncate">{s.label}</span>
+                      <span className="text-xs font-medium text-[#A1A1AA] group-hover/skill:text-white transition-colors duration-300 truncate">{s.label}</span>
                     </div>
                   );
                 })}

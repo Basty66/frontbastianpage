@@ -73,13 +73,12 @@ function App() {
   const [scrolled, setScrolled] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [accent, setAccent] = useState(() => {
-    try { return localStorage.getItem('bd-accent') || 'cyan'; } catch { return 'cyan'; }
-  });
-  const [logoClicks, setLogoClicks] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const logoClicksRef = useRef(0);
   const logoTimeoutRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
+  // El scroll ocurre en el contenedor interno, no en window
+  const scrollerRef = useRef(null);
 
   useScrollLock(menuOpen);
 
@@ -87,49 +86,50 @@ function App() {
     return () => { clearTimeout(scrollTimeoutRef.current); };
   }, []);
 
+  // Easter egg: 5 clicks seguidos en el logo abren el panel admin
   const handleLogoClick = useCallback(() => {
-    setLogoClicks((prev) => prev + 1);
     clearTimeout(logoTimeoutRef.current);
-    logoTimeoutRef.current = setTimeout(() => setLogoClicks(0), 2000);
-  }, []);
-
-  useEffect(() => {
-    if (logoClicks >= 5) {
-      setLogoClicks(0);
+    logoClicksRef.current += 1;
+    if (logoClicksRef.current >= 5) {
+      logoClicksRef.current = 0;
       navigate('/admin');
+      return;
     }
-  }, [logoClicks, navigate]);
-
-  useEffect(() => {
-    document.documentElement.dataset.accent = accent;
-    try { localStorage.setItem('bd-accent', accent); } catch { /* localStorage no disponible */ }
-  }, [accent]);
+    logoTimeoutRef.current = setTimeout(() => { logoClicksRef.current = 0; }, 2000);
+  }, [navigate]);
 
   useEffect(() => {
     return () => { clearTimeout(logoTimeoutRef.current); };
   }, []);
 
   useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          const y = window.scrollY;
+          const y = el.scrollTop;
           setScrolled(y > 60);
           setShowBackToTop(y > 300);
-          const docH = document.documentElement.scrollHeight - window.innerHeight;
-          setScrollProgress(docH > 0 ? Math.min((y / docH) * 100, 100) : 0);
+          const max = el.scrollHeight - el.clientHeight;
+          setScrollProgress(max > 0 ? Math.min((y / max) * 100, 100) : 0);
           ticking = false;
         });
         ticking = true;
       }
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Al cambiar de ruta el contenedor conserva el scroll anterior
+  useEffect(() => {
+    scrollerRef.current?.scrollTo({ top: 0 });
+  }, [location.pathname]);
+
   const scrollToTop = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   const scrollTo = useCallback((id) => {
@@ -191,13 +191,11 @@ function App() {
           </Link>
 
           <div className="hidden md:flex flex-1 items-center justify-center gap-0.5">
-            {navLinks.map((link, i) => (
+            {navLinks.map((link) => (
               <button
                 key={link.id}
                 onClick={() => scrollTo(link.id)}
-              className={`group relative px-3 py-1.5 text-[13px] font-medium transition-[color,background] duration-300 rounded-lg ${
-                'text-[#A1A1AA] hover:text-white hover:bg-white/[0.03]'
-              }`}
+                className="group relative px-3 py-1.5 text-[13px] font-medium rounded-lg text-[#A1A1AA] hover:text-white hover:bg-white/[0.03] transition-[color,background] duration-300"
               >
                 <span className="relative z-10">{link.label}</span>
                 <span className="absolute inset-x-2 bottom-1 h-[1px] bg-blue-500/60 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-center" />
@@ -268,7 +266,7 @@ function App() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div ref={scrollerRef} className="flex-1 overflow-y-auto">
         <ErrorBoundary>
           <div key={location.pathname} className="page-enter">
             <Routes>
