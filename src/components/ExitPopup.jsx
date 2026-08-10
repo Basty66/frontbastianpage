@@ -1,12 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import { X, Mail, Send, Sparkles } from 'lucide-react';
 import { WHATSAPP_NUMBER } from '../lib/constants';
+import useScrollLock from '../hooks/useScrollLock';
 
 export default function ExitPopup() {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+
+  useScrollLock(show && !dismissed);
 
   const handleExit = useCallback((e) => {
     if (dismissed || show || sent) return;

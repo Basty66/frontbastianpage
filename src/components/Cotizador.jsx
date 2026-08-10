@@ -5,6 +5,7 @@ import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle, C
 import Reveal from './Reveal';
 import PDFPreview from './PDFPreview';
 import useAnimatedNumber from '../hooks/useAnimatedNumber';
+import useScrollLock from '../hooks/useScrollLock';
 import { supabase } from '../lib/supabaseClient';
 import { WHATSAPP_NUMBER } from '../lib/constants';
 import bastianSigImg from '/firma-bastian.png';
@@ -315,17 +316,7 @@ const Cotizador = () => {
 
   const anyModalOpen = showPreview || showSignatures || showPdfPreview;
 
-  useEffect(() => {
-    if (anyModalOpen) {
-      const scrollbarW = window.innerWidth - document.documentElement.clientWidth;
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.paddingRight = `${scrollbarW}px`;
-      return () => {
-        document.documentElement.style.overflow = '';
-        document.body.style.paddingRight = '';
-      };
-    }
-  }, [anyModalOpen]);
+  useScrollLock(anyModalOpen);
 
   useEffect(() => {
     const scrollToTop = (ref) => {
@@ -1507,7 +1498,7 @@ const Cotizador = () => {
             role="dialog"
             aria-modal="true"
             aria-label="Vista previa de cotización"
-            className="relative w-full max-w-lg sm:max-w-xl bg-gradient-to-b from-[#18181B] to-[#09090B] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black/50 max-h-[92vh] overflow-y-auto animate-modal-content"
+            className="relative w-full max-w-lg sm:max-w-xl bg-gradient-to-b from-[#18181B] to-[#09090B] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black/50 max-h-[92vh] overflow-y-auto scroll-smooth-ios animate-modal-content"
             ref={previewModalRef}
             style={{ animationDelay: '0.05s' }}
             onClick={(e) => e.stopPropagation()}
@@ -1647,7 +1638,7 @@ const Cotizador = () => {
             aria-modal="true"
             aria-label="Firmar conformidad"
             ref={signatureModalRef}
-            className="relative w-full max-w-lg bg-gradient-to-b from-[#18181B] to-[#09090B] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black/50 max-h-[95vh] overflow-y-auto animate-modal-content"
+            className="relative w-full max-w-lg bg-gradient-to-b from-[#18181B] to-[#09090B] border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl shadow-black/50 max-h-[95vh] overflow-y-auto scroll-smooth-ios animate-modal-content"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -1806,7 +1797,7 @@ const Cotizador = () => {
             aria-modal="true"
             aria-label="Vista previa del PDF"
             ref={pdfModalRef}
-            className="relative w-full h-full sm:h-[90vh] sm:max-w-4xl bg-gradient-to-b from-[#18181B] to-[#09090B] border-0 sm:border border-white/10 sm:rounded-3xl p-3 sm:p-6 shadow-2xl shadow-black/50 sm:max-h-[95vh] flex flex-col overflow-y-auto sm:overflow-hidden"
+            className="relative w-full h-full sm:h-[90vh] sm:max-w-4xl bg-gradient-to-b from-[#18181B] to-[#09090B] border-0 sm:border border-white/10 sm:rounded-3xl p-3 sm:p-6 shadow-2xl shadow-black/50 sm:max-h-[95vh] flex flex-col overflow-y-auto scroll-smooth-ios sm:overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <button

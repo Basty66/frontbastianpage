@@ -13,6 +13,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import CookieConsent from './components/CookieConsent';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
+import useScrollLock from './hooks/useScrollLock';
 import Cookies from './components/Cookies';
 import { CotizadorSkeleton } from './components/Skeletons';
 import { WHATSAPP_FULL, INSTAGRAM_URL } from './lib/constants';
@@ -79,10 +80,7 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const logoTimeoutRef = useRef(null);
 
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [menuOpen]);
+  useScrollLock(menuOpen);
 
   const handleLogoClick = useCallback(() => {
     setLogoClicks((prev) => prev + 1);

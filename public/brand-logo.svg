@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563EB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="chromeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#A1A1AA;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#D4D4D8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A1A1AA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Owl Logo -->
+  <g transform="translate(10, 15) scale(1.8)">
+    <!-- Body -->
+    <path d="M16 4C10 4 6 10 6 16v3a2 2 0 002 2h16a2 2 0 002-2v-3c0-6-4-12-10-12z" stroke="url(#blueGrad)" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <!-- Left ear -->
+    <path d="M10 8L7 3l5 4" stroke="url(#blueGrad)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Right ear -->
+    <path d="M22 8l3-5-5 4" stroke="url(#blueGrad)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Left eye ring -->
+    <circle cx="13" cy="15" r="3.5" stroke="#A1A1AA" stroke-width="1.8" fill="none"/>
+    <!-- Right eye ring -->
+    <circle cx="19" cy="15" r="3.5" stroke="#A1A1AA" stroke-width="1.8" fill="none"/>
+    <!-- Left pupil -->
+    <circle cx="13" cy="15" r="1.5" fill="#2563EB"/>
+    <!-- Right pupil -->
+    <circle cx="19" cy="15" r="1.5" fill="#2563EB"/>
+    <!-- Beak -->
+    <path d="M15 19l1 2 1-2" stroke="#A1A1AA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+
+  <!-- Brand Name -->
+  <text x="60" y="52" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-weight="800" font-size="42" fill="#2563EB">BS</text>
+  <text x="112" y="52" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-weight="600" font-size="42" fill="#A1A1AA">DigitalTech</text>
+
+  <!-- Tagline -->
+  <text x="60" y="78" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-weight="400" font-size="14" fill="#71717A">Soluciones Web Profesionales</text>
+
+  <!-- Subtle line -->
+  <line x1="60" y1="88" x2="340" y2="88" stroke="#2563EB" stroke-width="1.5" stroke-opacity="0.3"/>
+</svg>
