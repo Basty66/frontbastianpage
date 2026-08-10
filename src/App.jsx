@@ -165,7 +165,7 @@ function App() {
   }, [navigate, location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col text-white selection:bg-white/30 selection:text-white overflow-x-hidden" style={{ background: '#09090B' }}>
+    <div className="h-screen flex flex-col text-white selection:bg-white/30 selection:text-white overflow-hidden" style={{ background: '#09090B' }}>
       {/* Scroll Progress */}
       <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
 
@@ -269,7 +269,7 @@ function App() {
         </div>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 overflow-y-auto">
         <ErrorBoundary>
           <div key={location.pathname} className="page-enter">
             <Routes>
