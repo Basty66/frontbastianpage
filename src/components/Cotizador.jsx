@@ -1039,7 +1039,7 @@ const Cotizador = () => {
                   <span className="w-7 h-7 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-xs font-bold">1</span>
                   Elige tu plan
                 </label>
-                <div className="grid sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   {planes.map((plan) => {
                     const c = colorMap[plan.color];
                     const selected = selectedPlan === plan.id;
@@ -1118,50 +1118,50 @@ const Cotizador = () => {
                             <div
                               key={item.id}
                               onClick={() => setTipoWeb(item.precio)}
-                              className={`flex items-center justify-between px-3 py-2.5 rounded-lg border cursor-pointer transition-all duration-300 ${
+                              className={`flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg border cursor-pointer transition-all duration-300 ${
                                 sel
                                   ? 'border-blue-500/25 bg-blue-500/[0.06] text-white'
                                   : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/20'
                               }`}
                             >
-                              <div className="flex items-center gap-2.5">
-                                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${sel ? 'border-blue-400 bg-blue-400/20' : 'border-white/20'}`}>
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${sel ? 'border-blue-400 bg-blue-400/20' : 'border-white/20'}`}>
                                   {sel && <div className="w-2 h-2 rounded-full bg-blue-400" />}
                                 </div>
-                                <span className="text-sm">{item.label}</span>
-                                <span className="text-[10px] text-slate-500">{item.desc}</span>
+                                <span className="text-sm truncate">{item.label}</span>
+                                <span className="text-[10px] text-slate-500 hidden sm:inline">{item.desc}</span>
                               </div>
-                              <span className="text-sm font-semibold">{formatCurrency(item.precio)}</span>
+                              <span className="text-sm font-semibold flex-shrink-0">{formatCurrency(item.precio)}</span>
                             </div>
                           );
                         })}
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 mb-4">
-                        <p className="col-span-2 text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Extras</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+                        <p className="col-span-full text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Extras</p>
                         {getExtrasDisponibles().map((item) => {
                           const active = extras.includes(item.id);
                           return (
                             <div
                               key={item.id}
                               onClick={() => handleExtraChange(item.id)}
-                              className={`flex items-center justify-between px-3 py-2 rounded-lg border cursor-pointer transition-all duration-300 ${
+                              className={`flex items-center justify-between gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all duration-300 ${
                                 active
                                   ? 'border-blue-500/25 bg-blue-500/[0.06] text-white'
                                   : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/20'
                               }`}
                             >
-                              <div className="flex items-center gap-2">
-                                <div className={`w-4 h-4 rounded border-2 flex items-center justify-center ${active ? 'border-blue-400 bg-blue-400' : 'border-white/20'}`}>
+                              <div className="flex items-center gap-2 min-w-0">
+                                <div className={`w-4 h-4 rounded border-2 flex-shrink-0 flex items-center justify-center ${active ? 'border-blue-400 bg-blue-400' : 'border-white/20'}`}>
                                   {active && (
                                     <svg className="w-2.5 h-2.5 text-[#030712]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                     </svg>
                                   )}
                                 </div>
-                                <span className="text-xs">{item.label}</span>
+                                <span className="text-xs truncate">{item.label}</span>
                               </div>
-                              <span className="text-xs font-medium text-white/60">+{formatCurrency(item.precio)}</span>
+                              <span className="text-xs font-medium text-white/60 flex-shrink-0">+{formatCurrency(item.precio)}</span>
                             </div>
                           );
                         })}
