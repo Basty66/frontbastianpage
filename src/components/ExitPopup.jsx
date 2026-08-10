@@ -45,6 +45,7 @@ export default function ExitPopup() {
         <button
           onClick={() => setDismissed(true)}
           className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-all hover:rotate-90"
+          aria-label="Cerrar"
         >
           <X className="w-4 h-4" />
         </button>

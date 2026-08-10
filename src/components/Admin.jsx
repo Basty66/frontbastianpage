@@ -79,7 +79,7 @@ function AdminTestimonios({ supabase, showToast }) {
     }
   };
 
-  useEffect(() => { cargar(); }, []);
+  useEffect(() => { let m = true; cargar().then(() => { if (!m) { setPending([]); setApproved([]); } }); return () => { m = false; }; }, []);
 
   const handleApprove = async (id) => {
     setActionLoading(id);
@@ -239,7 +239,7 @@ function AdminProyectos({ supabase, showToast }) {
     }
   };
 
-  useEffect(() => { cargar(); }, []);
+  useEffect(() => { let m = true; cargar().then(() => { if (!m) setItems([]); }); return () => { m = false; }; }, []);
 
   const openNew = () => { setEditing('new'); setForm(emptyProyecto); };
   const openEdit = (item) => { setEditing(item.id); setForm({ ...item, tags: (item.tags || []).join(', ') }); };
@@ -453,7 +453,7 @@ function AdminPosts({ supabase, showToast }) {
     }
   };
 
-  useEffect(() => { cargar(); }, []);
+  useEffect(() => { let m = true; cargar().then(() => { if (!m) setItems([]); }); return () => { m = false; }; }, []);
 
   const openNew = () => { setEditing('new'); setForm(emptyPost); };
   const openEdit = (item) => { setEditing(item.id); setForm({ ...item, tags: (item.tags || []).join(', ') }); };

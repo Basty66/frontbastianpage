@@ -79,8 +79,13 @@ function App() {
   const [logoClicks, setLogoClicks] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const logoTimeoutRef = useRef(null);
+  const scrollTimeoutRef = useRef(null);
 
   useScrollLock(menuOpen);
+
+  useEffect(() => {
+    return () => { clearTimeout(scrollTimeoutRef.current); };
+  }, []);
 
   const handleLogoClick = useCallback(() => {
     setLogoClicks((prev) => prev + 1);
@@ -129,6 +134,7 @@ function App() {
 
   const scrollTo = useCallback((id) => {
     setMenuOpen(false);
+    clearTimeout(scrollTimeoutRef.current);
     if (id === 'portafolio' || id === 'proceso' || id === 'sobre-mi') {
       navigate(`/${id}`);
       return;
@@ -136,7 +142,7 @@ function App() {
     if (id === 'cotizador') {
       if (location.pathname !== '/') {
         navigate('/');
-        setTimeout(() => {
+        scrollTimeoutRef.current = setTimeout(() => {
           const el = document.getElementById('cotizador');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }, 150);
@@ -148,7 +154,7 @@ function App() {
     }
     if (location.pathname !== '/') {
       navigate('/');
-      setTimeout(() => {
+      scrollTimeoutRef.current = setTimeout(() => {
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
       }, 100);
@@ -269,12 +275,12 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/portafolio" element={<PortfolioPage />} />
-              <Route path="/proceso" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400"><div className="animate-pulse text-sm">Cargando...</div></div>}><ProcesoPage /></Suspense>} />
+              <Route path="/proceso" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400"><div className="animate-pulse text-sm">Cargando...</div></div>}><ErrorBoundary><ProcesoPage /></ErrorBoundary></Suspense>} />
               <Route path="/sobre-mi" element={<AboutPage />} />
               <Route path="/privacidad" element={<Privacy />} />
               <Route path="/terminos" element={<Terms />} />
               <Route path="/cookies" element={<Cookies />} />
-              <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400"><div className="animate-pulse text-sm">Cargando panel...</div></div>}><Admin /></Suspense>} />
+              <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400"><div className="animate-pulse text-sm">Cargando panel...</div></div>}><ErrorBoundary><Admin /></ErrorBoundary></Suspense>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
@@ -296,7 +302,7 @@ function App() {
         href={INSTAGRAM_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-24 right-6 z-50 w-13 h-13 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 md:animate-float group"
+        className="fixed bottom-24 right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 md:animate-float group"
         style={{ background: 'linear-gradient(135deg, #833AB4 0%, #FD1D1D 50%, #F77737 100%)' }}
         aria-label="Instagram @bs.digitaltech"
       >
@@ -311,7 +317,7 @@ function App() {
         href={WHATSAPP_FULL}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg shadow-[#25D366]/25 hover:shadow-xl hover:shadow-[#25D366]/40 hover:scale-110 transition-all duration-300 md:animate-float group"
+        className="fixed bottom-6 right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg shadow-[#25D366]/25 hover:shadow-xl hover:shadow-[#25D366]/40 hover:scale-110 transition-all duration-300 md:animate-float group"
         aria-label="WhatsApp"
       >
         <span className="absolute inset-0 rounded-full bg-[#25D366]/15 blur-lg md:animate-pulse" />
@@ -321,7 +327,7 @@ function App() {
       </a>
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-6 left-6 z-50 w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/[0.05] border border-blue-500/20 backdrop-blur-md flex items-center justify-center shadow-lg shadow-black/20 hover:bg-blue-600/10 hover:border-blue-500/40 hover:scale-110 transition-[background,border-color,transform,opacity] duration-500 ${
+        className={`fixed bottom-6 left-6 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/[0.05] border border-blue-500/20 backdrop-blur-md flex items-center justify-center shadow-lg shadow-black/20 hover:bg-blue-600/10 hover:border-blue-500/40 hover:scale-110 transition-[background,border-color,transform,opacity] duration-500 ${
           showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
         aria-label="Volver arriba"
@@ -333,7 +339,7 @@ function App() {
 
       <button
         onClick={() => scrollTo('cotizador')}
-        className={`fixed bottom-24 left-6 z-50 w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-blue-600/90 backdrop-blur-md flex items-center justify-center shadow-lg shadow-blue-600/25 border border-blue-400/20 hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/40 hover:scale-110 transition-all duration-300 md:animate-float group ${
+        className={`fixed bottom-24 left-6 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-600/90 backdrop-blur-md flex items-center justify-center shadow-lg shadow-blue-600/25 border border-blue-400/20 hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/40 hover:scale-110 transition-all duration-300 md:animate-float group ${
           showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
         aria-label="Cotizar ahora"
