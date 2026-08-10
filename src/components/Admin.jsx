@@ -40,7 +40,7 @@ function TabsSection({ tabs, active, onChange }) {
         <button
           key={tab.id}
           onClick={() => onChange(tab.id)}
-          className={`flex items-center gap-1.5 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-300 border-b-2 -mb-px ${
+          className={`flex items-center gap-1.5 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap t-smooth duration-300 border-b-2 -mb-px ${
             active === tab.id
               ? 'border-blue-500 text-blue-500'
               : 'border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-600'
@@ -150,7 +150,7 @@ function AdminTestimonios({ supabase, showToast }) {
         ) : (
           <div className="space-y-3">
             {pending.map((t, i) => (
-              <div key={t.id} className="group bg-gradient-to-r from-amber-500/[0.02] to-transparent border border-amber-500/15 rounded-xl p-4 flex items-start gap-4 transition-all duration-300 hover:bg-amber-500/[0.04] hover:border-amber-500/30"
+              <div key={t.id} className="group bg-gradient-to-r from-amber-500/[0.02] to-transparent border border-amber-500/15 rounded-xl p-4 flex items-start gap-4 t-smooth duration-300 hover:bg-amber-500/[0.04] hover:border-amber-500/30"
                 style={{ animation: `modal-content-in 0.3s ease-out ${0.05 + i * 0.04}s both` }}>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
@@ -166,12 +166,12 @@ function AdminTestimonios({ supabase, showToast }) {
                 </div>
                 <div className="flex gap-2 flex-shrink-0 pt-1">
                   <button onClick={() => handleApprove(t.id)} disabled={actionLoading === t.id}
-                    className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-500/50 transition-all duration-300 disabled:opacity-40"
+                    className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-500/50 t-smooth duration-300 disabled:opacity-40"
                     title="Aprobar">
                     {actionLoading === t.id ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
                   </button>
                   <button onClick={() => handleDelete(t.id)} disabled={actionLoading === t.id}
-                    className="p-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 hover:border-red-500/50 transition-all duration-300 disabled:opacity-40"
+                    className="p-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 hover:border-red-500/50 t-smooth duration-300 disabled:opacity-40"
                     title="Eliminar">
                     {actionLoading === t.id ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
                   </button>
@@ -196,7 +196,7 @@ function AdminTestimonios({ supabase, showToast }) {
         ) : (
           <div className="space-y-2">
             {approved.map((t, i) => (
-              <div key={t.id} className="bg-white/[0.01] border border-white/5 rounded-xl p-4 flex items-start gap-4 transition-all duration-300 hover:bg-white/[0.03] opacity-70 hover:opacity-100"
+              <div key={t.id} className="bg-white/[0.01] border border-white/5 rounded-xl p-4 flex items-start gap-4 t-smooth duration-300 hover:bg-white/[0.03] opacity-70 hover:opacity-100"
                 style={{ animation: `modal-content-in 0.3s ease-out ${0.05 + i * 0.03}s both` }}>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
@@ -212,7 +212,7 @@ function AdminTestimonios({ supabase, showToast }) {
                   <p className="text-slate-400 text-xs leading-relaxed">&ldquo;{t.texto}&rdquo;</p>
                 </div>
                 <button onClick={() => handleDelete(t.id)} disabled={actionLoading === t.id}
-                  className="p-2 rounded-lg bg-red-500/5 border border-red-500/20 text-red-400/60 hover:bg-red-500/15 hover:border-red-500/40 hover:text-red-400 transition-all duration-300 disabled:opacity-40 flex-shrink-0 pt-1"
+                  className="p-2 rounded-lg bg-red-500/5 border border-red-500/20 text-red-400/60 hover:bg-red-500/15 hover:border-red-500/40 hover:text-red-400 t-smooth duration-300 disabled:opacity-40 flex-shrink-0 pt-1"
                   title="Eliminar">
                   {actionLoading === t.id ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
                 </button>
@@ -334,7 +334,7 @@ function AdminProyectos({ supabase, showToast }) {
     <div>
       <div className="flex items-center justify-between mb-6">
         <p className="text-xs text-slate-400">{items.length} proyecto(s)</p>
-        <button onClick={openNew} className="flex items-center gap-1.5 text-xs font-medium text-blue-500 bg-blue-500/10 border border-blue-500/20 px-3 py-2 rounded-xl hover:bg-blue-500/20 transition-all duration-300">
+        <button onClick={openNew} className="flex items-center gap-1.5 text-xs font-medium text-blue-500 bg-blue-500/10 border border-blue-500/20 px-3 py-2 rounded-xl hover:bg-blue-500/20 t-smooth duration-300">
           <Plus className="w-3.5 h-3.5" /> Nuevo proyecto
         </button>
       </div>
@@ -387,11 +387,11 @@ function AdminProyectos({ supabase, showToast }) {
           </div>
           <div className="flex gap-2 pt-2">
             <button onClick={handleSave} disabled={saving}
-              className="flex items-center gap-1.5 text-xs font-medium text-white bg-blue-500/20 border border-blue-500/30 px-4 py-2 rounded-xl hover:bg-blue-500/30 transition-all duration-300 disabled:opacity-40">
+              className="flex items-center gap-1.5 text-xs font-medium text-white bg-blue-500/20 border border-blue-500/30 px-4 py-2 rounded-xl hover:bg-blue-500/30 t-smooth duration-300 disabled:opacity-40">
               {saving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
               {editing === 'new' ? 'Crear' : 'Guardar'}
             </button>
-            <button onClick={cancelEdit} className="text-xs text-slate-400 px-4 py-2 rounded-xl border border-white/10 hover:bg-white/[0.03] transition-all duration-300">
+            <button onClick={cancelEdit} className="text-xs text-slate-400 px-4 py-2 rounded-xl border border-white/10 hover:bg-white/[0.03] t-smooth duration-300">
               Cancelar
             </button>
           </div>
@@ -407,7 +407,7 @@ function AdminProyectos({ supabase, showToast }) {
       ) : (
         <div className="space-y-3">
           {items.map((item, i) => (
-            <div key={item.id} className="bg-white/[0.01] border border-white/5 rounded-xl p-4 flex items-start gap-3 transition-all duration-300 hover:bg-white/[0.03]"
+            <div key={item.id} className="bg-white/[0.01] border border-white/5 rounded-xl p-4 flex items-start gap-3 t-smooth duration-300 hover:bg-white/[0.03]"
               style={{ animation: `modal-content-in 0.3s ease-out ${0.05 + i * 0.03}s both` }}>
               <GripVertical className="w-4 h-4 text-slate-600 mt-1.5 flex-shrink-0" />
               <div className="flex-1 min-w-0">
@@ -427,17 +427,17 @@ function AdminProyectos({ supabase, showToast }) {
               </div>
               <div className="flex gap-1.5 flex-shrink-0 pt-1">
                 <button onClick={() => toggleVisible(item)}
-                  className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-all duration-300"
+                  className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 t-smooth duration-300"
                   title={item.visible ? 'Ocultar' : 'Mostrar'}>
                   <EyeOff className="w-3.5 h-3.5" />
                 </button>
                 <button onClick={() => openEdit(item)}
-                  className="p-2 rounded-lg text-slate-500 hover:text-blue-500 hover:bg-blue-500/10 transition-all duration-300"
+                  className="p-2 rounded-lg text-slate-500 hover:text-blue-500 hover:bg-blue-500/10 t-smooth duration-300"
                   title="Editar">
                   <Edit3 className="w-3.5 h-3.5" />
                 </button>
                 <button onClick={() => handleDelete(item.id)}
-                  className="p-2 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all duration-300"
+                  className="p-2 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 t-smooth duration-300"
                   title="Eliminar">
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
@@ -566,7 +566,7 @@ function AdminPosts({ supabase, showToast }) {
     <div>
       <div className="flex items-center justify-between mb-6">
         <p className="text-xs text-slate-400">{items.length} post(s)</p>
-        <button onClick={openNew} className="flex items-center gap-1.5 text-xs font-medium text-blue-500 bg-blue-500/10 border border-blue-500/20 px-3 py-2 rounded-xl hover:bg-blue-500/20 transition-all duration-300">
+        <button onClick={openNew} className="flex items-center gap-1.5 text-xs font-medium text-blue-500 bg-blue-500/10 border border-blue-500/20 px-3 py-2 rounded-xl hover:bg-blue-500/20 t-smooth duration-300">
           <Plus className="w-3.5 h-3.5" /> Nuevo post
         </button>
       </div>
@@ -608,11 +608,11 @@ function AdminPosts({ supabase, showToast }) {
           </div>
           <div className="flex gap-2 pt-2">
             <button onClick={handleSave} disabled={saving}
-              className="flex items-center gap-1.5 text-xs font-medium text-white bg-blue-500/20 border border-blue-500/30 px-4 py-2 rounded-xl hover:bg-blue-500/30 transition-all duration-300 disabled:opacity-40">
+              className="flex items-center gap-1.5 text-xs font-medium text-white bg-blue-500/20 border border-blue-500/30 px-4 py-2 rounded-xl hover:bg-blue-500/30 t-smooth duration-300 disabled:opacity-40">
               {saving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
               {editing === 'new' ? 'Crear' : 'Guardar'}
             </button>
-            <button onClick={cancelEdit} className="text-xs text-slate-400 px-4 py-2 rounded-xl border border-white/10 hover:bg-white/[0.03] transition-all duration-300">
+            <button onClick={cancelEdit} className="text-xs text-slate-400 px-4 py-2 rounded-xl border border-white/10 hover:bg-white/[0.03] t-smooth duration-300">
               Cancelar
             </button>
           </div>
@@ -627,7 +627,7 @@ function AdminPosts({ supabase, showToast }) {
       ) : (
         <div className="space-y-2">
           {items.map((item, i) => (
-            <div key={item.id} className="bg-white/[0.01] border border-white/5 rounded-xl p-4 flex items-start gap-3 transition-all duration-300 hover:bg-white/[0.03]"
+            <div key={item.id} className="bg-white/[0.01] border border-white/5 rounded-xl p-4 flex items-start gap-3 t-smooth duration-300 hover:bg-white/[0.03]"
               style={{ animation: `modal-content-in 0.3s ease-out ${0.05 + i * 0.03}s both` }}>
               <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${item.published ? 'bg-emerald-400' : 'bg-amber-400'}`} />
               <div className="flex-1 min-w-0">
@@ -639,17 +639,17 @@ function AdminPosts({ supabase, showToast }) {
               </div>
               <div className="flex gap-1.5 flex-shrink-0 pt-1">
                 <button onClick={() => togglePublished(item)}
-                  className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-all duration-300"
+                  className="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 t-smooth duration-300"
                   title={item.published ? 'Archivar' : 'Publicar'}>
                   {item.published ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                 </button>
                 <button onClick={() => openEdit(item)}
-                  className="p-2 rounded-lg text-slate-500 hover:text-blue-500 hover:bg-blue-500/10 transition-all duration-300"
+                  className="p-2 rounded-lg text-slate-500 hover:text-blue-500 hover:bg-blue-500/10 t-smooth duration-300"
                   title="Editar">
                   <Edit3 className="w-3.5 h-3.5" />
                 </button>
                 <button onClick={() => handleDelete(item.id)}
-                  className="p-2 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all duration-300"
+                  className="p-2 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 t-smooth duration-300"
                   title="Eliminar">
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
@@ -709,10 +709,10 @@ export default function Admin() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden" style={{ background: '#09090B' }}>
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className={`absolute -top-32 -right-32 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl transition-all duration-1000 ${loginAnim ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} />
-          <div className={`absolute -bottom-32 -left-32 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl transition-all duration-1000 delay-300 ${loginAnim ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} />
+          <div className={`absolute -top-32 -right-32 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl t-smooth duration-1000 ${loginAnim ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} />
+          <div className={`absolute -bottom-32 -left-32 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl t-smooth duration-1000 delay-300 ${loginAnim ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} />
         </div>
-        <form onSubmit={handleLogin} className={`relative w-full max-w-sm bg-gradient-to-b from-white/[0.03] to-white/[0.01] border border-white/10 rounded-3xl p-8 backdrop-blur-xl shadow-2xl shadow-black/30 transition-all duration-700 ease-out ${loginAnim ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'}`}>
+        <form onSubmit={handleLogin} className={`relative w-full max-w-sm bg-gradient-to-b from-white/[0.03] to-white/[0.01] border border-white/10 rounded-3xl p-8 backdrop-blur-xl shadow-2xl shadow-black/30 t-smooth duration-700 ease-out ${loginAnim ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'}`}>
           <div className="text-center mb-8">
             <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-500/20 border border-blue-500/20 flex items-center justify-center animate-float">
               <Shield className="w-7 h-7 text-blue-500" />
@@ -726,7 +726,7 @@ export default function Admin() {
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input type={showPw ? 'text' : 'password'} placeholder="Ingresa la contraseña"
                 value={password} onChange={(e) => { setPassword(e.target.value); setPwError(''); }}
-                className={`w-full bg-black/40 border rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 transition-all duration-300 ${pwError ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20' : 'border-white/10 focus:border-blue-500/80 focus:ring-blue-500/20'}`}
+                className={`w-full bg-black/40 border rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 t-smooth duration-300 ${pwError ? 'border-red-500/60 focus:border-red-500 focus:ring-red-500/20' : 'border-white/10 focus:border-blue-500/80 focus:ring-blue-500/20'}`}
                 autoFocus />
               <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
                 {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -734,13 +734,13 @@ export default function Admin() {
             </div>
             {pwError && <p className="text-red-400 text-xs flex items-center gap-1 mt-1.5 animate-modal-content"><AlertTriangle className="w-3 h-3" /> {pwError}</p>}
           </div>
-          <button type="submit" className="relative overflow-hidden group w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm transition-all duration-500 hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 flex items-center justify-center gap-2">
+          <button type="submit" className="relative overflow-hidden group w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm t-smooth duration-500 hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 flex items-center justify-center gap-2">
             <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <LogIn className="w-4 h-4 relative z-10" />
             <span className="relative z-10">Ingresar</span>
           </button>
           <Link to="/" className="block text-center text-xs text-slate-500 hover:text-blue-500 transition-colors mt-5 group">
-            <span className="group-hover:mr-1 transition-all">&larr;</span> Volver al inicio
+            <span className="group-hover:mr-1 t-smooth">&larr;</span> Volver al inicio
           </Link>
         </form>
       </div>

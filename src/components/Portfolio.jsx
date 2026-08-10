@@ -129,12 +129,12 @@ const Portfolio = ({ fullPage = false }) => {
         ) : (
           <div className="relative">
             {canScrollLeft && (
-              <button onClick={() => scroll(-1)} className="hidden sm:flex absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/[0.06] border border-white/10 items-center justify-center text-white/60 hover:bg-white/[0.1] hover:text-white transition-all duration-300 backdrop-blur-md">
+              <button onClick={() => scroll(-1)} className="hidden sm:flex absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/[0.06] border border-white/10 items-center justify-center text-white/60 hover:bg-white/[0.1] hover:text-white t-smooth duration-300 backdrop-blur-md">
                 <ChevronLeft className="w-5 h-5" />
               </button>
             )}
             {canScrollRight && (
-              <button onClick={() => scroll(1)} className="hidden sm:flex absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/[0.06] border border-white/10 items-center justify-center text-white/60 hover:bg-white/[0.1] hover:text-white transition-all duration-300 backdrop-blur-md">
+              <button onClick={() => scroll(1)} className="hidden sm:flex absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/[0.06] border border-white/10 items-center justify-center text-white/60 hover:bg-white/[0.1] hover:text-white t-smooth duration-300 backdrop-blur-md">
                 <ChevronRight className="w-5 h-5" />
               </button>
             )}
@@ -153,7 +153,7 @@ const Portfolio = ({ fullPage = false }) => {
               <Reveal animation="fade-up" delay={displayProjects.length * 80} className="flex-shrink-0 w-[85vw] sm:w-[400px]">
                 <button
                   onClick={() => navigate('/portafolio')}
-                  className="group w-full h-full min-h-[380px] bg-white/[0.02] border border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center gap-4 hover:border-blue-500/30 hover:bg-blue-500/[0.03] transition-all duration-500"
+                  className="group w-full h-full min-h-[380px] bg-white/[0.02] border border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center gap-4 hover:border-blue-500/30 hover:bg-blue-500/[0.03] t-smooth duration-500"
                 >
                   <div className="w-14 h-14 rounded-2xl bg-blue-500/[0.08] border border-blue-500/15 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                     <ArrowUpRight className="w-6 h-6 text-blue-400/70 group-hover:text-blue-400 transition-colors" />
@@ -179,7 +179,7 @@ function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
   const gradient = colores[idx % colores.length];
 
   return (
-    <div className={`group bg-white/[0.02] border border-white/10 rounded-2xl backdrop-blur-sm transition-all duration-500 [cubic-bezier(0.4,0,0.2,1)] hover:border-blue-500/20 hover:shadow-xl hover:shadow-blue-500/5 flex flex-col ${compact ? '' : 'md:flex-row'}`}>
+    <div className={`group bg-white/[0.02] border border-white/10 rounded-2xl backdrop-blur-sm t-smooth duration-500 [cubic-bezier(0.4,0,0.2,1)] hover:border-blue-500/20 hover:shadow-xl hover:shadow-blue-500/5 flex flex-col ${compact ? '' : 'md:flex-row'}`}>
       <div className={`relative overflow-hidden rounded-t-2xl ${compact ? 'aspect-video' : 'md:w-1/2 aspect-video md:aspect-auto md:rounded-l-2xl md:rounded-tr-none'}`}>
         {!proj.screenshot || imgError ? (
           <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`}>
@@ -191,7 +191,7 @@ function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
           <img
             src={proj.screenshot}
             alt={proj.titulo}
-            className={`w-full h-full object-cover object-top transition-all duration-700 [cubic-bezier(0.4,0,0.2,1)] group-hover:scale-105 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`w-full h-full object-cover object-top t-smooth duration-700 [cubic-bezier(0.4,0,0.2,1)] group-hover:scale-105 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
             loading="lazy"
             onLoad={() => setImgLoaded(true)}
             onError={() => setImgError(true)}
@@ -215,7 +215,7 @@ function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
         <p className="text-xs text-[#A1A1AA] leading-relaxed mb-2 line-clamp-2">{proj.desc}</p>
 
         <div
-          className="overflow-hidden transition-all duration-600 ease-[cubic-bezier(0.4,0,0.2,1)]"
+          className="overflow-hidden t-smooth duration-600 ease-[cubic-bezier(0.4,0,0.2,1)]"
           style={{ maxHeight: expanded ? '500px' : '0px', opacity: expanded ? 1 : 0, transitionProperty: 'max-height, opacity', transitionDuration: '600ms, 400ms', transitionDelay: expanded ? '0ms, 150ms' : '150ms, 0ms' }}
         >
           <div className="space-y-2.5 pt-2 border-t border-white/5 mb-3">
@@ -236,7 +236,7 @@ function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
 
         <button
           onClick={onToggle}
-          className="flex items-center gap-1 text-xs text-blue-400/60 hover:text-blue-400 font-medium transition-colors mb-2 self-start"
+          className="flex items-center gap-1 text-xs text-blue-400/60 hover:text-blue-400 font-medium transition-colors mb-1 self-start min-h-11 py-2 -my-1 pr-2"
         >
           {expanded ? 'Menos' : 'Ver más'}
           <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
@@ -253,12 +253,12 @@ function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
           )}
         </div>
 
-        <div className="flex items-center gap-3 pt-3 border-t border-white/5">
+        <div className="flex items-center gap-4 pt-1 border-t border-white/5">
           <a
             href={proj.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group/link text-xs text-[#A1A1AA] hover:text-blue-400 transition-colors flex items-center gap-1"
+            className="group/link text-xs text-[#A1A1AA] hover:text-blue-400 transition-colors flex items-center gap-1 min-h-11 py-2 pr-2"
           >
             <ExternalLink className="w-3 h-3 transition-transform duration-300 group-hover/link:rotate-12" />
             Visitar
@@ -268,7 +268,7 @@ function CaseStudyCard({ proj, idx, compact, expanded, onToggle }) {
               href={proj.repo}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/link text-xs text-[#A1A1AA] hover:text-blue-400 transition-colors flex items-center gap-1"
+              className="group/link text-xs text-[#A1A1AA] hover:text-blue-400 transition-colors flex items-center gap-1 min-h-11 py-2 pr-2"
             >
               <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>

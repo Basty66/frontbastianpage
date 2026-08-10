@@ -103,7 +103,7 @@ const Proceso = () => {
               const Icon = step.icon;
               return (
                 <Reveal key={step.num} animation="fade-up" delay={i * 100}>
-                  <div className="relative bg-white/[0.02] border border-white/[0.06] rounded-2xl p-5 sm:p-6 hover:border-white/10 transition-all duration-500">
+                  <div className="relative bg-white/[0.02] border border-white/[0.06] rounded-2xl p-5 sm:p-6 hover:border-white/10 t-smooth duration-500">
                     <div className="flex items-start gap-4">
                       <div className="flex-shrink-0">
                         <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${step.bg} border ${step.border} flex items-center justify-center`}>
@@ -153,7 +153,7 @@ const Proceso = () => {
               const Icon = b.icon;
               return (
                 <Reveal key={b.title} animation="fade-up">
-                  <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-4 sm:p-5 hover:border-white/10 transition-all duration-300 h-full">
+                  <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-4 sm:p-5 hover:border-white/10 t-smooth duration-300 h-full">
                     <div className="flex items-center gap-2 mb-2">
                       <Icon className="w-4 h-4 text-blue-400/60" />
                       <h3 className="text-white font-heading font-semibold text-sm">{b.title}</h3>
@@ -175,7 +175,7 @@ const Proceso = () => {
             <p className="text-[#A1A1AA] text-sm mb-6">Cotiza ahora y recibe tu propuesta al instante.</p>
             <button
               onClick={() => { navigate('/'); setTimeout(() => document.getElementById('cotizador')?.scrollIntoView({ behavior: 'smooth' }), 200); }}
-              className="bg-blue-600 text-white font-bold px-6 py-3 rounded-xl transition-all duration-500 hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 text-sm inline-flex items-center gap-2"
+              className="bg-blue-600 text-white font-bold px-6 py-3 rounded-xl t-smooth duration-500 hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 text-sm inline-flex items-center gap-2"
             >
               Cotizar mi proyecto
               <ArrowRight className="w-4 h-4" />

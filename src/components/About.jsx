@@ -123,8 +123,8 @@ const About = () => {
                 {skills.map((s, i) => {
                   const Icon = s.icon;
                   return (
-                    <div key={i} className="group/skill flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:bg-blue-600/[0.06] hover:border-blue-500/15 transition-all duration-300">
-                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center group-hover/skill:bg-blue-600/10 group-hover/skill:border-blue-500/20 transition-all duration-300">
+                    <div key={i} className="group/skill flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:bg-blue-600/[0.06] hover:border-blue-500/15 t-smooth duration-300">
+                      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center group-hover/skill:bg-blue-600/10 group-hover/skill:border-blue-500/20 t-smooth duration-300">
                         <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#A1A1AA] group-hover/skill:text-blue-400 transition-colors duration-300" />
                       </div>
                       <span className="text-xs font-medium text-[#A1A1AA] group-hover/skill:text-white transition-colors duration-300 truncate">{s.label}</span>

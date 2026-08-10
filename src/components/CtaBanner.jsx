@@ -21,7 +21,7 @@ const CtaBanner = () => {
               </p>
               <button
                 onClick={scrollToCotizador}
-                className="relative overflow-hidden group bg-blue-600 text-white font-bold px-5 sm:px-6 py-2.5 rounded-xl transition-all duration-500 ease-out hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm glow-blue-sm"
+                className="relative overflow-hidden group bg-blue-600 text-white font-bold px-5 sm:px-6 py-2.5 rounded-xl t-smooth duration-500 ease-out hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm glow-blue-sm"
               >
                 <span className="relative z-10">Cotizar mi proyecto</span>
               </button>

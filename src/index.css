@@ -135,6 +135,36 @@ body {
   animation: page-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Contenedor real del scroll. `scroll-behavior` en <html> ya no aplica
+   porque el documento no se desplaza: el que se mueve es este div. */
+.app-scroller {
+  scroll-behavior: smooth;
+  overscroll-behavior-y: contain;
+}
+
+/* ---------- Sistema de transiciones ---------- */
+/* Reemplaza a `transition-all`, que también anima propiedades de layout
+   (width, height, padding…) y fuerza recálculo de maquetación en cada
+   frame. Aquí solo van propiedades que el navegador puede componer o
+   pintar sin re-maquetar, así el movimiento se mantiene fluido aunque la
+   pantalla vaya a 120 Hz o más. */
+.t-smooth {
+  transition-property: transform, opacity, color, background-color, border-color, box-shadow, fill, stroke;
+}
+
+/* Curvas: salida suave para lo que entra, respuesta rápida al hover */
+.ease-fluid {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Avisa al navegador de qué se va a mover antes de que ocurra, para que
+   prepare la capa y el primer frame del hover no se pierda. Se aplica solo
+   a lo que realmente se transforma, no a todo. */
+[class*="hover:-translate-y"],
+[class*="hover:scale-1"] {
+  will-change: transform;
+}
+
 /* ---------- Ripple ---------- */
 
 .ripple-container {
@@ -160,14 +190,20 @@ body {
   background-size: 60px 60px;
 }
 
+/* Escala en vez de ancho: scaleX corre en el compositor, width obliga a
+   recalcular layout en cada frame de scroll. */
 .scroll-progress-bar {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
   height: 2px;
   z-index: 9999;
   background: linear-gradient(90deg, rgba(37,99,235,0.6), rgba(59,130,246,0.9));
-  transition: width 0.1s linear;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  will-change: transform;
+  transition: transform 0.12s linear;
 }
 
 /* Blue premium glow */
@@ -250,7 +286,8 @@ body {
    deja las transiciones casi instantáneas, sin romper los estados. */
 
 @media (prefers-reduced-motion: reduce) {
-  html {
+  html,
+  .app-scroller {
     scroll-behavior: auto;
   }
 

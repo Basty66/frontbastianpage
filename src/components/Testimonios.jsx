@@ -177,7 +177,7 @@ const Testimonios = () => {
           {!showForm ? (
             <button
               onClick={() => setShowForm(true)}
-              className="group w-full p-5 rounded-2xl border-2 border-dashed border-white/[0.06] hover:border-white/10 bg-white/[0.01] hover:bg-white/[0.02] transition-all duration-500 text-center"
+              className="group w-full p-5 rounded-2xl border-2 border-dashed border-white/[0.06] hover:border-white/10 bg-white/[0.01] hover:bg-white/[0.02] t-smooth duration-500 text-center"
             >
               <Star className="w-6 h-6 mx-auto mb-2 text-blue-400/30 group-hover:text-blue-400/60 transition-colors duration-500" />
               <p className="text-sm text-[#A1A1AA] group-hover:text-white transition-colors font-medium">
@@ -213,7 +213,7 @@ const Testimonios = () => {
                   placeholder="Ej: Juan Perez"
                   value={formData.nombre}
                   onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                  className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-white/20 transition-all"
+                  className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-white/20 t-smooth"
                 />
               </div>
 
@@ -224,7 +224,7 @@ const Testimonios = () => {
                   placeholder="Ej: Mi Empresa SpA"
                   value={formData.empresa}
                   onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
-                  className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-white/20 transition-all"
+                  className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-white/20 t-smooth"
                 />
               </div>
 
@@ -236,7 +236,7 @@ const Testimonios = () => {
                       key={star}
                       type="button"
                       onClick={() => setFormData({ ...formData, estrellas: star })}
-                      className="transition-all duration-200 hover:scale-110"
+                      className="t-smooth duration-200 hover:scale-110"
                     >
                       <Star className={`w-6 h-6 ${starColor(star, formData.estrellas)}`} />
                     </button>
@@ -252,7 +252,7 @@ const Testimonios = () => {
                   placeholder="Cuenta tu experiencia trabajando conmigo..."
                   value={formData.texto}
                   onChange={(e) => setFormData({ ...formData, texto: e.target.value })}
-                  className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-white/20 transition-all resize-none"
+                  className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-white/20 t-smooth resize-none"
                 />
               </div>
 
@@ -263,7 +263,7 @@ const Testimonios = () => {
               <button
                 type="submit"
                 disabled={enviando}
-                className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm transition-all hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm t-smooth hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4" />
                 {enviando ? 'Enviando...' : 'Enviar resena'}

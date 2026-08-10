@@ -199,7 +199,7 @@ const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
     <div className="space-y-2">
       <div
         ref={containerRef}
-        className="signature-pad-container relative bg-gradient-to-b from-slate-800/60 to-slate-900/60 border border-white/10 rounded-xl overflow-hidden group hover:border-white/[0.08] transition-all duration-300"
+        className="signature-pad-container relative bg-gradient-to-b from-slate-800/60 to-slate-900/60 border border-white/10 rounded-xl overflow-hidden group hover:border-white/[0.08] t-smooth duration-300"
         style={{ touchAction: 'none' }}
       >
         <canvas
@@ -213,12 +213,12 @@ const SignaturePad = memo(({ canvasRef, onDraw, onClear }) => {
           onTouchStart={startDrawing}
           onTouchEnd={stopDrawing}
         />
-        <div className="absolute inset-0 pointer-events-none rounded-xl border border-transparent group-hover:border-white/[0.04] transition-all duration-500" />
+        <div className="absolute inset-0 pointer-events-none rounded-xl border border-transparent group-hover:border-white/[0.04] t-smooth duration-500" />
         <div className="absolute bottom-3 right-3 flex gap-2 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
           <button
             type="button"
             onClick={clear}
-            className="p-2 rounded-lg bg-white/5 hover:bg-white/15 text-[#A1A1AA] hover:text-white transition-all backdrop-blur-sm border border-white/5 hover:border-white/20"
+            className="p-2 rounded-lg bg-white/5 hover:bg-white/15 text-[#A1A1AA] hover:text-white t-smooth backdrop-blur-sm border border-white/5 hover:border-white/20"
             title="Limpiar firma"
           >
             <Eraser className="w-4 h-4" />
@@ -650,7 +650,7 @@ const Cotizador = () => {
             <button
               key={m.id}
               onClick={() => setMoneda(m.id)}
-              className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all duration-300 ${
+              className={`px-3 py-1 rounded-lg text-xs font-medium border t-smooth duration-300 ${
                 moneda === m.id
                   ? 'border-white/[0.12] bg-white/[0.03] text-white/60'
                   : 'border-white/10 text-slate-500 hover:text-[#A1A1AA] hover:border-white/20'
@@ -672,7 +672,7 @@ const Cotizador = () => {
           <React.Fragment key={i}>
             <button
               onClick={() => canClick && setStep(stepNum)}
-              className={`group relative flex items-center gap-1.5 sm:gap-3 px-2 sm:px-5 py-2 sm:py-2.5 rounded-xl border transition-all duration-500 ease-out flex-shrink-0 min-w-0 ${
+              className={`group relative flex items-center gap-1.5 sm:gap-3 px-2 sm:px-5 py-2 sm:py-2.5 rounded-xl border t-smooth duration-500 ease-out flex-shrink-0 min-w-0 ${
                 isActive
                   ? 'border-blue-500/25 bg-blue-500/[0.04] text-white shadow-lg shadow-blue-500/10 scale-[1.02]'
                   : isCompleted
@@ -681,7 +681,7 @@ const Cotizador = () => {
               } ${!canClick ? 'opacity-40 cursor-not-allowed' : ''}`}
             >
               {isActive && <span className="absolute inset-0 rounded-xl bg-blue-500/[0.04] animate-pulse" />}
-              <span className={`relative w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 flex-shrink-0 ${
+              <span className={`relative w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-xs font-bold t-smooth duration-500 flex-shrink-0 ${
                 isActive ? 'bg-blue-600 text-white' : isCompleted ? 'bg-white/[0.06] text-white/60' : 'bg-white/10 text-white/60'
               }`}>
                 {isCompleted ? (
@@ -693,7 +693,7 @@ const Cotizador = () => {
               <span className={`hidden sm:inline text-xs font-semibold leading-tight truncate transition-colors duration-300 ${isActive ? 'text-white' : ''}`}>{s.label}</span>
             </button>
             {i < steps.length - 1 && (
-              <div className={`h-px w-3 sm:w-12 transition-all duration-700 ease-out flex-shrink-0 ${isCompleted ? 'bg-blue-500/20' : isActive ? 'bg-gradient-to-r from-blue-500/40 to-blue-400/10' : 'bg-white/10'}`} />
+              <div className={`h-px w-3 sm:w-12 t-smooth duration-700 ease-out flex-shrink-0 ${isCompleted ? 'bg-blue-500/20' : isActive ? 'bg-gradient-to-r from-blue-500/40 to-blue-400/10' : 'bg-white/10'}`} />
             )}
           </React.Fragment>
           );
@@ -701,7 +701,7 @@ const Cotizador = () => {
       </div>
 
       <div className="grid lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-12 items-start">
-        <div className={`lg:col-span-3 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg space-y-5 sm:space-y-8 transition-all duration-700 ease-out ${
+        <div className={`lg:col-span-3 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg space-y-5 sm:space-y-8 t-smooth duration-700 ease-out ${
           step <= 1 ? 'opacity-100 translate-y-0 scale-100 blur-0' : 'opacity-20 -translate-y-2 scale-[0.98] pointer-events-none'
         }`}>
           {step === 1 && (
@@ -718,7 +718,7 @@ const Cotizador = () => {
                     return (
                       <div
                         key={plan.id}
-                        className={`group relative overflow-hidden p-3 sm:p-4 rounded-xl border cursor-pointer transition-all duration-500 ease-out ${
+                        className={`group relative overflow-hidden p-3 sm:p-4 rounded-xl border cursor-pointer t-smooth duration-500 ease-out ${
                           selected
                             ? `${c.border} text-white scale-[1.02]`
                             : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/30 hover:bg-white/[0.04] hover:scale-[1.01]'
@@ -747,13 +747,13 @@ const Cotizador = () => {
                         <span className={`absolute inset-0 rounded-xl ${c.from} ${c.to} -translate-x-full transition-transform duration-500 ease-out ${selected ? 'translate-x-0' : 'group-hover:translate-x-0'}`} />
                         <span className="relative z-10 flex flex-col h-full">
                           <div className="flex items-center justify-between mb-2">
-                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${
+                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center t-smooth duration-500 ${
                               selected ? 'border-blue-400/60' : 'border-white/20 group-hover:border-white/40'
                             }`}>
                               {selected && <div className={`w-2.5 h-2.5 rounded-full ${c.dot}`} />}
                             </div>
                             {plan.precio ? (
-                              <span className="font-bold font-heading text-sm sm:text-lg transition-all duration-300 group-hover:scale-110 inline-block truncate">{formatCurrency(plan.precio)}</span>
+                              <span className="font-bold font-heading text-sm sm:text-lg t-smooth duration-300 group-hover:scale-110 inline-block truncate">{formatCurrency(plan.precio)}</span>
                             ) : (
                               <span className="text-xs font-medium text-white/70">Precio variable</span>
                             )}
@@ -790,7 +790,7 @@ const Cotizador = () => {
                             <div
                               key={item.id}
                               onClick={() => handleTipoWebChange(item.precio)}
-                              className={`flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg border cursor-pointer transition-all duration-300 ${
+                              className={`flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg border cursor-pointer t-smooth duration-300 ${
                                 sel
                                   ? 'border-blue-500/25 bg-blue-500/[0.06] text-white'
                                   : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/20'
@@ -817,7 +817,7 @@ const Cotizador = () => {
                             <div
                               key={item.id}
                               onClick={() => handleExtraChange(item.id)}
-                              className={`flex items-center justify-between gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all duration-300 ${
+                              className={`flex items-center justify-between gap-2 px-3 py-2 rounded-lg border cursor-pointer t-smooth duration-300 ${
                                 active
                                   ? 'border-blue-500/25 bg-blue-500/[0.06] text-white'
                                   : 'border-white/10 bg-white/[0.02] text-[#A1A1AA] hover:border-white/20'
@@ -856,7 +856,7 @@ const Cotizador = () => {
                       <button
                         onClick={() => setStep(2)}
                         disabled={tipoWeb === 0}
-                        className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm transition-all hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm t-smooth hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 disabled:opacity-40 disabled:cursor-not-allowed"
                       >
                         {tipoWeb === 0 ? 'Selecciona un tipo de web' : `Continuar — ${formatCurrency(total)} ${moneda === 'CLP' ? 'CLP' : ''}`}
                       </button>
@@ -888,7 +888,7 @@ const Cotizador = () => {
             </div>
           )}
 
-          <div className={`p-4 sm:p-6 rounded-2xl border backdrop-blur-sm flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 transition-all duration-700 ease-out ${
+          <div className={`p-4 sm:p-6 rounded-2xl border backdrop-blur-sm flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 t-smooth duration-700 ease-out ${
             total > 0
               ? 'bg-gradient-to-r from-blue-500/10 via-blue-400/5 to-transparent border-blue-500/15 shadow-[0_0_30px_rgba(37,99,235,0.06)]'
               : 'bg-white/[0.03] border-white/10'
@@ -900,7 +900,7 @@ const Cotizador = () => {
                 Costo de servidor: $0 de por vida
               </div>
             </div>
-            <div className={`text-2xl sm:text-3xl md:text-4xl font-extrabold font-heading tracking-tight transition-all duration-500 ${
+            <div className={`text-2xl sm:text-3xl md:text-4xl font-extrabold font-heading tracking-tight t-smooth duration-500 ${
               total > 0 ? 'text-white drop-shadow-[0_0_12px_rgba(37,99,235,0.15)]' : 'text-[#A1A1AA]'
             }`}>
               <span key={total} className="inline-block animate-[count-up_0.4s_ease-out]">
@@ -911,7 +911,7 @@ const Cotizador = () => {
           </div>
         </div>
 
-        <Reveal animation="fade-up" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg lg:sticky lg:top-28 transition-all duration-500 ease-out ${
+        <Reveal animation="fade-up" delay={200} className={`lg:col-span-2 bg-white/[0.02] border border-white/10 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl backdrop-blur-lg lg:sticky lg:top-28 t-smooth duration-500 ease-out ${
           step === 2 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-30 translate-y-3 scale-[0.97] pointer-events-none'
         }`}>
           <h3 className="text-2xl font-heading font-bold mb-2">
@@ -941,7 +941,7 @@ const Cotizador = () => {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl transition-all duration-500 ease-out border border-blue-500/20 bg-blue-600/10 hover:border-transparent hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2"
+                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl t-smooth duration-500 ease-out border border-blue-500/20 bg-blue-600/10 hover:border-transparent hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
                 <svg className="w-5 h-5 relative z-10" viewBox="0 0 24 24" fill="white">
@@ -954,7 +954,7 @@ const Cotizador = () => {
                 href="https://calendly.com/cristianbastian/30min"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl transition-all duration-500 ease-out border border-white/[0.08] bg-white/[0.02] hover:border-transparent hover:shadow-xl hover:shadow-white/[0.08] hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2"
+                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl t-smooth duration-500 ease-out border border-white/[0.08] bg-white/[0.02] hover:border-transparent hover:shadow-xl hover:shadow-white/[0.08] hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-white to-white/80 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
                 <svg className="w-4 h-4 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -967,7 +967,7 @@ const Cotizador = () => {
                 type="button"
                 onClick={generatePDF}
                 disabled={generating}
-                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl transition-all duration-500 ease-out border border-blue-500/20 bg-blue-600/10 hover:border-transparent hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl t-smooth duration-500 ease-out border border-blue-500/20 bg-blue-600/10 hover:border-transparent hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
                 <FileDown className="w-4 h-4 relative z-10" />
@@ -986,7 +986,7 @@ const Cotizador = () => {
                     value={formData.nombre}
                     onChange={(e) => handleFormChange('nombre', e.target.value)}
                     onBlur={() => handleFormBlur('nombre')}
-                    className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                    className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:ring-2 t-smooth duration-300 ${
                       formErrors.nombre
                         ? 'border-red-500/40 focus:border-red-400/60 focus:ring-red-500/10'
                         : formData.nombre
@@ -1005,7 +1005,7 @@ const Cotizador = () => {
                     placeholder="Ej: Mi Empresa SpA"
                     value={formData.empresa}
                     onChange={(e) => { setError(null); setFormData({ ...formData, empresa: e.target.value }); }}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-blue-500/40 focus:ring-blue-500/10 transition-all duration-300"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-blue-500/40 focus:ring-blue-500/10 t-smooth duration-300"
                   />
                 </div>
               </Reveal>
@@ -1019,7 +1019,7 @@ const Cotizador = () => {
                     value={formData.email}
                     onChange={(e) => handleFormChange('email', e.target.value)}
                     onBlur={() => handleFormBlur('email')}
-                    className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                    className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:ring-2 t-smooth duration-300 ${
                       formErrors.email
                         ? 'border-red-500/40 focus:border-red-400/60 focus:ring-red-500/10'
                         : formData.email
@@ -1037,7 +1037,7 @@ const Cotizador = () => {
                     <select
                       value={codigoPais}
                       onChange={(e) => setCodigoPais(e.target.value)}
-                      className="bg-black/40 border border-white/10 rounded-xl px-3 py-3 text-white text-sm focus:outline-none focus:border-blue-500/40 focus:ring-blue-500/10 transition-all duration-300 appearance-none cursor-pointer flex-shrink-0"
+                      className="bg-black/40 border border-white/10 rounded-xl px-3 py-3 text-white text-sm focus:outline-none focus:border-blue-500/40 focus:ring-blue-500/10 t-smooth duration-300 appearance-none cursor-pointer flex-shrink-0"
                       style={{ minWidth: '80px' }}
                     >
                       {codigosPais.map((c) => (
@@ -1052,7 +1052,7 @@ const Cotizador = () => {
                         value={formData.telefono}
                         onChange={(e) => handleFormChange('telefono', e.target.value)}
                         onBlur={() => handleFormBlur('telefono')}
-                        className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                        className={`w-full bg-black/40 border rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:ring-2 t-smooth duration-300 ${
                           formErrors.telefono
                             ? 'border-red-500/40 focus:border-red-400/60 focus:ring-red-500/10'
                             : formData.telefono
@@ -1073,7 +1073,7 @@ const Cotizador = () => {
                     placeholder="Cuéntame sobre tu proyecto..."
                     value={formData.mensaje}
                     onChange={(e) => { setError(null); setFormData({ ...formData, mensaje: e.target.value }); }}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-blue-500/40 focus:ring-blue-500/10 focus:shadow-[0_0_12px_rgba(37,99,235,0.08)] transition-all duration-300 resize-none"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-blue-500/40 focus:ring-blue-500/10 focus:shadow-[0_0_12px_rgba(37,99,235,0.08)] t-smooth duration-300 resize-none"
                   />
                 </div>
               </Reveal>
@@ -1092,7 +1092,7 @@ const Cotizador = () => {
                 <button
                   type="button"
                   onClick={() => setShowPreview(true)}
-                  className="w-full flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.08] transition-all duration-300 group"
+                  className="w-full flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.08] t-smooth duration-300 group"
                 >
                   <span className="text-sm text-[#A1A1AA] group-hover:text-white transition-colors flex items-center gap-2">
                     <svg className="w-4 h-4 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1112,7 +1112,7 @@ const Cotizador = () => {
                 <button
                   type="button"
                   onClick={() => setShowSignatures(true)}
-                  className="w-full flex items-center justify-between p-4 rounded-xl border transition-all duration-300 group"
+                  className="w-full flex items-center justify-between p-4 rounded-xl border t-smooth duration-300 group"
                   style={{
                     borderColor: clientSigned
                       ? 'rgba(52,211,153,0.3)' : 'rgba(255,255,255,0.1)',
@@ -1121,7 +1121,7 @@ const Cotizador = () => {
                   }}
                 >
                   <span className="flex items-center gap-2">
-                    <span className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center t-smooth duration-300 ${
                       clientSigned
                         ? 'bg-blue-500/10 text-blue-400/60' : 'bg-white/10 text-[#A1A1AA]'
                     }`}>
@@ -1151,7 +1151,7 @@ const Cotizador = () => {
                 <button
                   type="submit"
                   disabled={total === 0 || loading}
-                  className="relative overflow-hidden group w-full text-white font-bold py-4 rounded-xl transition-all duration-500 ease-out border border-blue-500/20 bg-blue-600/10 shadow-lg shadow-blue-600/10 animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none disabled:hover:bg-transparent disabled:hover:border-white/10"
+                  className="relative overflow-hidden group w-full text-white font-bold py-4 rounded-xl t-smooth duration-500 ease-out border border-blue-500/20 bg-blue-600/10 shadow-lg shadow-blue-600/10 animate-neon hover:animate-none hover:border-transparent hover:shadow-xl hover:shadow-blue-600/25 hover:-translate-y-0.5 text-sm uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none disabled:hover:bg-transparent disabled:hover:border-white/10"
                 >
                   <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
                   <span className="relative z-10">{loading ? 'Generando...' : 'Revisar y Enviar'}</span>
@@ -1177,7 +1177,7 @@ const Cotizador = () => {
           >
             <button
               onClick={() => setShowPreview(false)}
-              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-[#A1A1AA] hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
+              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-[#A1A1AA] hover:text-white flex items-center justify-center t-smooth duration-300 hover:rotate-90"
               aria-label="Cerrar"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1299,7 +1299,7 @@ const Cotizador = () => {
       {/* Modal Firmas */}
       {createPortal(
       <div
-        className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 transition-all duration-300 ease-out ${
+        className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 t-smooth duration-300 ease-out ${
           showSignatures ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
         onClick={() => setShowSignatures(false)}
@@ -1315,7 +1315,7 @@ const Cotizador = () => {
           >
             <button
               onClick={() => setShowSignatures(false)}
-              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-[#A1A1AA] hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
+              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-[#A1A1AA] hover:text-white flex items-center justify-center t-smooth duration-300 hover:rotate-90"
               aria-label="Cerrar"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1391,7 +1391,7 @@ const Cotizador = () => {
                     <button
                       type="button"
                       onClick={() => carnetFileRef.current?.click()}
-                      className="w-full p-4 rounded-xl border-2 border-dashed border-white/[0.08] hover:border-blue-500/20 bg-white/[0.02] hover:bg-blue-500/[0.04] transition-all duration-300 text-center group"
+                      className="w-full p-4 rounded-xl border-2 border-dashed border-white/[0.08] hover:border-blue-500/20 bg-white/[0.02] hover:bg-blue-500/[0.04] t-smooth duration-300 text-center group"
                     >
                       <svg className="w-8 h-8 mx-auto mb-2 text-white/20 group-hover:text-blue-400/50 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
@@ -1405,7 +1405,7 @@ const Cotizador = () => {
                       <button
                         type="button"
                         onClick={() => { setCarnetImage(null); if (carnetFileRef.current) carnetFileRef.current.value = ''; }}
-                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-red-500/80 text-white/60 hover:text-white flex items-center justify-center transition-all"
+                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-red-500/80 text-white/60 hover:text-white flex items-center justify-center t-smooth"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -1430,7 +1430,7 @@ const Cotizador = () => {
                       handleClientClear();
                     }
                   }}
-                  className="flex-1 px-4 py-3 rounded-xl border border-white/10 text-[#A1A1AA] hover:text-white hover:border-white/30 hover:bg-white/[0.03] transition-all text-sm font-medium flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-3 rounded-xl border border-white/10 text-[#A1A1AA] hover:text-white hover:border-white/30 hover:bg-white/[0.03] t-smooth text-sm font-medium flex items-center justify-center gap-2"
                 >
                   <Eraser className="w-4 h-4" />
                   Limpiar y volver a firmar
@@ -1444,7 +1444,7 @@ const Cotizador = () => {
                     setError(null);
                     setShowSignatures(false);
                   }}
-                  className="flex-1 px-4 py-3 rounded-xl bg-blue-600 text-white font-bold text-sm transition-all hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-3 rounded-xl bg-blue-600 text-white font-bold text-sm t-smooth hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 hover:-translate-y-0.5 flex items-center justify-center gap-2"
                 >
                   <Check className="w-4 h-4" />
                   Confirmar firma
@@ -1458,7 +1458,7 @@ const Cotizador = () => {
       {/* Modal PDF Preview */}
       {createPortal(
       <div
-        className={`fixed inset-0 z-50 flex items-center justify-center sm:p-4 transition-all duration-300 ease-out ${
+        className={`fixed inset-0 z-50 flex items-center justify-center sm:p-4 t-smooth duration-300 ease-out ${
           showPdfPreview && pdfPreviewUrl ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
         onClick={() => { setError(null); setShowPdfPreview(false); setPdfPreviewUrl(null); }}
@@ -1474,7 +1474,7 @@ const Cotizador = () => {
           >
             <button
               onClick={() => { setError(null); setShowPdfPreview(false); setPdfPreviewUrl(null); }}
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-[#A1A1AA] hover:text-white flex items-center justify-center transition-all duration-300 hover:rotate-90"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-[#A1A1AA] hover:text-white flex items-center justify-center t-smooth duration-300 hover:rotate-90"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -1500,7 +1500,7 @@ const Cotizador = () => {
             <div className="flex gap-2 sm:gap-3 justify-end flex-wrap">
               <button
                 onClick={() => { setError(null); setShowPdfPreview(false); setPdfPreviewUrl(null); }}
-                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl border border-white/10 text-[#A1A1AA] hover:text-white hover:border-white/30 transition-all text-xs sm:text-sm"
+                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl border border-white/10 text-[#A1A1AA] hover:text-white hover:border-white/30 t-smooth text-xs sm:text-sm"
               >
                 Cancelar
               </button>
@@ -1511,7 +1511,7 @@ const Cotizador = () => {
                     pdfDocRef.current.save(nombreArchivo);
                   }
                 }}
-                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl border border-white/[0.08] bg-white/[0.02] text-white hover:bg-white/[0.03] transition-all text-xs sm:text-sm flex items-center gap-2"
+                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl border border-white/[0.08] bg-white/[0.02] text-white hover:bg-white/[0.03] t-smooth text-xs sm:text-sm flex items-center gap-2"
               >
                 <FileDown className="w-4 h-4" />
                 Descargar
@@ -1519,7 +1519,7 @@ const Cotizador = () => {
               <button
                 onClick={enviarCotizacion}
                 disabled={loading}
-                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-blue-600 text-white font-bold transition-all text-xs sm:text-sm hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-blue-600 text-white font-bold t-smooth text-xs sm:text-sm hover:bg-blue-500 hover:shadow-xl hover:shadow-blue-600/25 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Enviando...' : 'Enviar'}
               </button>

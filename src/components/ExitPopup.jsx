@@ -44,7 +44,7 @@ export default function ExitPopup() {
       >
         <button
           onClick={() => setDismissed(true)}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-all hover:rotate-90"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center t-smooth hover:rotate-90"
           aria-label="Cerrar"
         >
           <X className="w-4 h-4" />
@@ -82,14 +82,14 @@ export default function ExitPopup() {
                   placeholder="tu@email.cl"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-white/20 transition-all"
+                  className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder:text-[#A1A1AA]/40 focus:outline-none focus:border-white/20 t-smooth"
                   autoFocus
                 />
               </div>
             </div>
             <button
               type="submit"
-              className="relative overflow-hidden group w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm transition-all hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 hover:-translate-y-0.5 flex items-center justify-center gap-2"
+              className="relative overflow-hidden group w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm t-smooth hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/25 hover:-translate-y-0.5 flex items-center justify-center gap-2"
             >
               <Send className="w-4 h-4 relative z-10" />
               <span className="relative z-10">Recibir presupuesto gratis</span>
