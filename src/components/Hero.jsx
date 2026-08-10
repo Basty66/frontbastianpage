@@ -138,7 +138,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="inicio" className="relative min-h-screen flex items-center overflow-x-hidden bg-grid">
+    <section id="inicio" className="relative h-dvh flex items-center overflow-hidden bg-grid">
       {/* Particles - full width */}
       <div className="hidden md:block absolute inset-0 z-0 pointer-events-none">
         {particles.map((p) => (
