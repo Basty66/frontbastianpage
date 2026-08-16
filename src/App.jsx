@@ -86,11 +86,11 @@ function App() {
     return () => { clearTimeout(scrollTimeoutRef.current); };
   }, []);
 
-  // Easter egg: 5 clicks seguidos en el logo abren el panel admin
+  // Easter egg: 3 clicks seguidos en el logo abren el panel admin
   const handleLogoClick = useCallback(() => {
     clearTimeout(logoTimeoutRef.current);
     logoClicksRef.current += 1;
-    if (logoClicksRef.current >= 5) {
+    if (logoClicksRef.current >= 3) {
       logoClicksRef.current = 0;
       navigate('/admin');
       return;
@@ -175,7 +175,7 @@ function App() {
         scrolled ? 'bg-[#09090B]/80 border-white/[0.06] shadow-lg shadow-black/20' : 'bg-[#09090B]/40 border-white/[0.04]'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center">
-          <Link to="/" onClick={() => { handleLogoClick(); setMenuOpen(false); }} className="flex items-center gap-1.5 sm:gap-2 group">
+          <Link to="/" onClick={(e) => { e.preventDefault(); handleLogoClick(); setMenuOpen(false); }} className="flex items-center gap-1.5 sm:gap-2 group">
             <svg viewBox="0 2 40 26" fill="none" className="w-7 h-7 sm:w-8 sm:h-8" style={{ animation: 'fade-slide-in 0.6s ease-out' }}>
               <path d="M20 6C12 6 7 12 7 19v4a3 3 0 003 3h20a3 3 0 003-3v-4c0-7-5-13-13-13z" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 t-smooth duration-500" />
               <path d="M11 9L7 3l7 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 t-smooth duration-500" />

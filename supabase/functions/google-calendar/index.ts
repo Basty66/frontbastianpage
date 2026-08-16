@@ -22,9 +22,9 @@ serve(async (req) => {
 
     const { action, ...params } = await req.json()
 
-    // For public actions (get-slots, create-event), use the first connected token
-    // For admin actions (connect, check-status), require auth
-    const ADMIN_ACTIONS = ['connect', 'check-status']
+    // For public actions (get-slots, create-event, check-status), use stored tokens directly
+    // For admin actions (connect), require auth
+    const ADMIN_ACTIONS = ['connect']
 
     let userId: string | null = null
     let accessToken: string | null = null
@@ -53,7 +53,6 @@ serve(async (req) => {
       .schema('app_private')
       .from('user_google_tokens')
       .select('*')
-      .eq('user_id', userId || '*')
       .limit(1)
       .single()
 
