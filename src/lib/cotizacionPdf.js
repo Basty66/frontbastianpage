@@ -179,7 +179,7 @@ export function buildCotizacionPDF({
   text('Cristian Bastian Cerda', mg + 4, pY + 7, 10, 'bold', BLUE);
   text('Analista Programador', mg + 4, pY + 13, 8, 'normal', GRAY);
   text('cristianbastian.dev@gmail.com  |  +56 9 2812 2947', mg + 4 + cw / 2, pY + 7, 8, 'normal', DARK);
-  text('Santiago, Chile  |  RUT: 19.876.543-2', mg + 4 + cw / 2, pY + 13, 8, 'normal', GRAY);
+  text('Santiago, Chile  |  RUT: 20.878.838-8', mg + 4 + cw / 2, pY + 13, 8, 'normal', GRAY);
   y = pY + 24;
 
   // =============== SERVICIO ===============
