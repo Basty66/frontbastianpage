@@ -20,6 +20,74 @@ serve(async (req) => {
       return new Response('ok', { status: 200, headers: corsHeaders })
     }
 
+    // ===== BOOKING CONFIRMATION =====
+    if (record?.fecha && record?.hora && record?.meetLink !== undefined) {
+      const { nombre, email, fecha, hora, meetLink } = record
+
+      const bookingHtml = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#09090B;font-family:system-ui,-apple-system,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 16px">
+    <table width="560" cellpadding="0" cellspacing="0" style="background:#111113;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)">
+      <tr>
+        <td style="background:linear-gradient(135deg,#09090B 0%,#1a1a2e 100%);padding:36px 40px;text-align:center;border-bottom:2px solid #2563EB">
+          <h1 style="margin:0;font-size:28px;font-weight:700;letter-spacing:-0.5px;color:#2563EB">BS DigitalTech</h1>
+          <p style="margin:6px 0 0;font-size:13px;color:#A1A1AA">Soluciones Web Profesionales</p>
+        </td>
+      </tr>
+      <tr><td style="padding:36px 40px 12px">
+        <h2 style="margin:0 0 6px;font-size:22px;color:#FAFAFA;font-weight:700">Reunión agendada</h2>
+        <p style="margin:0;font-size:14px;color:#A1A1AA">Hola ${nombre.split(' ')[0]}, tu reunión ha sido confirmada.</p>
+      </td></tr>
+      <tr><td style="padding:16px 40px">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.15);border-radius:12px;padding:20px">
+          <tr><td style="font-size:11px;font-weight:700;color:#2563EB;letter-spacing:1px;padding-bottom:10px;text-transform:uppercase">Detalles</td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:3px 0"><span style="color:#A1A1AA">Fecha:</span> <strong style="color:#FAFAFA">${fecha}</strong></td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:3px 0"><span style="color:#A1A1AA">Hora:</span> <strong style="color:#FAFAFA">${hora} (Chile)</strong></td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:3px 0"><span style="color:#A1A1AA">Duración:</span> <strong style="color:#FAFAFA">30 minutos</strong></td></tr>
+        </table>
+      </td></tr>
+      <tr><td style="padding:20px 40px;text-align:center">
+        <a href="${meetLink}" style="display:inline-block;background:#2563EB;color:#ffffff;font-size:14px;font-weight:600;padding:12px 32px;border-radius:10px;text-decoration:none">Unirse a Google Meet</a>
+      </td></tr>
+      <tr><td style="padding:0 40px 24px;text-align:center">
+        <p style="margin:0;font-size:13px;color:#A1A1AA;line-height:1.6">Si necesitas reagendar, responde a este correo o escríbeme por WhatsApp.</p>
+      </td></tr>
+      <tr>
+        <td style="background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.06);padding:20px 40px;text-align:center">
+          <p style="margin:0;font-size:12px;color:#2563EB;font-weight:600">BS DigitalTech</p>
+          <p style="margin:4px 0 0;font-size:11px;color:#71717A">Soluciones Web Profesionales · Chile</p>
+        </td>
+      </tr>
+    </table>
+  </td></tr></table>
+</body>
+</html>`
+
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'BS DigitalTech <onboarding@resend.dev>',
+          to: [email],
+          subject: `Reunión confirmada — ${fecha} ${hora}`,
+          html: bookingHtml,
+        }),
+      })
+
+      if (!res.ok) {
+        console.error('Booking email error:', res.status, await res.text())
+      }
+
+      return new Response('ok', { status: 200, headers: corsHeaders })
+    }
+
+    // ===== COTIZACION =====
     const { nombre, email, telefono, tipo_web, extras, total_estimado, mensaje, empresa } = record
 
     const extraLabels: Record<string, string> = {

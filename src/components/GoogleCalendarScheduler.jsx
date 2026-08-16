@@ -75,7 +75,40 @@ export default function GoogleCalendarScheduler({ clientName, clientEmail, onBoo
       })
 
       const data = await res.json()
-      if (data.event && data.event.htmlLink) {
+      if (data.event && !data.event.error) {
+        // Send confirmation email via Resend
+        try {
+          const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+          const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+          const slotDate = new Date(selectedSlot.start)
+          const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+          const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+          const dateStr = `${days[slotDate.getDay()]} ${slotDate.getDate()} de ${months[slotDate.getMonth()]}`
+          const timeStr = `${slotDate.getHours()}:${String(slotDate.getMinutes()).padStart(2, '0')}`
+
+          await fetch(`${supabaseUrl}/functions/v1/send-email`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': supabaseKey,
+              'Authorization': `Bearer ${supabaseKey}`,
+            },
+            body: JSON.stringify({
+              type: 'INSERT',
+              table: 'booking_confirmation',
+              record: {
+                nombre: clientName,
+                email: clientEmail,
+                fecha: dateStr,
+                hora: timeStr,
+                meetLink: data.event.htmlLink || '',
+              },
+            }),
+          })
+        } catch (emailErr) {
+          console.error('Confirmation email error:', emailErr)
+        }
+
         setBooked(true)
         onBooked?.(data.event)
       } else {

@@ -786,7 +786,7 @@ function AdminCalendar({ supabase, showToast }) {
   const [connected, setConnected] = useState(false)
   const [loading, setLoading] = useState(true)
   const GOOGLE_CLIENT_ID = '418367522971-5f5brhdk853n7ebh05pjprc5tko9a6qq.apps.googleusercontent.com'
-  const GOOGLE_REDIRECT_URI = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar-auth`
+  const GOOGLE_REDIRECT_URI = 'https://tjurqmgkapyfofyvllqj.supabase.co/auth/v1/callback'
   const GOOGLE_CALENDAR_FN = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar`
 
   useEffect(() => {
