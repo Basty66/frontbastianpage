@@ -785,7 +785,8 @@ export default function Admin() {
 function AdminCalendar({ supabase, showToast }) {
   const [connected, setConnected] = useState(false)
   const [loading, setLoading] = useState(true)
-  const GOOGLE_AUTH_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar-auth`
+  const GOOGLE_CLIENT_ID = '418367522971-5f5brhdk853n7ebh05pjprc5tko9a6qq.apps.googleusercontent.com'
+  const GOOGLE_REDIRECT_URI = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar-auth`
   const GOOGLE_CALENDAR_FN = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar`
 
   useEffect(() => {
@@ -809,7 +810,9 @@ function AdminCalendar({ supabase, showToast }) {
   }
 
   const handleConnect = () => {
-    window.open(GOOGLE_AUTH_URL, '_blank')
+    const scopes = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.events'].join(' ')
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(GOOGLE_REDIRECT_URI)}&response_type=code&scope=${encodeURIComponent(scopes)}&access_type=offline&prompt=consent`
+    window.open(authUrl, '_blank')
   }
 
   return (
