@@ -4,6 +4,7 @@ import {
   Shield, Check, Trash2, Lock, ArrowLeft, Star, RefreshCw,
   LogIn, AlertTriangle, X, Eye, EyeOff, UserCheck,
   Plus, Edit3, GripVertical, Save, FolderKanban, FileText,
+  Calendar,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -703,6 +704,7 @@ export default function Admin() {
     { id: 'testimonios', label: 'Testimonios', icon: Star },
     { id: 'proyectos', label: 'Proyectos', icon: FolderKanban },
     { id: 'posts', label: 'Blog', icon: FileText },
+    { id: 'calendar', label: 'Calendar', icon: Calendar },
   ];
 
   if (!authed) {
@@ -774,7 +776,87 @@ export default function Admin() {
         {activeTab === 'testimonios' && <AdminTestimonios supabase={supabase} showToast={showToast} />}
         {activeTab === 'proyectos' && <AdminProyectos supabase={supabase} showToast={showToast} />}
         {activeTab === 'posts' && <AdminPosts supabase={supabase} showToast={showToast} />}
+        {activeTab === 'calendar' && <AdminCalendar supabase={supabase} showToast={showToast} />}
       </div>
     </div>
   );
+}
+
+function AdminCalendar({ supabase, showToast }) {
+  const [connected, setConnected] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const GOOGLE_AUTH_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar-auth`
+
+  useEffect(() => {
+    checkStatus()
+  }, [])
+
+  const checkStatus = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) return
+
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'check-status' }),
+      })
+      const data = await res.json()
+      setConnected(data.connected)
+    } catch (err) {
+      console.error('Error checking calendar status:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleConnect = async () => {
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) {
+      showToast('error', 'Debes iniciar sesión primero')
+      return
+    }
+    window.open(`${GOOGLE_AUTH_URL}?state=${session.user.id}`, '_blank')
+  }
+
+  return (
+    <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+          <Calendar className="w-5 h-5 text-blue-500" />
+        </div>
+        <div>
+          <h3 className="text-white font-semibold">Google Calendar</h3>
+          <p className="text-xs text-slate-400">Conecta tu calendario para agendamiento automático</p>
+        </div>
+      </div>
+
+      {loading ? (
+        <p className="text-xs text-slate-400">Verificando estado...</p>
+      ) : connected ? (
+        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Check className="w-4 h-4 text-emerald-400" />
+            <span className="text-emerald-300 text-sm font-medium">Conectado</span>
+          </div>
+          <p className="text-xs text-slate-400">Tu Google Calendar está conectado. Los clientes pueden agendar reuniones directamente desde la web.</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          <p className="text-xs text-slate-400">Al conectar, los clientes podrán ver tus horarios disponibles y agendar reuniones directo en tu Google Calendar.</p>
+          <button
+            onClick={handleConnect}
+            className="w-full bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold py-2.5 px-4 rounded-xl transition-colors flex items-center justify-center gap-2"
+          >
+            <Calendar className="w-4 h-4" />
+            Conectar Google Calendar
+          </button>
+          <p className="text-[10px] text-slate-500 text-center">Se abrirá una ventana de Google para autorizar el acceso.</p>
+        </div>
+      )}
+    </div>
+  )
 }
