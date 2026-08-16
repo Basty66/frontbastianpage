@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Settings, CreditCard, Search, Globe, FileDown, Eraser, AlertTriangle, Check, Star, PenTool, Eye } from 'lucide-react';
 import Reveal from './Reveal';
 import PDFPreview from './PDFPreview';
+import GoogleCalendarScheduler from './GoogleCalendarScheduler';
 import useAnimatedNumber from '../hooks/useAnimatedNumber';
 import useScrollLock from '../hooks/useScrollLock';
 import { supabase } from '../lib/supabaseClient';
@@ -955,18 +956,11 @@ const Cotizador = () => {
                 <span className="relative z-10">¿Consultas? Escríbeme</span>
               </a>
 
-              <a
-                href="https://calendar.app.google/pvpooPqXKQAGCvJg7"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl t-smooth duration-500 ease-out border border-white/[0.08] bg-white/[0.02] hover:border-transparent hover:shadow-xl hover:shadow-white/[0.08] hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2"
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-white to-white/80 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
-                <svg className="w-4 h-4 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <span className="relative z-10">Agendar reunión gratis</span>
-              </a>
+              <GoogleCalendarScheduler
+                clientName={formData.nombre}
+                clientEmail={formData.email}
+                onBooked={(event) => console.log('Event booked:', event)}
+              />
 
               <button
                 type="button"
