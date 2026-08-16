@@ -7,6 +7,8 @@ import Testimonios from './components/Testimonios';
 import About from './components/About';
 import PortfolioSection from './components/Portfolio';
 import CtaBanner from './components/CtaBanner';
+import LeadMagnet from './components/LeadMagnet';
+import CasosExito from './components/CasosExito';
 import FloatingActions from './components/FloatingActions';
 import ExitPopup from './components/ExitPopup';
 import Reveal from './components/Reveal';
@@ -34,10 +36,12 @@ const Home = () => {
     <main>
       <Hero />
       <PortfolioSection />
+      <CasosExito />
       <CtaBanner />
       <Suspense fallback={<CotizadorSkeleton />}>
         <Cotizador />
       </Suspense>
+      <LeadMagnet />
       <Testimonios />
     </main>
   );
