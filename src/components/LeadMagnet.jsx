@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import { buildGuidePDF } from '../lib/guidePdf'
 
 export default function LeadMagnet() {
   const [email, setEmail] = useState('')
@@ -13,30 +14,15 @@ export default function LeadMagnet() {
 
     try {
       // Store lead in Supabase
-      const { data, error } = await supabase.from('leads').insert({
+      await supabase.from('leads').insert({
         email,
         source: 'lead-magnet',
         magnet: '5-errores-web',
-      }).select()
+      })
 
-      if (error) throw error
-
-      // Send the guide via email
-      if (data && data[0]) {
-        const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
-        const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
-        await fetch(`${SUPABASE_URL}/functions/v1/send-email`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({
-            type: 'INSERT',
-            record: data[0],
-          }),
-        })
-      }
+      // Generate and download PDF
+      const doc = buildGuidePDF()
+      doc.save('5-errores-web-BS-DigitalTech.pdf')
     } catch (err) {
       console.error('Error:', err)
     }
