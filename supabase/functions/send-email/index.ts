@@ -20,6 +20,87 @@ serve(async (req) => {
       return new Response('ok', { status: 200, headers: corsHeaders })
     }
 
+    // ===== LEAD MAGNET =====
+    if (record?.source === 'lead-magnet') {
+      const { email, magnet } = record
+
+      const guideHtml = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#09090B;font-family:system-ui,-apple-system,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 16px">
+    <table width="560" cellpadding="0" cellspacing="0" style="background:#111113;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)">
+      <tr>
+        <td style="background:linear-gradient(135deg,#09090B 0%,#1a1a2e 100%);padding:36px 40px;text-align:center;border-bottom:2px solid #2563EB">
+          <h1 style="margin:0;font-size:28px;font-weight:700;letter-spacing:-0.5px;color:#2563EB">BS DigitalTech</h1>
+          <p style="margin:6px 0 0;font-size:13px;color:#A1A1AA">Soluciones Web Profesionales</p>
+        </td>
+      </tr>
+      <tr><td style="padding:36px 40px 12px">
+        <h2 style="margin:0 0 6px;font-size:22px;color:#FAFAFA;font-weight:700">5 errores que tu web NO puede tener</h2>
+        <p style="margin:0;font-size:14px;color:#A1A1AA">Aquí tienes la guía completa. Guarda este correo y revisa cada punto.</p>
+      </td></tr>
+      <tr><td style="padding:16px 40px">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.15);border-radius:12px;padding:20px">
+          <tr><td style="font-size:11px;font-weight:700;color:#2563EB;letter-spacing:1px;padding-bottom:10px;text-transform:uppercase">Los 5 errores</td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:6px 0"><strong style="color:#EF4444">1.</strong> <strong style="color:#FAFAFA">Web lenta:</strong> Más de 3 segundos de carga = 53% de usuarios que se van.</td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:6px 0"><strong style="color:#EF4444">2.</strong> <strong style="color:#FAFAFA">No es responsive:</strong> El 60% de las búsquedas son desde celular. Si no se ve bien, pierdes clientes.</td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:6px 0"><strong style="color:#EF4444">3.</strong> <strong style="color:#FAFAFA">Sin llamado a la acción:</strong> Si no digo qué hacer, no lo hacen. Botones claros = más conversiones.</td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:6px 0"><strong style="color:#EF4444">4.</strong> <strong style="color:#FAFAFA">Diseño desactualizado:</strong> Los usuarios juzgan tu negocio en 0.05 segundos. El diseño importa.</td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:6px 0"><strong style="color:#EF4444">5.</strong> <strong style="color:#FAFAFA">Sin SSL:</strong> Los navegadores marcan tu web como "no segura". Pierdes confianza automáticamente.</td></tr>
+        </table>
+      </td></tr>
+      <tr><td style="padding:20px 40px">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:12px;padding:20px">
+          <tr><td style="font-size:11px;font-weight:700;color:#22C55E;letter-spacing:1px;padding-bottom:10px;text-transform:uppercase">Checklist rápido</td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:4px 0">✅ Mi web carga en menos de 3 segundos</td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:4px 0">✅ Se ve perfecto en celular</td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:4px 0">✅ Tiene botones claros de contacto/acción</td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:4px 0">✅ El diseño transmite confianza profesional</td></tr>
+          <tr><td style="font-size:13px;color:#D4D4D8;padding:4px 0">✅ Tiene certificado SSL (https://)</td></tr>
+        </table>
+      </td></tr>
+      <tr><td style="padding:20px 40px;text-align:center">
+        <a href="https://bsdigitaltech.vercel.app/#cotizador" style="display:inline-block;background:#2563EB;color:#ffffff;font-size:14px;font-weight:600;padding:12px 32px;border-radius:10px;text-decoration:none">Cotiza tu web gratis</a>
+      </td></tr>
+      <tr><td style="padding:0 40px 24px;text-align:center">
+        <p style="margin:0;font-size:13px;color:#A1A1AA;line-height:1.6">Si necesitas ayuda con tu web, responde a este correo o escríbeme por WhatsApp.</p>
+      </td></tr>
+      <tr>
+        <td style="background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.06);padding:20px 40px;text-align:center">
+          <p style="margin:0;font-size:12px;color:#2563EB;font-weight:600">BS DigitalTech</p>
+          <p style="margin:4px 0 0;font-size:11px;color:#71717A">Soluciones Web Profesionales · Chile</p>
+        </td>
+      </tr>
+    </table>
+  </td></tr></table>
+</body>
+</html>`
+
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'BS DigitalTech <onboarding@resend.dev>',
+          to: [email],
+          subject: '5 errores que tu web NO puede tener — Guía gratis',
+          html: guideHtml,
+        }),
+      })
+
+      if (!res.ok) {
+        console.error('Lead magnet email error:', res.status, await res.text())
+      } else {
+        console.log('Lead magnet email success:', await res.json())
+      }
+
+      return new Response('ok', { status: 200, headers: corsHeaders })
+    }
+
     // ===== BOOKING CONFIRMATION =====
     if (record?.fecha && record?.hora && record?.meetLink !== undefined) {
       const { nombre, email, fecha, hora, meetLink } = record

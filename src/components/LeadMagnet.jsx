@@ -10,19 +10,36 @@ export default function LeadMagnet() {
     if (!email) return
     setLoading(true)
 
-    // Store lead in Supabase
+    // Store lead in Supabase and send email
     try {
       const { supabase } = await import('../lib/supabaseClient')
-      await supabase.from('leads').insert({
+      const { data, error } = await supabase.from('leads').insert({
         email,
         source: 'lead-magnet',
         magnet: '5-errores-web',
-      })
+      }).select()
+
+      if (error) throw error
+
+      // Send the guide via email
+      if (data && data[0]) {
+        const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+        await fetch(`${SUPABASE_URL}/functions/v1/send-email`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            type: 'INSERT',
+            record: data[0],
+          }),
+        })
+      }
     } catch (err) {
-      console.error('Error storing lead:', err)
+      console.error('Error:', err)
     }
 
-    // Generate PDF download link
     setSubmitted(true)
     setLoading(false)
   }
