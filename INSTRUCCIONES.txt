@@ -1,0 +1,24 @@
+# Instructions for applying changes to BS DigitalTech
+
+## How to apply all changes at once
+
+1. Open your project in VS Code or your preferred editor
+2. Open the file `CAMBIOS-PRECIOS.md` that was created in your project folder
+3. Copy each code block and paste it into the corresponding file
+4. Save all files
+5. Run these commands in your terminal:
+
+```powershell
+cd "C:\Users\crist\Desktop\frontbastianpage-master"
+git add .
+git commit -m "feat: actualiza precios y agrega nuevos servicios (agenda, cotizador, WhatsApp Business, CRM)"
+git push origin main
+```
+
+Vercel will deploy automatically.
+
+## Files to modify:
+- src/components/Cotizador.jsx (4 changes)
+- src/components/Hero.jsx (1 change)
+
+## All changes are documented in CAMBIOS-PRECIOS.md
