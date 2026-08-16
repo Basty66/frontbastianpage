@@ -24,8 +24,12 @@ serve(async (req) => {
 
     const extraLabels: Record<string, string> = {
       admin: 'Panel Administrativo',
-      pagos: 'Pasarela de Pago',
+      pagos: 'Mercado Pago',
+      agenda: 'Agenda Online',
+      cotizador: 'Cotizador Automático',
       seo: 'SEO Profesional',
+      whatsapp: 'WhatsApp Business',
+      crm: 'CRM Básico',
       idioma: 'Multi-idioma',
       soporte: 'Soporte Mensual',
       mantenimiento: 'Mantenimiento Anual',

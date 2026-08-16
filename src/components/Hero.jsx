@@ -200,7 +200,7 @@ const Hero = () => {
                   <Star key={s} className="w-2.5 h-2.5 fill-blue-400/60 text-blue-400/60" />
                 ))}
               </div>
-              <p className="text-xs text-[#A1A1AA] truncate">+15 clientes satisfechos</p>
+              <p className="text-xs text-[#A1A1AA] truncate">+20 clientes satisfechos</p>
             </div>
           </div>
         </Reveal>

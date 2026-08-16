@@ -621,6 +621,7 @@ const Cotizador = () => {
       tipoLabel: getTipoLabel(),
       formatCurrency,
       formatDate,
+      moneda,
       clientSignatureDataUrl,
       providerSignatureImg: bastianImgRef.current,
     });

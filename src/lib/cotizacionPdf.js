@@ -52,6 +52,7 @@ export function buildCotizacionPDF({
   tipoLabel,
   formatCurrency,
   formatDate,
+  moneda = 'CLP',
   clientSignatureDataUrl,
   providerSignatureImg,
 }) {
@@ -244,7 +245,7 @@ export function buildCotizacionPDF({
     doc.setLineWidth(0.4);
     doc.rect(tx, y, cw, 12);
     text('INVERSION TOTAL', tx + 3, y + 8, 11, 'bold', BLUE);
-    text(`${formatCurrency(total)} CLP`, pw - mg - 3, y + 8, 12, 'bold', BLUE, 'right');
+    text(`${formatCurrency(total)} ${moneda}`, pw - mg - 3, y + 8, 12, 'bold', BLUE, 'right');
     y += 18;
   }
 
@@ -289,9 +290,9 @@ export function buildCotizacionPDF({
   doc.setFillColor(...BLUE_LIGHT);
   doc.rect(mg, y, cw, 0.8, 'F');
   text('Esquema de pago 50% / 50%', mg + 4, y + 8, 10, 'bold', BLUE);
-  text(`1.  Anticipo: ${formatCurrency(anticipo)} CLP`, mg + 4, y + 18, 9, 'normal', DARK);
+  text(`1.  Anticipo: ${formatCurrency(anticipo)} ${moneda}`, mg + 4, y + 18, 9, 'normal', DARK);
   text('Para iniciar el desarrollo del proyecto.', mg + 12, y + 23, 8, 'normal', GRAY);
-  text(`2.  Saldo: ${formatCurrency(saldo)} CLP`, mg + 4, y + 28, 9, 'normal', DARK);
+  text(`2.  Saldo: ${formatCurrency(saldo)} ${moneda}`, mg + 4, y + 28, 9, 'normal', DARK);
   text('Contra entrega y conformidad final.', mg + 12, y + 33, 8, 'normal', GRAY);
   text(`Plazo total: ${dias} dias habiles desde el anticipo.`, pw - mg - 4, y + pH - 4, 8, 'bold', BLUE, 'right');
   y += pH + 8;

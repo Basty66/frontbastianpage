@@ -66,7 +66,7 @@ const steps = [
 ];
 
 const benefits = [
-  { icon: Percent, title: '50% de descuento', desc: 'El primer proyecto tiene 50% de descuento. Ejemplo: si tu web cuesta $200.000, solo pagas $100.000. Sin costos ocultos.' },
+  { icon: Percent, title: '50% de descuento', desc: 'El primer proyecto tiene 50% de descuento. Ejemplo: si tu web cuesta $300.000, solo pagas $150.000. Sin costos ocultos.' },
   { icon: FileText, title: 'PDF con tu propuesta', desc: 'Al cotizar, recibes al instante un PDF profesional con los detalles de tu proyecto: alcance, tecnologías, plazos y precio.' },
   { icon: CheckCircle2, title: 'Hosting $0 para siempre', desc: 'Tu web se hospeda en Vercel sin costo mensual. Solo pagas tu dominio una vez al año (~$10.000 CLP).' },
   { icon: CheckCircle2, title: 'Velocidad garantizada', desc: 'Tu web carga en menos de 2 segundos. Google te premia con mejor posicionamiento y tus clientes no se van por lentitud.' },
