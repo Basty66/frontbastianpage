@@ -179,11 +179,11 @@ const Hero = () => {
           </button>
         </div>
         <div className="flex items-center justify-center lg:justify-start gap-2 sm:gap-6 pt-0 sm:pt-2 flex-wrap">
-          <CounterBlock target={20} suffix="+" label="Proyectos" />
+          <CounterBlock target={25} suffix="+" label="Proyectos" />
           <div className="w-px h-6 sm:h-8 bg-blue-500/20" />
-          <CounterBlock target={15} suffix="+" label="Clientes" />
+          <CounterBlock target={20} suffix="+" label="Clientes" />
           <div className="w-px h-6 sm:h-8 bg-blue-500/20" />
-          <CounterBlock target={100} suffix="%" label="Disponibilidad" />
+          <CounterBlock target={100} suffix="%" label="Satisfacción" />
         </div>
         <Reveal animation="fade-up" delay={400} className="pt-0 sm:pt-2">
           <div className="flex items-center gap-1.5 sm:gap-2 bg-white/[0.03] border border-blue-500/10 rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 backdrop-blur-sm max-w-[260px] sm:max-w-xs mx-auto lg:mx-0 hover:border-blue-500/25 transition-colors duration-500">
