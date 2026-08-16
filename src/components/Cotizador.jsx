@@ -956,7 +956,7 @@ const Cotizador = () => {
               </a>
 
               <a
-                href="https://calendly.com/cristianbastian/30min"
+                href="https://calendar.app.google/pvpooPqXKQAGCvJg7"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative overflow-hidden group w-full text-white font-bold py-3.5 rounded-xl t-smooth duration-500 ease-out border border-white/[0.08] bg-white/[0.02] hover:border-transparent hover:shadow-xl hover:shadow-white/[0.08] hover:-translate-y-0.5 text-sm uppercase tracking-wider flex items-center justify-center gap-2"
