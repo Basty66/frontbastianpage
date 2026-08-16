@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { supabase } from '../lib/supabaseClient'
 
 export default function LeadMagnet() {
   const [email, setEmail] = useState('')
@@ -7,12 +8,11 @@ export default function LeadMagnet() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!email) return
+    if (!email || !supabase) return
     setLoading(true)
 
-    // Store lead in Supabase and send email
     try {
-      const { supabase } = await import('../lib/supabaseClient')
+      // Store lead in Supabase
       const { data, error } = await supabase.from('leads').insert({
         email,
         source: 'lead-magnet',
@@ -24,11 +24,12 @@ export default function LeadMagnet() {
       // Send the guide via email
       if (data && data[0]) {
         const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+        const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
         await fetch(`${SUPABASE_URL}/functions/v1/send-email`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
           },
           body: JSON.stringify({
             type: 'INSERT',
