@@ -7,6 +7,8 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+const OWNER_ID = 'owner-bsdigitaltech'
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -22,62 +24,27 @@ serve(async (req) => {
 
     const { action, ...params } = await req.json()
 
-    // For public actions (get-slots, create-event, check-status), use stored tokens directly
-    // For admin actions (connect), require auth
-    const ADMIN_ACTIONS = ['connect']
-
-    let userId: string | null = null
-    let accessToken: string | null = null
-
-    if (ADMIN_ACTIONS.includes(action)) {
-      const authHeader = req.headers.get('Authorization')
-      if (!authHeader) {
-        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-          status: 401,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        })
-      }
-      const token = authHeader.replace('Bearer ', '')
-      const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-      if (authError || !user) {
-        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-          status: 401,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        })
-      }
-      userId = user.id
-    }
-
-    // Get stored tokens (for public actions, get the first connected token)
-    const { data: tokens, error: tokenError } = await supabase
+    // Get stored tokens (always the owner's tokens)
+    const { data: tokens } = await supabase
       .schema('app_private')
       .from('user_google_tokens')
       .select('*')
-      .limit(1)
+      .eq('user_id', OWNER_ID)
       .single()
 
-    // For public actions, if no specific user, get any connected token
-    let tokenRow = tokens
-    if (!tokenRow && !ADMIN_ACTIONS.includes(action)) {
-      const { data: anyToken } = await supabase
-        .schema('app_private')
-        .from('user_google_tokens')
-        .select('*')
-        .limit(1)
-        .single()
-      tokenRow = anyToken
-    }
+    let accessToken: string | null = null
 
-    if (tokenRow) {
+    if (tokens) {
+      accessToken = tokens.access_token
+
       // Refresh token if expired
-      accessToken = tokenRow.access_token
-      if (new Date(tokenRow.expires_at) < new Date(Date.now() + 5 * 60 * 1000)) {
+      if (new Date(tokens.expires_at) < new Date(Date.now() + 5 * 60 * 1000)) {
         const refreshRes = await fetch('https://oauth2.googleapis.com/token', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams({
             grant_type: 'refresh_token',
-            refresh_token: tokenRow.refresh_token,
+            refresh_token: tokens.refresh_token,
             client_id: googleClientId,
             client_secret: googleClientSecret,
           }),
@@ -95,24 +62,22 @@ serve(async (req) => {
               expires_at: new Date(Date.now() + refreshData.expires_in * 1000).toISOString(),
               updated_at: new Date().toISOString(),
             })
-            .eq('user_id', tokenRow.user_id)
+            .eq('user_id', OWNER_ID)
         }
       }
     }
 
     // ===== CHECK STATUS =====
     if (action === 'check-status') {
-      const connected = !!tokenRow
-      return new Response(JSON.stringify({ connected }), {
+      return new Response(JSON.stringify({ connected: !!tokens }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
 
-    // ===== GET SLOTS (public) =====
+    // ===== GET SLOTS (public - no auth needed) =====
     if (action === 'get-slots') {
       if (!accessToken) {
-        return new Response(JSON.stringify({ error: 'Google Calendar not connected', slots: [] }), {
-          status: 400,
+        return new Response(JSON.stringify({ error: 'Calendario no conectado', slots: [] }), {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         })
       }
@@ -175,10 +140,10 @@ serve(async (req) => {
       })
     }
 
-    // ===== CREATE EVENT (public) =====
+    // ===== CREATE EVENT (public - no auth needed) =====
     if (action === 'create-event') {
       if (!accessToken) {
-        return new Response(JSON.stringify({ error: 'Google Calendar not connected' }), {
+        return new Response(JSON.stringify({ error: 'Calendario no conectado' }), {
           status: 400,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         })

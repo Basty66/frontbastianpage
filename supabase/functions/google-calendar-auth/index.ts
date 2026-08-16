@@ -7,6 +7,8 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+const OWNER_ID = 'owner-bsdigitaltech'
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -22,10 +24,8 @@ serve(async (req) => {
 
     const url = new URL(req.url)
     const code = url.searchParams.get('code')
-    const state = url.searchParams.get('state')
 
     if (!code) {
-      // Generate OAuth URL
       const redirectUri = `${supabaseUrl}/functions/v1/google-calendar-auth`
       const scopes = [
         'https://www.googleapis.com/auth/calendar',
@@ -38,15 +38,13 @@ serve(async (req) => {
         `response_type=code&` +
         `scope=${encodeURIComponent(scopes)}&` +
         `access_type=offline&` +
-        `prompt=consent&` +
-        `state=${state || 'default'}`
+        `prompt=consent`
 
       return new Response(JSON.stringify({ url: authUrl }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
 
-    // Exchange code for tokens
     const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -68,29 +66,12 @@ serve(async (req) => {
       })
     }
 
-    // Get user from state or token
-    const authHeader = req.headers.get('Authorization')
-    let userId = state // State contains user ID
-
-    if (authHeader) {
-      const token = authHeader.replace('Bearer ', '')
-      const { data: { user } } = await supabase.auth.getUser(token)
-      if (user) userId = user.id
-    }
-
-    if (!userId) {
-      return new Response(JSON.stringify({ error: 'No user ID provided' }), {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
-    }
-
-    // Store tokens
+    // Store tokens with fixed owner ID (no Supabase Auth needed)
     const { error: upsertError } = await supabase
       .schema('app_private')
       .from('user_google_tokens')
       .upsert({
-        user_id: userId,
+        user_id: OWNER_ID,
         access_token: tokenData.access_token,
         refresh_token: tokenData.refresh_token,
         expires_at: new Date(Date.now() + tokenData.expires_in * 1000).toISOString(),
@@ -100,21 +81,23 @@ serve(async (req) => {
 
     if (upsertError) {
       console.error('Upsert error:', upsertError)
-      return new Response(JSON.stringify({ error: 'Failed to store tokens' }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
     }
 
-    // Redirect to success page
     return new Response(`
+      <!DOCTYPE html>
       <html>
-        <head><title>Google Calendar Conectado</title></head>
-        <body style="font-family: system-ui; text-align: center; padding: 50px; background: #09090B; color: white;">
-          <h1 style="color: #10b981;">✅ Google Calendar conectado</h1>
-          <p>Puedes cerrar esta ventana.</p>
-          <script>setTimeout(() => window.close(), 2000)</script>
-        </body>
+      <head><title>BS DigitalTech — Calendar Conectado</title></head>
+      <body style="margin:0;padding:0;background:#09090B;font-family:system-ui,-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh">
+        <div style="text-align:center;padding:40px">
+          <div style="width:64px;height:64px;background:rgba(16,185,129,0.15);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h1 style="color:#FAFAFA;font-size:24px;font-weight:700;margin:0 0 8px">Google Calendar conectado</h1>
+          <p style="color:#A1A1AA;font-size:14px;margin:0 0 24px">Los clientes ahora pueden agendar reuniones directo en tu calendar.</p>
+          <p style="color:#52525B;font-size:12px">Puedes cerrar esta ventana.</p>
+          <script>setTimeout(() => window.close(), 3000)<\/script>
+        </div>
+      </body>
       </html>
     `, {
       headers: { ...corsHeaders, 'Content-Type': 'text/html' },

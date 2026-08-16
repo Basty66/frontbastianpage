@@ -786,6 +786,7 @@ function AdminCalendar({ supabase, showToast }) {
   const [connected, setConnected] = useState(false)
   const [loading, setLoading] = useState(true)
   const GOOGLE_AUTH_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar-auth`
+  const GOOGLE_CALENDAR_FN = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar`
 
   useEffect(() => {
     checkStatus()
@@ -793,15 +794,9 @@ function AdminCalendar({ supabase, showToast }) {
 
   const checkStatus = async () => {
     try {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) return
-
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/google-calendar`, {
+      const res = await fetch(GOOGLE_CALENDAR_FN, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'check-status' }),
       })
       const data = await res.json()
@@ -813,13 +808,8 @@ function AdminCalendar({ supabase, showToast }) {
     }
   }
 
-  const handleConnect = async () => {
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      showToast('error', 'Debes iniciar sesión primero')
-      return
-    }
-    window.open(`${GOOGLE_AUTH_URL}?state=${session.user.id}`, '_blank')
+  const handleConnect = () => {
+    window.open(GOOGLE_AUTH_URL, '_blank')
   }
 
   return (
@@ -837,12 +827,20 @@ function AdminCalendar({ supabase, showToast }) {
       {loading ? (
         <p className="text-xs text-slate-400">Verificando estado...</p>
       ) : connected ? (
-        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Check className="w-4 h-4 text-emerald-400" />
-            <span className="text-emerald-300 text-sm font-medium">Conectado</span>
+        <div className="space-y-3">
+          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Check className="w-4 h-4 text-emerald-400" />
+              <span className="text-emerald-300 text-sm font-medium">Conectado</span>
+            </div>
+            <p className="text-xs text-slate-400">Tu Google Calendar está conectado. Los clientes pueden agendar reuniones directamente desde la web.</p>
           </div>
-          <p className="text-xs text-slate-400">Tu Google Calendar está conectado. Los clientes pueden agendar reuniones directamente desde la web.</p>
+          <button
+            onClick={handleConnect}
+            className="w-full bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 text-xs font-medium py-2 px-4 rounded-xl transition-colors border border-white/[0.06]"
+          >
+            Reconectar calendar
+          </button>
         </div>
       ) : (
         <div className="space-y-3">
