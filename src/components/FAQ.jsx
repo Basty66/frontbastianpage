@@ -44,7 +44,7 @@ export default function FAQ() {
   const toggle = (i) => setOpenId(openId === i ? null : i);
 
   return (
-    <section id="faq" className="py-16 sm:py-20 px-4 sm:px-6 border-t border-white/5 bg-slate-900/10">
+    <section id="faq" className="relative py-16 sm:py-20 px-4 sm:px-6 border-t border-white/5 bg-slate-900/10 overflow-hidden">
       <div className="max-w-3xl mx-auto">
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 tracking-tight">

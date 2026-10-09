@@ -161,7 +161,7 @@ function App() {
   }, [navigate, location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col text-white selection:bg-brand-cyan/30 selection:text-white bg-gradient-to-tr from-[#030712] via-[#0b1329] to-[#0f172a]">
+    <div className="min-h-screen flex flex-col overflow-x-hidden text-white selection:bg-brand-cyan/30 selection:text-white bg-gradient-to-tr from-[#030712] via-[#0b1329] to-[#0f172a]">
       {/* Scroll Progress */}
       <div className="scroll-progress-bar" style={{ width: `${scrollProgress}%` }} />
 

@@ -131,7 +131,7 @@ const Portfolio = ({ fullPage = false }) => {
   }, []);
 
   return (
-    <section id="portafolio" className="py-16 sm:py-20 px-4 sm:px-6">
+    <section id="portafolio" className="relative py-16 sm:py-20 px-4 sm:px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <Reveal animation="fade-up" className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className={`font-heading font-bold mb-4 tracking-tight ${fullPage ? 'text-3xl sm:text-4xl md:text-5xl' : 'text-2xl sm:text-3xl md:text-4xl'}`}>
