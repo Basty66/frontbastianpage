@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback, useRef, lazy, Suspense } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
-const Admin = lazy(() => import('./components/Admin'));
 import { Menu, X } from 'lucide-react';
 import Hero from './components/Hero';
 import Testimonios from './components/Testimonios';
@@ -18,6 +17,7 @@ import Privacy from './components/Privacy';
 import Terms from './components/Terms';
 import useScrollLock from './hooks/useScrollLock';
 import Cookies from './components/Cookies';
+import { WHATSAPP_NUMBER } from './lib/constants';
 import { CotizadorSkeleton } from './components/Skeletons';
 
 
@@ -79,8 +79,6 @@ function App() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const logoClicksRef = useRef(0);
-  const logoTimeoutRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
   // El scroll ocurre en el contenedor interno, no en window
   const scrollerRef = useRef(null);
@@ -89,22 +87,6 @@ function App() {
 
   useEffect(() => {
     return () => { clearTimeout(scrollTimeoutRef.current); };
-  }, []);
-
-  // Easter egg: 3 clicks seguidos en el logo abren el panel admin
-  const handleLogoClick = useCallback(() => {
-    clearTimeout(logoTimeoutRef.current);
-    logoClicksRef.current += 1;
-    if (logoClicksRef.current >= 3) {
-      logoClicksRef.current = 0;
-      navigate('/admin');
-      return;
-    }
-    logoTimeoutRef.current = setTimeout(() => { logoClicksRef.current = 0; }, 2000);
-  }, [navigate]);
-
-  useEffect(() => {
-    return () => { clearTimeout(logoTimeoutRef.current); };
   }, []);
 
   useEffect(() => {
@@ -180,7 +162,7 @@ function App() {
         scrolled ? 'bg-[#09090B]/80 border-white/[0.06] shadow-lg shadow-black/20' : 'bg-[#09090B]/40 border-white/[0.04]'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center">
-          <Link to="/" onClick={(e) => { e.preventDefault(); handleLogoClick(); setMenuOpen(false); }} className="flex items-center gap-1.5 sm:gap-2 group">
+          <Link to="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-1.5 sm:gap-2 group">
             <svg viewBox="0 2 40 26" fill="none" className="w-7 h-7 sm:w-8 sm:h-8" style={{ animation: 'fade-slide-in 0.6s ease-out' }}>
               <path d="M20 6C12 6 7 12 7 19v4a3 3 0 003 3h20a3 3 0 003-3v-4c0-7-5-13-13-13z" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 t-smooth duration-500" />
               <path d="M11 9L7 3l7 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.6" className="group-hover:stroke-[#2563EB] group-hover:stroke-opacity-100 t-smooth duration-500" />
@@ -258,7 +240,7 @@ function App() {
           </nav>
           <div className="relative px-5 py-4 border-t border-white/[0.06]">
             <a
-              href="https://wa.me/56933933434?text=%C2%A1Hola!%20Quisiera%20una%20cotizaci%C3%B3n%20para%20un%20proyecto%20web."
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=%C2%A1Hola!%20Quisiera%20una%20cotizaci%C3%B3n%20para%20un%20proyecto%20web.`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-[#25D366]/10 border border-[#25D366]/20 text-[#25D366] text-sm font-medium hover:bg-[#25D366]/20 t-smooth duration-300"
@@ -283,7 +265,6 @@ function App() {
               <Route path="/privacidad" element={<Privacy />} />
               <Route path="/terminos" element={<Terms />} />
               <Route path="/cookies" element={<Cookies />} />
-              <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400"><div className="animate-pulse text-sm">Cargando panel...</div></div>}><ErrorBoundary><Admin /></ErrorBoundary></Suspense>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
